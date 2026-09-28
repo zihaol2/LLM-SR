@@ -1,0 +1,297 @@
+cached Topography_Chemotaxis|anon_with_data|deepseek-v4-flash
+cached Topography_Chemotaxis|anon_with_data#2|deepseek-v4-flash
+cached Topography_Chemotaxis|anon_with_data#3|deepseek-v4-flash
+cached Morphogenesis|anon_with_data|deepseek-v4-flash
+cached Morphogenesis|anon_with_data#2|deepseek-v4-flash
+cached Morphogenesis|anon_with_data#3|deepseek-v4-flash
+cached Forced_Swift_Hohenberg|anon_with_data|deepseek-v4-flash
+cached Forced_Swift_Hohenberg|anon_with_data#2|deepseek-v4-flash
+cached Forced_Swift_Hohenberg|anon_with_data#3|deepseek-v4-flash
+cached Traffic_Flow_Bottleneck|anon_with_data|deepseek-v4-flash
+cached Traffic_Flow_Bottleneck|anon_with_data#2|deepseek-v4-flash
+cached Traffic_Flow_Bottleneck|anon_with_data#3|deepseek-v4-flash
+cached Predator_Prey|anon_with_data|deepseek-v4-flash
+cached Predator_Prey|anon_with_data#2|deepseek-v4-flash
+cached Predator_Prey|anon_with_data#3|deepseek-v4-flash
+saved C:\Users\Li ZiHao\Desktop\AI4MATH\LLM-PDESR\_notes\role_probe_raw.json
+--- Topography_Chemotaxis|anon_with_data|claude-haiku-4-5 (456 chars)
+FIELD_ROLES: f1 = reaction-diffusion concentration or normalized density field (evidence: [0,1] range, non-negative, spatially smooth k=1 dominant mode, temporal growth from localized initial condition to near-uniform saturation state, rms drift ratio 1.66 indicates nonlinear dynamics with reaction and diffusion)
+
+EQUATION:
+```python
+def rhs(x, f1, params, d_dx):
+    f1_t = params[0] * d_dx(f1, 2) + params[1] * f1 * (params[2] - f1)
+    return f1_t
+```
+--- Topography_Chemotaxis|anon_with_data#2|claude-haiku-4-5 (425 chars)
+FIELD_ROLES: f1 = concentration or normalized density field (evidence: range [0,1], non-negative, spatial spectrum dominated by k=1 mode (90%), temporal growth from localized initial condition to near-uniform saturation, suggesting diffusive spreading or reaction-diffusion dynamics)
+
+EQUATION:
+```python
+def rhs(x, f1, params, d_dx):
+    f1_t = params[0] * d_dx(f1, 2) + params[1] * f1 * (params[2] - f1)
+    return f1_t
+```
+--- Topography_Chemotaxis|anon_with_data#3|claude-haiku-4-5 (2191 chars)
+I need to analyze the data characteristics to identify the physical quantity and governing equation.
+
+**Analysis of f1:**
+
+Range and sign: f1 ∈ [0, 1], non-negative, concentrated around 0.715. This suggests a normalized concentration, density, or probability-like quantity.
+
+Spatial spectrum: Dominated by k=1 (90%) with small k=2 (10%) contribution. This indicates a single dominant wavelength corresponding to one period across the domain. The fundamental mode dominates strongly.
+
+Time behavior: 
+
+--- Morphogenesis|anon_with_data|claude-haiku-4-5 (1730 chars)
+I'll analyze this PDE data systematically.
+
+**Analysis:**
+
+The data shows:
+- f1 is strictly non-negative (min=0, max=1.297, negative fraction=0.00)
+- Spatial spectrum dominated by k=1 (54%), with significant k=2 (30%) and k=3 (12%)
+- Initial condition: f1 = 0 everywhere at t=0
+- At t=5.01 and t=10.00: a localized profile centered around x≈0.62, approximately Gaussian-like
+- RMS drift ratio 1.42 suggests the field is growing and spreading over time
+- The field remains localized and positive throu
+--- Morphogenesis|anon_with_data#2|claude-haiku-4-5 (1885 chars)
+I need to analyze the data to identify the physical quantity and determine the governing equation.
+
+Let me work through the evidence systematically:
+
+**Data characteristics analysis:**
+- f1 is non-negative (min=0, no negative values)
+- Range: [0, 1.297], mean ≈ 0.181
+- Spatial spectrum dominated by k=1 (54%), with k=2 (30%) and k=3 (12%) - indicating a localized, smooth solution
+- RMS drift increases by factor of 1.42 from first to second half of simulation - growing amplitude over time
+- Initia
+--- Morphogenesis|anon_with_data#3|claude-haiku-4-5 (2609 chars)
+I need to analyze the data to identify the physical quantity and governing equation. Let me work through this systematically.
+
+**Analysis of the data:**
+
+1. **Field characteristics:**
+   - f1 is strictly non-negative (min=0, negative fraction=0)
+   - Range: [0, 1.297]
+   - Spatial spectrum dominated by k=1 (54%), with k=2 (30%) and k=3 (12%) - indicates low-frequency, smooth spatial structure
+   - RMS drift ratio 1.42 suggests growth over time
+
+2. **Spatial behavior:**
+   - At t=0, f1=0 everywhe
+--- Forced_Swift_Hohenberg|anon_with_data|claude-haiku-4-5 (2485 chars)
+I need to analyze this PDE data systematically to identify the field and derive the governing equation.
+
+Let me start by examining the key characteristics:
+
+**Field Analysis:**
+- f1 ranges from -0.362 to +0.872 (asymmetric, biased positive)
+- Mean +0.017, RMS 0.139, 51% negative values
+- Spatial spectrum dominated by k=3 (43%), k=4 (25%), k=2 (22%) - multiple wavenumber content
+- RMS drift ratio 3.06 (second half / first half) - field growing in time
+- Sample evolution shows f1 increasing dramat
+--- Forced_Swift_Hohenberg|anon_with_data#2|claude-haiku-4-5 (587 chars)
+FIELD_ROLES: f1 = solution to a nonlinear diffusion or reaction-diffusion equation with potential energy landscape (evidence: negative fraction 0.51 and symmetric range [-0.362, +0.872] suggest bistable or multi-stable dynamics; dominant wavenumbers k=3,4,2 indicate spatially structured patterns; 3.06× RMS drift suggests energy transfer or pattern growth over time)
+
+EQUATION:
+```python
+def rhs(x, f1, params, d_dx):
+    f1_t = params[0] * d_dx(f1, 2) + params[1] * f1 + params[2] * f1**3 + params[
+--- Forced_Swift_Hohenberg|anon_with_data#3|claude-haiku-4-5 (1910 chars)
+I'll analyze this PDE data systematically to identify the field and derive the governing equation.
+
+## Analysis
+
+**Field identification:**
+
+The data shows:
+- f1 has mean ≈ 0, symmetric range [-0.362, +0.872], 51% negative fraction → oscillatory field
+- Spatial spectrum dominated by k=3,4,2 → short-wavelength oscillations
+- Strong time evolution: rms drift ratio 3.06 (second half / first half) → field grows significantly
+- Sample progression shows growth with oscillatory structure (t=0: ±0.001 → 
+--- Traffic_Flow_Bottleneck|anon_with_data|claude-haiku-4-5 (3906 chars)
+--- USER MESSAGE BEGIN ---
+You are given numerical data from a one-dimensional PDE system with a single field (f1) on a spatial grid x.
+Targets: the time derivatives (f1_t).
+
+Nothing about the physical meaning of the fields is provided on purpose: the symbols carry no interpretation beyond their numerical values. The data comes from a numerical simulation and is noise free.
+Measured evidence about the data:
+grid: nx=256, nt=400, dx=0.1172, domain [-15.00, 14.88]
+f1: min +0.100 max +0.700 mean +0
+--- Traffic_Flow_Bottleneck|anon_with_data#2|claude-haiku-4-5 (2495 chars)
+I need to analyze the data to identify the field and derive the governing equation.
+
+Let me start by examining the characteristics:
+
+**Data observations:**
+- f1 ranges [0.100, 0.700], strictly non-negative, mean 0.158
+- Spatial spectrum dominated by k=1 (45%), k=2 (25%), k=3 (10%) — smooth, low-wavenumber dominated
+- Temporal stability: rms drift 0.99 suggests quasi-steady or slowly-evolving dynamics
+- Spatial samples show localized peak structure that shifts in time (peak moves from x=-6.56 at 
+--- Traffic_Flow_Bottleneck|anon_with_data#3|claude-haiku-4-5 (2584 chars)
+I'll analyze the data systematically to identify the field and derive the governing equation.
+
+## Analysis
+
+**Field Identification:**
+
+The data shows:
+- f1 range: [0.100, 0.700], strictly non-negative
+- Spatial spectrum dominated by k=1 (45%), k=2 (25%), k=3 (10%) — smooth, low-wavenumber content
+- Temporal behavior: rms drift ratio 0.99 (near 1.0) indicates quasi-steady or periodic dynamics
+- Sample evolution: A localized feature (amplitude ~0.3) around x≈-2.34 at t=0 migrates rightward to x≈1.
+--- Predator_Prey|anon_with_data|claude-haiku-4-5 (571 chars)
+FIELD_ROLES: f1 = concentration/density (evidence: non-negative, peaks at mid-domain, dominates dynamics with k=1 spatial mode, grows from t=0 to t=10); f2 = reaction rate/source term (evidence: much smaller amplitude, decays over time (rms drift 0.51), spatially localized, low correlation with f1 suggests coupling rather than direct proportionality)
+
+EQUATION:
+```python
+def rhs(x, f1, f2, params, d_dx):
+    f1_t = params[0] * d_dx(f1, 2) + params[1] * f2 - params[2] * f1
+    f2_t = params[3] * 
+--- Predator_Prey|anon_with_data#2|claude-haiku-4-5 (641 chars)
+FIELD_ROLES: f1 = concentration/density (evidence: non-negative, bounded [0,1], dominates dynamics with k=1 spectral peak growing from localized to nearly uniform over time); f2 = reaction/catalytic agent (evidence: non-negative, small magnitude [0,0.4], decays over time (rms drift 0.51), spatially correlated with f1 (k=1,2 peaks), low correlation suggests secondary role)
+
+EQUATION:
+```python
+def rhs(x, f1, f2, params, d_dx):
+    f1_t = params[0] * d_dx(f1, 2) + params[1] * f1 * (params[2] - f1)
+--- Predator_Prey|anon_with_data#3|claude-haiku-4-5 (2503 chars)
+I'll analyze the data systematically to identify the physical quantities and derive the governing equations.
+
+## Analysis
+
+**Field f1 characteristics:**
+- Range [0, 1), always non-negative, mean 0.645
+- Dominated by k=1 spatial mode (85%)
+- Grows significantly in time (rms drift 1.57: second half 1.57× first half)
+- At t=0: localized bump around x≈2.8-4.2
+- At t=10: saturated near 1.0 everywhere
+- Behavior suggests **reactive field** (order parameter or concentration)
+
+**Field f2 characteristics
+saved C:\Users\Li ZiHao\Desktop\AI4MATH\LLM-PDESR\_notes\role_probe_raw.json
+--- Topography_Chemotaxis|anon_with_data|gemini-3.5-flash-lite (394 chars)
+FIELD_ROLES: f1 = non-conserved phase-field / order parameter (evidence: bounded between 0 and 1, smooth spatial spectrum dominated by low wavenumbers, monotonic relaxation towards a stable state)
+EQUATION:
+```python
+def rhs(x, f1, params, d_dx):
+    f1_t = params[0] * d_dx(f1, 2) + params[1] * f1 * (params[2] - f1) * (f1 - params[3]) + params[4] * d_dx(f1, 4) + params[5]
+    return f1_t
+```
+--- Topography_Chemotaxis|anon_with_data#2|gemini-3.5-flash-lite (274 chars)
+FIELD_ROLES: f1 = concentration/density (evidence: bounded between 0 and 1, smooth spatial spectrum, non-negative)
+EQUATION:
+```python
+def rhs(x, f1, params, d_dx):
+    f1_t = params[0] * d_dx(f1, 2) + params[1] * f1 * (params[2] - f1) * (f1 - params[3])
+    return f1_t
+```
+--- Topography_Chemotaxis|anon_with_data#3|gemini-3.5-flash-lite (289 chars)
+FIELD_ROLES: f1 = concentration/density (evidence: bounded between 0 and 1, smooth spatial spectrum dominated by low wavenumbers)
+EQUATION:
+```python
+def rhs(x, f1, params, d_dx):
+    f1_t = params[0] * d_dx(f1, 2) + params[1] * f1 * (params[2] - f1) * (f1 - params[3])
+    return f1_t
+```
+--- Morphogenesis|anon_with_data|gemini-3.5-flash-lite (316 chars)
+FIELD_ROLES: f1 = wave amplitude / density field (evidence: non-negative values, localized pulse propagation, smooth spatial spectrum dominated by low wavenumbers)
+EQUATION:
+```python
+def rhs(x, f1, params, d_dx):
+    f1_t = params[0] * d_dx(f1, 2) + params[1] * f1 * d_dx(f1, 1) + params[2] * f1
+    return f1_t
+```
+--- Morphogenesis|anon_with_data#2|gemini-3.5-flash-lite (308 chars)
+FIELD_ROLES: f1 = wave amplitude (evidence: non-negative range, bell-shaped pulses propagating and growing slowly, dominated by low spatial frequencies)
+EQUATION:
+```python
+def rhs(x, f1, params, d_dx):
+    f1_t = params[0] * d_dx(f1, 2) + params[1] * f1 * d_dx(f1, 1) + params[2] * f1**3
+    return f1_t
+```
+--- Morphogenesis|anon_with_data#3|gemini-3.5-flash-lite (281 chars)
+FIELD_ROLES: f1 = wave amplitude (evidence: non-negative range, bell-shaped pulses propagating and spreading in space over time)
+EQUATION:
+```python
+def rhs(x, f1, params, d_dx):
+    f1_t = params[0] * d_dx(f1, 2) + params[1] * f1 * d_dx(f1, 1) + params[2] * f1
+    return f1_t
+```
+--- Forced_Swift_Hohenberg|anon_with_data|gemini-3.5-flash-lite (289 chars)
+FIELD_ROLES: f1 = nonlinear wave field (evidence: dominant low modes $k=3,4$, growth over time)
+EQUATION:
+```python
+def rhs(x, f1, params, d_dx):
+    f1_t = params[0] * d_dx(f1, 2) + params[1] * d_dx(f1, 4) + params[2] * f1 * d_dx(f1, 1) + params[3] * (f1 ** params[4])
+    return f1_t
+```
+--- Forced_Swift_Hohenberg|anon_with_data#2|gemini-3.5-flash-lite (344 chars)
+FIELD_ROLES: f1 = nonlinear wave field / conserved scalar (evidence: smooth wave propagation with amplitude growth and dominant low-k modes)
+EQUATION:
+```python
+def rhs(x, f1, params, d_dx):
+    f1_t = params[0] * d_dx(f1, 2) + params[1] * d_dx(f1, 4) + params[2] * f1 * d_dx(f1, 1) + params[3] * (f1**params[4]) + params[5]
+    return f1_t
+```
+--- Forced_Swift_Hohenberg|anon_with_data#3|gemini-3.5-flash-lite (327 chars)
+FIELD_ROLES: f1 = nonlinear wave field (evidence: dominant modes k=3,4, growth in second half)
+EQUATION:
+```python
+def rhs(x, f1, params, d_dx):
+    f1_t = params[0] * d_dx(f1, 2) + params[1] * d_dx(f1, 4) + params[2] * f1 * d_dx(f1, 1) + params[3] * f1**2 * d_dx(f1, 1) + params[4] * f1**3 + params[5] * f1
+    return f1_t
+```
+--- Traffic_Flow_Bottleneck|anon_with_data|gemini-3.5-flash-lite (371 chars)
+FIELD_ROLES: f1 = concentration or density field (evidence: positive-definite range [0.1, 0.7], smooth localized pulses travelling and spreading in space)
+EQUATION:
+```python
+def rhs(x, f1, params, d_dx):
+    f1_t = params[0] * d_dx(f1, 2) + params[1] * d_dx(f1, 4) + params[2] * f1 * d_dx(f1, 1) + params[3] * (f1 - params[4]) * f1 * (params[5] - f1)
+    return f1_t
+```
+--- Traffic_Flow_Bottleneck|anon_with_data#2|gemini-3.5-flash-lite (354 chars)
+FIELD_ROLES: f1 = concentration or density of a localized wave/pulse (evidence: positive definite field with propagating localized peaks)
+EQUATION:
+```python
+def rhs(x, f1, params, d_dx):
+    f1_t = params[0] * d_dx(f1, 2) + params[1] * d_dx(f1, 4) + params[2] * f1 * d_dx(f1, 1) + params[3] * (f1 - params[4]) * f1 * (params[5] - f1)
+    return f1_t
+```
+--- Traffic_Flow_Bottleneck|anon_with_data#3|gemini-3.5-flash-lite (374 chars)
+FIELD_ROLES: f1 = concentration or density of a localized wave/soliton (evidence: positive, bounded between 0.1 and 0.7, propagating and spreading over time)
+EQUATION:
+```python
+def rhs(x, f1, params, d_dx):
+    f1_t = params[0] * d_dx(f1, 2) + params[1] * d_dx(f1, 4) + params[2] * f1 * d_dx(f1, 1) + params[3] * (f1 - params[4]) * f1 * (params[5] - f1)
+    return f1_t
+```
+--- Predator_Prey|anon_with_data|gemini-3.5-flash-lite (586 chars)
+FIELD_ROLES: f1 = activator or concentration (evidence: non-negative range [0, 1], smooth spatial spectrum dominated by low wavenumbers); f2 = inhibitor or depleted substrate (evidence: small magnitude, localized positive values, weak correlation with f1)
+EQUATION:
+```python
+def rhs(x, f1, f2, params, d_dx):
+    f1_xx = d_dx(f1, 2)
+    f2_xx = d_dx(f2, 2)
+    f1_t = params[0] * f1_xx + params[1] * f1 * (params[2] - f1) * (f1 - params[3]) - params[4] * f1 * f2 + params[5]
+    f2_t = params[6] * f
+--- Predator_Prey|anon_with_data#2|gemini-3.5-flash-lite (538 chars)
+FIELD_ROLES: f1 = activator / concentration (evidence: range [0, 1], smooth spatial profile, growth over time); f2 = inhibitor / depletion field (evidence: localized positive values, low mean, rapid decay/suppression)
+EQUATION:
+```python
+def rhs(x, f1, f2, params, d_dx):
+    f1_xx = d_dx(f1, 2)
+    f2_xx = d_dx(f2, 2)
+    f1_t = params[0] * f1_xx + params[1] * f1 * (params[2] - f1) * (f1 - params[3]) - params[4] * f2 * f1 + params[5]
+    f2_t = params[6] * f2_xx + params[7] * f1 - params[8] * f2
+--- Predator_Prey|anon_with_data#3|gemini-3.5-flash-lite (512 chars)
+FIELD_ROLES: f1 = activator or concentration (evidence: non-negative, bounded [0,1], grows and saturates); f2 = inhibitor or depletion field (evidence: localized, small amplitude, fast decay)
+EQUATION:
+```python
+def rhs(x, f1, f2, params, d_dx):
+    f1_xx = d_dx(f1, 2)
+    f2_xx = d_dx(f2, 2)
+    f1_t = params[0] * f1_xx + params[1] * f1 * (params[2] - f1) * (f1 - params[3]) - params[4] * f1 * f2
+    f2_t = params[5] * f2_xx + params[6] * f2 * (params[7] - f2) + params[8] * f1 * f2
+    return f1
+saved C:\Users\Li ZiHao\Desktop\AI4MATH\LLM-PDESR\_notes\role_probe_raw.json
