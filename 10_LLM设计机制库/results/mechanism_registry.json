@@ -1,0 +1,229 @@
+{
+ "version": 1,
+ "mechanisms": [
+  {
+   "name": "adv",
+   "signature": [
+    "phi"
+   ],
+   "order": 1,
+   "doc": "transport (u.grad)phi, contraction built in",
+   "builtin": true
+  },
+  {
+   "name": "dif",
+   "signature": [
+    "phi"
+   ],
+   "order": 2,
+   "doc": "isotropic second-order (diffusion) operator",
+   "builtin": true
+  },
+  {
+   "name": "disp",
+   "signature": [
+    "phi",
+    "axis"
+   ],
+   "order": 3,
+   "doc": "third-order derivative along one axis",
+   "builtin": true
+  },
+  {
+   "name": "hdif",
+   "signature": [
+    "phi",
+    "axis"
+   ],
+   "order": 4,
+   "doc": "fourth-order derivative along one axis",
+   "builtin": true
+  },
+  {
+   "name": "prs",
+   "signature": [
+    "phi",
+    "axis"
+   ],
+   "order": 1,
+   "doc": "first-order derivative along one axis",
+   "builtin": true
+  },
+  {
+   "name": "frc",
+   "signature": [
+    "phi"
+   ],
+   "order": 0,
+   "doc": "the field itself (bare source term)",
+   "builtin": true
+  },
+  {
+   "name": "rxn",
+   "signature": [
+    "phi",
+    "func"
+   ],
+   "order": 0,
+   "doc": "scalar function of one field, func in {id,sin,cos,exp,tanh}",
+   "builtin": true
+  },
+  {
+   "name": "cpl",
+   "signature": [
+    "phi",
+    "psi"
+   ],
+   "order": 0,
+   "doc": "pointwise product of two fields",
+   "builtin": true
+  },
+  {
+   "name": "wave",
+   "signature": [
+    "k1",
+    "k2",
+    "func",
+    "k3"
+   ],
+   "order": 0,
+   "doc": "coordinate function sin/cos/exp/tanh(k1*x1 + k2*x2 + k3*x3)",
+   "builtin": true
+  },
+  {
+   "name": "coord_sin",
+   "signature": [
+    "k1",
+    "k2",
+    "k3"
+   ],
+   "order": 0,
+   "doc": "alias of wave(...,'sin')",
+   "builtin": true
+  },
+  {
+   "name": "coord_cos",
+   "signature": [
+    "k1",
+    "k2",
+    "k3"
+   ],
+   "order": 0,
+   "doc": "alias of wave(...,'cos')",
+   "builtin": true
+  },
+  {
+   "name": "conservative_advection",
+   "signature": [
+    "phi",
+    "psi",
+    "axis"
+   ],
+   "order": 1,
+   "definition": "D(MUL(phi, psi), axis, 1)",
+   "builtin": false,
+   "physics": "Divergence of flux phi*psi; for phi=u and psi=some speed, gives -∂(u*v)/∂x",
+   "level": 1,
+   "priority": 1,
+   "evidence_ratio": 0.5670169468900191,
+   "n_atoms": 1,
+   "provenance": {
+    "by": "llm-design"
+   }
+  },
+  {
+   "name": "relative_gradient_diffusion",
+   "signature": [
+    "Df1",
+    "f1",
+    "axis"
+   ],
+   "order": 2,
+   "definition": "D( DIV(D(f1, axis, 1), f1), axis, 1)",
+   "builtin": false,
+   "physics": "Diffusion driven by relative gradient of density, anticipating vehicles' speed adjustments",
+   "level": 2,
+   "priority": 2,
+   "evidence_ratio": 1.0,
+   "n_atoms": 3,
+   "provenance": {
+    "by": "llm-design"
+   }
+  },
+  {
+   "name": "bottleneck_advection_coefficient",
+   "signature": [
+    "u",
+    "f1",
+    "axis",
+    "xaxis"
+   ],
+   "order": 1,
+   "definition": "D(MUL(f1, S(X(xaxis), 'tanh')),axis,1)",
+   "builtin": false,
+   "physics": "Advection with a tanh spatial bottleneck modulation of velocity",
+   "level": 3,
+   "priority": 3,
+   "evidence_ratio": 0.7404651884861442,
+   "n_atoms": 3,
+   "provenance": {
+    "by": "llm-design"
+   }
+  },
+  {
+   "name": "bottleneck_source_like_diffusive",
+   "signature": [
+    "u",
+    "f1",
+    "xaxis"
+   ],
+   "order": 1,
+   "definition": "D(f1, 0, 1)",
+   "builtin": false,
+   "physics": "Spatial derivative modulated by bottleneck geometry maybe as right-hand-side term (but note it is not a source but part of flux if combined)",
+   "level": 3,
+   "priority": 3,
+   "evidence_ratio": 1.0,
+   "n_atoms": 3,
+   "provenance": {
+    "by": "llm-design"
+   }
+  },
+  {
+   "name": "exponential_flux",
+   "signature": [
+    "f1",
+    "axis"
+   ],
+   "order": 1,
+   "definition": "D(S(f1, 'exp') , axis, 1)",
+   "builtin": false,
+   "physics": "Exponential dependence of flux on density, e.g., exponential speed-density model",
+   "level": 2,
+   "priority": 2,
+   "evidence_ratio": 0.5369514648588771,
+   "n_atoms": 1,
+   "provenance": {
+    "by": "llm-design"
+   }
+  },
+  {
+   "name": "cubic_diffusion",
+   "signature": [
+    "f1",
+    "axis"
+   ],
+   "order": 2,
+   "definition": "D( MUL( POW(f1, 2), D(f1, axis, 1) ), axis, 1 )",
+   "builtin": false,
+   "physics": "Nonlinear diffusion with density-squared coefficient, common in porous media / traffic",
+   "level": 2,
+   "priority": 2,
+   "evidence_ratio": 1.0,
+   "n_atoms": 1,
+   "provenance": {
+    "by": "llm-design"
+   }
+  }
+ ]
+}

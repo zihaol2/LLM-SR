@@ -1,0 +1,282 @@
+{
+ "design": {
+  "scope": "This problem concerns the time evolution of vehicle density u(x1) in traffic flow with a spatial bottleneck and anticipation-driven relative gradient diffusion. The physics includes advection (flux divergence), diffusion (both concentration and relative/anticipative Fickian-like terms), and spatially dependent coefficients for bottleneck-induced variation along x1. Out of scope are multi-dimensional flow, higher-order derivatives (order >2), external forcing, sources/sinks, and nonlocal integral or stochastic terms.",
+  "out_of_scope": "No explicit source/sink (e.g., ramps), no multi-lane or multi-dimensional effects, no time-dependent coefficients, no integro-differential terms, no explicit noise, and no derivative order above 2.",
+  "levels": [
+   {
+    "level": 1,
+    "name": "Conservation / balance",
+    "priority": 1,
+    "idea": "The rate of change of density is governed by divergence of a flux: f1_t = -∂/∂x1 (v * u). The velocity v can be a constitutive closure, but the conservation structure is fixed."
+   },
+   {
+    "level": 2,
+    "name": "Constitutive closures (flux) ",
+    "priority": 2,
+    "idea": "Define the velocity or flux in terms of density and its gradient. Include anticipation as a correction to the equilibrium speed depending on spatial gradient of density (relative gradient diffusion). Include exponential, tanh, or polynomial dependence typical of traffic models."
+   },
+   {
+    "level": 3,
+    "name": "Spatial bottleneck modulation and higher-order corrections",
+    "priority": 3,
+    "idea": "Add explicit spatial dependence via X(0) or coord functions to simulate the narrowing road, possibly as coefficients inside the flux or as separate additive diffusive terms. Also allow purely diffusive non-conservative terms (e.g., D(MUL(D(f1,x,1), f1),x,1) = second derivative plus quadratic first derivative) that may emerge from relative gradient diffusion."
+   }
+  ],
+  "mechanisms": [
+   {
+    "name": "conservative_advection",
+    "signature": [
+     "phi",
+     "psi",
+     "axis"
+    ],
+    "order": 1,
+    "definition": "D(MUL(phi, psi), axis, 1)",
+    "physics": "Divergence of flux phi*psi; for phi=u and psi=some speed, gives -∂(u*v)/∂x",
+    "level": 1,
+    "priority": 1
+   },
+   {
+    "name": "simple_fickian",
+    "signature": [
+     "D",
+     "axis"
+    ],
+    "order": 2,
+    "definition": "D(D(f1, axis, 1), axis, 1)",
+    "physics": "Standard Fickian diffusion in density gradient",
+    "level": 2,
+    "priority": 2
+   },
+   {
+    "name": "relative_gradient_diffusion",
+    "signature": [
+     "Df1",
+     "f1",
+     "axis"
+    ],
+    "order": 2,
+    "definition": "D( DIV(D(f1, axis, 1), f1), axis, 1)",
+    "physics": "Diffusion driven by relative gradient of density, anticipating vehicles' speed adjustments",
+    "level": 2,
+    "priority": 2
+   },
+   {
+    "name": "bottleneck_advection_coefficient",
+    "signature": [
+     "u",
+     "f1",
+     "axis",
+     "xaxis"
+    ],
+    "order": 1,
+    "definition": "D(MUL(f1, S(X(xaxis), 'tanh')),axis,1)",
+    "physics": "Advection with a tanh spatial bottleneck modulation of velocity",
+    "level": 3,
+    "priority": 3
+   },
+   {
+    "name": "bottleneck_source_like_diffusive",
+    "signature": [
+     "u",
+     "f1",
+     "xaxis"
+    ],
+    "order": 1,
+    "definition": "D(f1, 0, 1)",
+    "physics": "Spatial derivative modulated by bottleneck geometry maybe as right-hand-side term (but note it is not a source but part of flux if combined)",
+    "level": 3,
+    "priority": 3
+   },
+   {
+    "name": "anticipation_velocity",
+    "signature": [
+     "u",
+     "v0",
+     "grad",
+     "alpha"
+    ],
+    "order": 1,
+    "definition": "SUB(f1, MUL(alpha, D(f1, 0, 1)))",
+    "physics": "Velocity with anticipation: v = u - α * ∂u/∂x (relative gradient effect)",
+    "level": 2,
+    "priority": 2
+   },
+   {
+    "name": "density_speed_relation",
+    "signature": [
+     "u",
+     "umax",
+     "u0"
+    ],
+    "order": 1,
+    "definition": "SUB(0.12, MUL(0.001, f1))",
+    "physics": "Linear speed-density relation (Greenshields-like) after scaling: speed decreases with density",
+    "level": 2,
+    "priority": 2
+   },
+   {
+    "name": "exponential_flux",
+    "signature": [
+     "f1",
+     "axis"
+    ],
+    "order": 1,
+    "definition": "D(S(f1, 'exp') , axis, 1)",
+    "physics": "Exponential dependence of flux on density, e.g., exponential speed-density model",
+    "level": 2,
+    "priority": 2
+   },
+   {
+    "name": "spatial_bottleneck_velocity",
+    "signature": [
+     "f1",
+     "xaxis",
+     "a"
+    ],
+    "order": 1,
+    "definition": "MUL(f1, S( X(xaxis), 'tanh'))",
+    "physics": "Velocity multiplied by tanh(x1) to model bottleneck narrowing with position",
+    "level": 3,
+    "priority": 3
+   },
+   {
+    "name": "cubic_diffusion",
+    "signature": [
+     "f1",
+     "axis"
+    ],
+    "order": 2,
+    "definition": "D( MUL( POW(f1, 2), D(f1, axis, 1) ), axis, 1 )",
+    "physics": "Nonlinear diffusion with density-squared coefficient, common in porous media / traffic",
+    "level": 2,
+    "priority": 2
+   }
+  ],
+  "search_plan": "Start with level 1 (conservative advection) using a generic velocity closure (e.g., linear in density or simple constant) and test residual. If residual stalls, add level 2 constitutive closures: try simple Fickian, relative gradient diffusion, and nonlinear diffusion with density powers. Add bottleneck modulations from level 3 if residual remains high: multiply velocity by tanh(x1) or add explicit X(0) terms in the diffusion coefficient. When complexity grows without accuracy improvement, remove terms with smallest coefficient magnitude or cross-validated contribution, and prefer lower-order mechanisms. Use linear regression on coefficient set at each level to identify dominant terms.",
+  "banned": [
+   "Any term with derivative order >2, e.g., D(D(D(f1,x,1),x,1),x,1)",
+   "Explicit source/sink term not explained by divergence, e.g., adding f1 itself or constant without flux divergence",
+   "Use of zero-mean random or noise terms",
+   "Explicit time-dependent coefficients or forcing",
+   "Use of absolute value of density (density is always positive)",
+   "Use of coordinate function with x2/x3 (1D domain)",
+   "Any term mixing multiple fields (only f1 and x1 exist)"
+  ]
+ },
+ "mechanisms": [
+  {
+   "name": "conservative_advection",
+   "signature": [
+    "phi",
+    "psi",
+    "axis"
+   ],
+   "order": 1,
+   "definition": "D(MUL(phi, psi), axis, 1)",
+   "builtin": false,
+   "physics": "Divergence of flux phi*psi; for phi=u and psi=some speed, gives -∂(u*v)/∂x",
+   "level": 1,
+   "priority": 1,
+   "evidence_ratio": 0.5670169468900191,
+   "n_atoms": 1,
+   "provenance": {
+    "by": "llm-design"
+   }
+  },
+  {
+   "name": "relative_gradient_diffusion",
+   "signature": [
+    "Df1",
+    "f1",
+    "axis"
+   ],
+   "order": 2,
+   "definition": "D( DIV(D(f1, axis, 1), f1), axis, 1)",
+   "builtin": false,
+   "physics": "Diffusion driven by relative gradient of density, anticipating vehicles' speed adjustments",
+   "level": 2,
+   "priority": 2,
+   "evidence_ratio": 1.0,
+   "n_atoms": 3,
+   "provenance": {
+    "by": "llm-design"
+   }
+  },
+  {
+   "name": "bottleneck_advection_coefficient",
+   "signature": [
+    "u",
+    "f1",
+    "axis",
+    "xaxis"
+   ],
+   "order": 1,
+   "definition": "D(MUL(f1, S(X(xaxis), 'tanh')),axis,1)",
+   "builtin": false,
+   "physics": "Advection with a tanh spatial bottleneck modulation of velocity",
+   "level": 3,
+   "priority": 3,
+   "evidence_ratio": 0.7404651884861442,
+   "n_atoms": 3,
+   "provenance": {
+    "by": "llm-design"
+   }
+  },
+  {
+   "name": "bottleneck_source_like_diffusive",
+   "signature": [
+    "u",
+    "f1",
+    "xaxis"
+   ],
+   "order": 1,
+   "definition": "D(f1, 0, 1)",
+   "builtin": false,
+   "physics": "Spatial derivative modulated by bottleneck geometry maybe as right-hand-side term (but note it is not a source but part of flux if combined)",
+   "level": 3,
+   "priority": 3,
+   "evidence_ratio": 1.0,
+   "n_atoms": 3,
+   "provenance": {
+    "by": "llm-design"
+   }
+  },
+  {
+   "name": "exponential_flux",
+   "signature": [
+    "f1",
+    "axis"
+   ],
+   "order": 1,
+   "definition": "D(S(f1, 'exp') , axis, 1)",
+   "builtin": false,
+   "physics": "Exponential dependence of flux on density, e.g., exponential speed-density model",
+   "level": 2,
+   "priority": 2,
+   "evidence_ratio": 0.5369514648588771,
+   "n_atoms": 1,
+   "provenance": {
+    "by": "llm-design"
+   }
+  },
+  {
+   "name": "cubic_diffusion",
+   "signature": [
+    "f1",
+    "axis"
+   ],
+   "order": 2,
+   "definition": "D( MUL( POW(f1, 2), D(f1, axis, 1) ), axis, 1 )",
+   "builtin": false,
+   "physics": "Nonlinear diffusion with density-squared coefficient, common in porous media / traffic",
+   "level": 2,
+   "priority": 2,
+   "evidence_ratio": 1.0,
+   "n_atoms": 1,
+   "provenance": {
+    "by": "llm-design"
+   }
+  }
+ ]
+}
