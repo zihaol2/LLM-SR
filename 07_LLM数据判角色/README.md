@@ -15,5 +15,4 @@
 
 ```bash
 python roles_probe.py                       # 5 个方程 × 5 次，deepseek-v4-flash
-python roles_probe.py deepseek-v4-flash 3   # 改成 3 次
 ```
