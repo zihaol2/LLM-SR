@@ -1,0 +1,8 @@
+[
+    {
+        "rank": 5,
+        "mse": 6.961632657406628e-07,
+        "complexity": 25,
+        "equation": "# Spatial bottleneck modulation - smooth transition in road capacity\n    bottleneck = 1 + params[2] * np.tanh(x * params[3])\n    \n    # Traffic conservation with bottleneck (Greenshields flux)\n    flux = u * (1 - u) * bottleneck\n    advection = -d_dx(flux, order=1)\n    \n    # Anticipation-driven relative gradient diffusion\n    # Drivers respond to relative density changes (normalized by local density)\n    relative_gradient = u / (1 + u)\n    anticipation_diffusion = params[0] * d_dx(relative_gradient, order=2)\n    \n    # Simple diffusion as baseline\n    simple_diffusion = params[1] * d_dx(u, order=2)\n    \n    # Combine physical terms with optimized weights\n    u_t_pred = advection + anticipation_diffusion + simple_diffusion\n    \n    return u_t_pred"
+    }
+]

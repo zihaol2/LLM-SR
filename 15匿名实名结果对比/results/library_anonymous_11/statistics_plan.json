@@ -1,0 +1,136 @@
+{
+ "plan": [
+  {
+   "op": "summary",
+   "field": "f1"
+  },
+  {
+   "op": "summary",
+   "field": "f1_t_true"
+  },
+  {
+   "op": "space_spectrum",
+   "field": "f1",
+   "at_time": "mid"
+  },
+  {
+   "op": "time_spectrum",
+   "field": "f1",
+   "at_x": "mid"
+  },
+  {
+   "op": "drift",
+   "field": "f1"
+  },
+  {
+   "op": "derivative_rms",
+   "field": "f1",
+   "orders": [
+    1,
+    2
+   ]
+  },
+  {
+   "op": "cross_correlation",
+   "field_a": "f1",
+   "field_b": "f1_t_true"
+  },
+  {
+   "op": "correlate_with_target",
+   "field": "f1",
+   "order": 1
+  },
+  {
+   "op": "balance_test",
+   "target": "f1_t_true"
+  },
+  {
+   "op": "nested_fit",
+   "field": "f1"
+  },
+  {
+   "op": "segmented_response",
+   "field": "f1",
+   "segments": 4
+  },
+  {
+   "op": "state_conditioned_response",
+   "field": "f1",
+   "bins": 5
+  }
+ ],
+ "used": [
+  {
+   "op": "summary",
+   "field": "f1"
+  },
+  {
+   "op": "summary",
+   "field": "f1_t_true"
+  },
+  {
+   "op": "space_spectrum",
+   "field": "f1",
+   "at_time": "mid"
+  },
+  {
+   "op": "time_spectrum",
+   "field": "f1",
+   "at_x": "mid"
+  },
+  {
+   "op": "drift",
+   "field": "f1"
+  },
+  {
+   "op": "derivative_rms",
+   "field": "f1",
+   "orders": [
+    1,
+    2
+   ]
+  },
+  {
+   "op": "cross_correlation",
+   "field_a": "f1",
+   "field_b": "f1_t_true"
+  },
+  {
+   "op": "correlate_with_target",
+   "field": "f1",
+   "order": 1
+  },
+  {
+   "op": "balance_test",
+   "target": "f1_t_true"
+  },
+  {
+   "op": "nested_fit",
+   "field": "f1"
+  },
+  {
+   "op": "segmented_response",
+   "field": "f1",
+   "segments": 4
+  },
+  {
+   "op": "state_conditioned_response",
+   "field": "f1",
+   "bins": 5
+  }
+ ],
+ "report": [
+  "summary f1: min +0.1000 max +0.6995 mean +0.1576 std 0.1162 rms 0.1958 negative fraction 0.000 quartiles +0.1000/+0.1002/+0.1386",
+  "summary f1_t_true: min -0.3638 max +0.1932 mean +0.0030 std 0.0463 rms 0.0464 negative fraction 0.349 quartiles -0.0000/+0.0000/+0.0059",
+  "space_spectrum f1 at_time=mid: k=1 (45%), k=2 (25%), k=3 (10%), k=4 (5%)",
+  "time_spectrum f1 at_x=mid: mode 1 (64%), mode 2 (14%), mode 3 (6%), mode 4 (3%)",
+  "drift f1: rms second/first 0.990 (first 0.1968, second 0.1949), mean first +0.1539, mean second +0.1614",
+  "derivative_rms f1: order 1: rms 0.0868, order 2: rms 0.2254",
+  "cross_correlation f1,f1_t_true: -0.103",
+  "correlate_with_target f1 order 1: -0.788",
+  "balance_test f1: domain average of f1_t_true is +0.003000 (std 0.000000), |domain average| / rms(target) = 0.06472; the domain average of f1 changes by +7.66% of its rms over the record",
+  "nested_fit f1: [d1] R2 0.6166, [d1,f*d1] R2 0.7092, [d1,f*d1,f^2*d1] R2 0.7187, [d1,d2] R2 0.6209, [d1,f*d1,d2] R2 0.8052",
+  "segmented_response f1: segment 1 coefficient -0.386, segment 2 coefficient -0.468, segment 3 coefficient -0.797",
+  "state_conditioned_response f1: state +0.109 (n=84384) -> response -0.633, state +0.280 (n=6821) -> response -0.541, state +0.395 (n=7273) -> response -0.439, state +0.509 (n=2707) -> response -0.262, state +0.632 (n=1215) -> response +0.068"
+ ]
+}

@@ -1,0 +1,361 @@
+{
+ "dataset_description": "structure: 1 spatial coordinate(s): x1; 1 time coordinate: t (there is no x2 and no x3)\na field is indexed as (space, time)\narrays:\n  x1: shape (256,), range [-15.0000, +14.8828], spacing 0.117188\n  t: shape (400,), range [+0.0000, +5.0000], spacing 0.012531\n  f1: shape (256, 400), range [+0.1000, +0.6995], mean +0.1576\n  f1_t_true: shape (256, 400), described only as the measured time derivative of f1\nNo physical meaning is attached to any of these arrays.\nEvery statement about the structure of the data must agree with the dimensions and shapes listed above. Do not assume any axis that is not listed.",
+ "statistics_report": [
+  "summary f1: min +0.1000 max +0.6995 mean +0.1576 std 0.1162 rms 0.1958 negative fraction 0.000 quartiles +0.1000/+0.1002/+0.1386",
+  "summary f1_t_true: min -0.3638 max +0.1932 mean +0.0030 std 0.0463 rms 0.0464 negative fraction 0.349 quartiles -0.0000/+0.0000/+0.0059",
+  "space_spectrum f1 at_time=mid: k=1 (45%), k=2 (25%), k=3 (10%), k=4 (5%)",
+  "time_spectrum f1 at_x=mid: mode 1 (64%), mode 2 (14%), mode 3 (6%), mode 4 (3%)",
+  "drift f1: rms second/first 0.990 (first 0.1968, second 0.1949), mean first +0.1539, mean second +0.1614",
+  "derivative_rms f1: order 1: rms 0.0868, order 2: rms 0.2254",
+  "cross_correlation f1,f1_t_true: -0.103",
+  "correlate_with_target f1 order 1: -0.788",
+  "balance_test f1: domain average of f1_t_true is +0.003000 (std 0.000000), |domain average| / rms(target) = 0.06472; the domain average of f1 changes by +7.66% of its rms over the record",
+  "nested_fit f1: [d1] R2 0.6166, [d1,f*d1] R2 0.7092, [d1,f*d1,f^2*d1] R2 0.7187, [d1,d2] R2 0.6209, [d1,f*d1,d2] R2 0.8052",
+  "segmented_response f1: segment 1 coefficient -0.386, segment 2 coefficient -0.468, segment 3 coefficient -0.797",
+  "state_conditioned_response f1: state +0.109 (n=84384) -> response -0.633, state +0.280 (n=6821) -> response -0.541, state +0.395 (n=7273) -> response -0.439, state +0.509 (n=2707) -> response -0.262, state +0.632 (n=1215) -> response +0.068"
+ ],
+ "inferred_roles": {
+  "f1": {
+   "identity": "A positive semi-definite quantity likely representing a concentration, density, or magnitude of some scalar (e.g., tracer concentration, wave energy, or material density). The target f1_t_true is a small residual/balance term with near-zero mean and occasional negative values, consistent with a source/sink or correction term rather than a fundamental conserved field.",
+   "confidence": "medium",
+   "evidence": "f1 is strictly positive with min +0.1, low variance relative to mean, and a long tail to +0.7; typical of a non-negative extensive quantity. f1_t_true has small amplitude (rms 0.046) relative to f1, is roughly symmetric around zero (mean 0.003, 35% negative), suggesting it is a residual/source term, not a primary field. The strong negative correlation with target (-0.788) and negative cross-correlation (-0.103) imply f1 dynamics are largely opposed or balanced by f1_t_true, consistent with a decay/source balance."
+  }
+ },
+ "design": {
+  "inferred_roles": {
+   "f1": {
+    "identity": "A positive semi-definite quantity likely representing a concentration, density, or magnitude of some scalar (e.g., tracer concentration, wave energy, or material density). The target f1_t_true is a small residual/balance term with near-zero mean and occasional negative values, consistent with a source/sink or correction term rather than a fundamental conserved field.",
+    "confidence": "medium",
+    "evidence": "f1 is strictly positive with min +0.1, low variance relative to mean, and a long tail to +0.7; typical of a non-negative extensive quantity. f1_t_true has small amplitude (rms 0.046) relative to f1, is roughly symmetric around zero (mean 0.003, 35% negative), suggesting it is a residual/source term, not a primary field. The strong negative correlation with target (-0.788) and negative cross-correlation (-0.103) imply f1 dynamics are largely opposed or balanced by f1_t_true, consistent with a decay/source balance."
+   }
+  },
+  "scope": "We seek interpretable differential operators of order at most 2 that relate the primary positive field f1 and the small target-like field f1_t_true, especially terms that represent transport (advection/diffusion), source/sink (reaction/damping), or balance/correction mechanisms. The target may act as a forcing or as a residual in a conservation law.",
+  "out_of_scope": "No higher-order derivatives (order > 2), no nonlocal integrals, no stochastic terms, no fitted coefficients within the definition, no direct time derivatives unless represented by spatial operators (no explicit time axis in data), no mixed coordinate products beyond those expressible by the given primitives.",
+  "levels": [
+   {
+    "level": 1,
+    "name": "Conservative transport and linear damping",
+    "priority": 1,
+    "idea": "Explain the dominant negative correlation with target and the small target amplitude by linear balance: f1 is advected/diffused by a latent velocity/flux field and decays linearly, with f1_t_true playing the role of a source/sink that nearly compensates."
+   },
+   {
+    "level": 2,
+    "name": "Nonlinear reaction and modulated transport",
+    "priority": 2,
+    "idea": "Add nonlinear terms such as f1^2 or tanh(f1) in the flux/source, and include coordinate-dependent modulations (e.g., sin/cos of linear combinations) to capture spatial inhomogeneity and the segmented/state-conditioned response."
+   },
+   {
+    "level": 3,
+    "name": "Two-way coupling with target",
+    "priority": 3,
+    "idea": "Model f1_t_true as a coupled field, allowing target to modify f1 via multiplicative/nonlinear interactions, aiming to match the observed state-conditioned response and nested fits."
+   }
+  ],
+  "mechanisms": [
+   {
+    "name": "linear_flux_divergence",
+    "signature": [
+     "f1",
+     "velocity",
+     "axis"
+    ],
+    "order": 1,
+    "definition": "D(MUL(f1, velocity), axis, 1)",
+    "physics": "Divergence of a linear advective flux; represents transport by a pre-existing velocity-like field.",
+    "level": 1,
+    "priority": 1
+   },
+   {
+    "name": "linear_diffusion",
+    "signature": [
+     "f1",
+     "axis"
+    ],
+    "order": 2,
+    "definition": "D(f1, axis, 2)",
+    "physics": "Isotropic diffusion along a single axis; captures spreading and reduces gradients.",
+    "level": 1,
+    "priority": 2
+   },
+   {
+    "name": "linear_damping",
+    "signature": [
+     "f1"
+    ],
+    "order": 0,
+    "definition": "f1",
+    "physics": "Linear relaxation/decay; since f1 is positive, this provides a negative contribution to the balance.",
+    "level": 1,
+    "priority": 3
+   },
+   {
+    "name": "linear_correction",
+    "signature": [
+     "f1_t_true"
+    ],
+    "order": 0,
+    "definition": "f1_t_true",
+    "physics": "Direct source/sink term identified with the target: the residual that balances f1 evolution.",
+    "level": 1,
+    "priority": 4
+   },
+   {
+    "name": "quadratic_source",
+    "signature": [
+     "f1"
+    ],
+    "order": 0,
+    "definition": "POW(f1, 2)",
+    "physics": "Quadratic damping/growth; captures nonlinear saturation or blow-up tendency.",
+    "level": 2,
+    "priority": 5
+   },
+   {
+    "name": "modulated_damping",
+    "signature": [
+     "f1",
+     "axis"
+    ],
+    "order": 0,
+    "definition": "MUL(f1, coord(sin, 1, 0, 0))",
+    "physics": "Spatially varying decay coefficient along axis 1; allows the response to vary by location.",
+    "level": 2,
+    "priority": 6
+   },
+   {
+    "name": "cubic_reaction",
+    "signature": [
+     "f1"
+    ],
+    "order": 0,
+    "definition": "POW(f1, 3)",
+    "physics": "Cubic nonlinearity; common in reaction-diffusion and amplitude equations.",
+    "level": 2,
+    "priority": 7
+   },
+   {
+    "name": "tanh_switch",
+    "signature": [
+     "f1"
+    ],
+    "order": 0,
+    "definition": "T(f1)",
+    "physics": "Saturating nonlinear response; limits the effect for large f1.",
+    "level": 2,
+    "priority": 8
+   },
+   {
+    "name": "cross_flux",
+    "signature": [
+     "f1",
+     "f1_t_true",
+     "axis"
+    ],
+    "order": 1,
+    "definition": "D(MUL(f1, f1_t_true), axis, 1)",
+    "physics": "Flux driven by the product of the primary field and the target; represents coupling between the main quantity and the small residual.",
+    "level": 3,
+    "priority": 9
+   },
+   {
+    "name": "target_modulated_diffusion",
+    "signature": [
+     "f1",
+     "f1_t_true",
+     "axis"
+    ],
+    "order": 2,
+    "definition": "D(f1, axis, 1) * f1_t_true + f1 * D(f1_t_true, axis, 1)",
+    "physics": "A conservative product rule form; contains D(f1) and D(f1_t_true) terms of order 1, but gives order 2 when including the divergence of that product.",
+    "level": 3,
+    "priority": 10
+   },
+   {
+    "name": "target_quadratic_source",
+    "signature": [
+     "f1",
+     "f1_t_true"
+    ],
+    "order": 0,
+    "definition": "MUL(f1, f1_t_true)",
+    "physics": "Multiplicative interaction: the source/sink strength scales with target value.",
+    "level": 3,
+    "priority": 11
+   }
+  ],
+  "search_plan": "Start with level 1 mechanisms: compute best combinations using symbolic regression with the given primitives and the nested_fit guidance; prioritize terms that reduce R2 as seen in the nested_fit (d1, f*d1, f^2*d1, d2). Then add level 2 nonlinear/modulated terms; finally introduce target-dependent couplings level 3. Validate each step against the correlation with target, balance tests, and state-conditioned response. Use Pareto selection: prefer simple mechanisms with small R2 gain per added term. Test each candidate by reconstructing the spatial/time spectra and drift properties.",
+  "banned": [
+   "Mechanisms that make f1 negative (contradicting measured min +0.1) through unbounded subtraction",
+   "Use of any division by f1_t_true (since it has near-zero values causing singularities)",
+   "Explicit time derivatives (no time axis given as an array)",
+   "Mixed derivatives beyond second order",
+   "Periodic functions in time without time coordinate",
+   "Nonlinear functions inside derivatives that require chain rule of order > 2 unless expressed as separate product terms with at most first-order derivatives individually",
+   "Any use of fitted coefficients inside the mechanism definition",
+   "Any form of nonlocal integral operators",
+   "Negative powers of f1",
+   "Use of coordinate functions on axes not present in the data"
+  ]
+ },
+ "mechanisms": [
+  {
+   "name": "linear_flux_divergence",
+   "signature": [
+    "f1",
+    "velocity",
+    "axis"
+   ],
+   "order": 1,
+   "definition": "D(MUL(f1, velocity), axis, 1)",
+   "builtin": false,
+   "physics": "Divergence of a linear advective flux; represents transport by a pre-existing velocity-like field.",
+   "level": 1,
+   "priority": 1,
+   "evidence_ratio": 1.0,
+   "n_atoms": 3,
+   "provenance": {
+    "by": "llm-design"
+   }
+  },
+  {
+   "name": "linear_diffusion",
+   "signature": [
+    "f1",
+    "axis"
+   ],
+   "order": 2,
+   "definition": "D(f1, axis, 2)",
+   "builtin": false,
+   "physics": "Isotropic diffusion along a single axis; captures spreading and reduces gradients.",
+   "level": 1,
+   "priority": 2,
+   "evidence_ratio": 1.0,
+   "n_atoms": 1,
+   "provenance": {
+    "by": "llm-design"
+   }
+  },
+  {
+   "name": "linear_damping",
+   "signature": [
+    "f1"
+   ],
+   "order": 0,
+   "definition": "f1",
+   "builtin": false,
+   "physics": "Linear relaxation/decay; since f1 is positive, this provides a negative contribution to the balance.",
+   "level": 1,
+   "priority": 3,
+   "evidence_ratio": 1.0,
+   "n_atoms": 1,
+   "provenance": {
+    "by": "llm-design"
+   }
+  },
+  {
+   "name": "linear_correction",
+   "signature": [
+    "f1_t_true"
+   ],
+   "order": 0,
+   "definition": "f1_t_true",
+   "builtin": false,
+   "physics": "Direct source/sink term identified with the target: the residual that balances f1 evolution.",
+   "level": 1,
+   "priority": 4,
+   "evidence_ratio": 1.0,
+   "n_atoms": 3,
+   "provenance": {
+    "by": "llm-design"
+   }
+  },
+  {
+   "name": "quadratic_source",
+   "signature": [
+    "f1"
+   ],
+   "order": 0,
+   "definition": "POW(f1, 2)",
+   "builtin": false,
+   "physics": "Quadratic damping/growth; captures nonlinear saturation or blow-up tendency.",
+   "level": 2,
+   "priority": 5,
+   "evidence_ratio": 1.0,
+   "n_atoms": 1,
+   "provenance": {
+    "by": "llm-design"
+   }
+  },
+  {
+   "name": "cubic_reaction",
+   "signature": [
+    "f1"
+   ],
+   "order": 0,
+   "definition": "POW(f1, 3)",
+   "builtin": false,
+   "physics": "Cubic nonlinearity; common in reaction-diffusion and amplitude equations.",
+   "level": 2,
+   "priority": 7,
+   "evidence_ratio": 1.0,
+   "n_atoms": 1,
+   "provenance": {
+    "by": "llm-design"
+   }
+  },
+  {
+   "name": "tanh_switch",
+   "signature": [
+    "f1"
+   ],
+   "order": 0,
+   "definition": "T(f1)",
+   "builtin": false,
+   "physics": "Saturating nonlinear response; limits the effect for large f1.",
+   "level": 2,
+   "priority": 8,
+   "evidence_ratio": 1.0,
+   "n_atoms": 1,
+   "provenance": {
+    "by": "llm-design"
+   }
+  },
+  {
+   "name": "cross_flux",
+   "signature": [
+    "f1",
+    "f1_t_true",
+    "axis"
+   ],
+   "order": 1,
+   "definition": "D(MUL(f1, f1_t_true), axis, 1)",
+   "builtin": false,
+   "physics": "Flux driven by the product of the primary field and the target; represents coupling between the main quantity and the small residual.",
+   "level": 3,
+   "priority": 9,
+   "evidence_ratio": 1.0,
+   "n_atoms": 3,
+   "provenance": {
+    "by": "llm-design"
+   }
+  },
+  {
+   "name": "target_quadratic_source",
+   "signature": [
+    "f1",
+    "f1_t_true"
+   ],
+   "order": 0,
+   "definition": "MUL(f1, f1_t_true)",
+   "builtin": false,
+   "physics": "Multiplicative interaction: the source/sink strength scales with target value.",
+   "level": 3,
+   "priority": 11,
+   "evidence_ratio": 1.0,
+   "n_atoms": 3,
+   "provenance": {
+    "by": "llm-design"
+   }
+  }
+ ]
+}

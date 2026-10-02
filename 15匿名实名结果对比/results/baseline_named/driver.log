@@ -1,0 +1,5 @@
+[run ] Traffic_Flow_Bottleneck: 500 samples -> ./results\Traffic_Flow_Bottleneck
+[done] Traffic_Flow_Bottleneck: exit=0 elapsed=76.8 min
+       best MSE=6.9616e-07 complexity=25 (front 50 -> 8)
+
+batch finished in 76.8 min, 1/1 problems with results

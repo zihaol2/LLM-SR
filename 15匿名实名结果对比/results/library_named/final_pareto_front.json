@@ -1,0 +1,74 @@
+[
+    {
+        "rank": 1,
+        "mse": 4.904197500083965e-11,
+        "complexity": 18,
+        "equation": "\"\"\"Mathematical function for the RHS of an unknown 1D PDE.\n\n    Args:\n        x: spatial coordinate grid, shape (Nx, 1).\n        f1: the measured field, shape (Nx, Nt).\n        params: a fixed-length array of exactly 5 entries. Use only indices 0..4.\n        d_axis: raw derivative operator (primitive layer); `G.D` wraps it.\n\n    Return:\n        `f1_t_pred`, a numpy array with the grid shape.\n    \"\"\"\n    # Conservative advection with linear speed-density: -\u2202[u(1-u)]/\u2202x\n    # This represents the fundamental traffic flow conservation law\n    flux = G.MUL(f1, (1 - f1))  # u*(1-u)\n    advection = G.prs(flux, 0)  # \u2202[u(1-u)]/\u2202x\n    \n    # Anticipation-driven relative gradient diffusion: \u2202/\u2202x[(\u2202u/\u2202x)/u]\n    # Vehicles anticipate density changes ahead and adjust speed accordingly\n    rel_grad = G.DIV(G.prs(f1, 0), f1)  # (\u2202u/\u2202x)/u\n    rel_grad_diff = G.prs(rel_grad, 0)  # \u2202/\u2202x[(\u2202u/\u2202x)/u]\n    \n    # Spatial bottleneck modulation: tanh(x) captures road narrowing effect\n    bottleneck = G.coord('tanh', 1.0, 0.0, 0.0)\n    \n    # Bottleneck reduces effective velocity, creating additional flux divergence\n    # The modulated flux: u*(1-u)*tanh(x)\n    bottleneck_flux = G.MUL(flux, bottleneck)  # u*(1-u)*tanh(x)\n    bottleneck_div = G.prs(bottleneck_flux, 0)  # \u2202[u(1-u)*tanh(x)]/\u2202x\n    \n    # Combined equation: \n    # f1_t = -a1*\u2202[u(1-u)]/\u2202x + a2*\u2202/\u2202x[(\u2202u/\u2202x)/u] - a3*\u2202[u(1-u)*tanh(x)]/\u2202x\n    # The negative sign on bottleneck term accounts for velocity reduction\n    f1_t_pred = (params[0] * advection + \n                 params[1] * rel_grad_diff + \n                 params[2] * bottleneck_div)\n    \n    return f1_t_pred"
+    },
+    {
+        "rank": 2,
+        "mse": 4.904197500083965e-11,
+        "complexity": 18,
+        "equation": "\"\"\"Mathematical function for the RHS of an unknown 1D PDE.\n\n    Args:\n        x: spatial coordinate grid, shape (Nx, 1).\n        f1: the measured field, shape (Nx, Nt).\n        params: a fixed-length array of exactly 5 entries. Use only indices 0..4.\n        d_axis: raw derivative operator (primitive layer); `G.D` wraps it.\n\n    Return:\n        `f1_t_pred`, a numpy array with the grid shape.\n    \"\"\"\n    # Conservative advection with linear speed-density: -\u2202[u(1-u)]/\u2202x\n    # This represents the fundamental traffic flow conservation law\n    flux = G.MUL(f1, (1 - f1))  # u*(1-u)\n    advection = G.prs(flux, 0)  # \u2202[u(1-u)]/\u2202x\n    \n    # Anticipation-driven relative gradient diffusion: \u2202/\u2202x[(\u2202u/\u2202x)/u]\n    # Vehicles anticipate density changes ahead and adjust speed accordingly\n    rel_grad = G.DIV(G.prs(f1, 0), f1)  # (\u2202u/\u2202x)/u\n    rel_grad_diff = G.prs(rel_grad, 0)  # \u2202/\u2202x[(\u2202u/\u2202x)/u]\n    \n    # Spatial bottleneck modulation: tanh(x) captures road narrowing effect\n    bottleneck = G.coord('tanh', 1.0, 0.0, 0.0)\n    \n    # Bottleneck reduces effective velocity, creating additional flux divergence\n    # The modulated flux: u*(1-u)*tanh(x)\n    bottleneck_flux = G.MUL(flux, bottleneck)  # u*(1-u)*tanh(x)\n    bottleneck_div = G.prs(bottleneck_flux, 0)  # \u2202[u(1-u)*tanh(x)]/\u2202x\n    \n    # Combined equation: \n    # f1_t = -a1*\u2202[u(1-u)]/\u2202x + a2*\u2202/\u2202x[(\u2202u/\u2202x)/u] - a3*\u2202[u(1-u)*tanh(x)]/\u2202x\n    # The negative sign on bottleneck term accounts for velocity reduction\n    f1_t_pred = (params[0] * advection + \n                 params[1] * rel_grad_diff + \n                 params[2] * bottleneck_div)\n    \n    return f1_t_pred"
+    },
+    {
+        "rank": 3,
+        "mse": 4.904197500083965e-11,
+        "complexity": 18,
+        "equation": "# Conservative advection: -\u2202[u(1-u)]/\u2202x (LWR flux with linear speed-density)\n    flux = G.MUL(f1, (1 - f1))  # u*(1-u)\n    advection = G.prs(flux, 0)  # \u2202[u(1-u)]/\u2202x\n    \n    # Anticipation-driven relative gradient diffusion: \u2202/\u2202x[(\u2202u/\u2202x)/u]\n    rel_grad = G.DIV(G.prs(f1, 0), f1)  # (\u2202u/\u2202x)/u\n    rel_grad_diff = G.prs(rel_grad, 0)  # \u2202[(\u2202u/\u2202x)/u]/\u2202x\n    \n    # Spatial bottleneck modulation: tanh(x) captures road narrowing\n    bottleneck = G.coord('tanh', 1.0, 0.0, 0.0)\n    \n    # Bottleneck modulates both advection and diffusion\n    # Effective flux with bottleneck: u(1-u)\u00b7(1+tanh(x)) \n    # (increases where road is wider, decreases where narrower)\n    bottleneck_flux = G.MUL(flux, bottleneck)  # u(1-u)\u00b7tanh(x)\n    bottleneck_div = G.prs(bottleneck_flux, 0)  # \u2202[u(1-u)\u00b7tanh(x)]/\u2202x\n    \n    # Combined equation with all physics:\n    # f1_t = -a1\u00b7\u2202[u(1-u)]/\u2202x + a2\u00b7\u2202/\u2202x[(\u2202u/\u2202x)/u] - a3\u00b7\u2202[u(1-u)\u00b7tanh(x)]/\u2202x\n    f1_t_pred = (params[0] * advection + \n                 params[1] * rel_grad_diff + \n                 params[2] * bottleneck_div)\n    \n    return f1_t_pred"
+    },
+    {
+        "rank": 4,
+        "mse": 4.904197500083965e-11,
+        "complexity": 18,
+        "equation": "# Conservative advection with linear speed-density: \u2202[u(1-u)]/\u2202x\n    # This represents the fundamental traffic flow conservation law (LWR model)\n    flux = G.MUL(f1, (1 - f1))\n    advection = G.prs(flux, 0)\n    \n    # Anticipation-driven relative gradient diffusion: \u2202/\u2202x[(\u2202u/\u2202x)/u]\n    # Vehicles anticipate density changes ahead and adjust speed accordingly\n    rel_grad = G.DIV(G.prs(f1, 0), f1)\n    rel_grad_diff = G.prs(rel_grad, 0)\n    \n    # Spatial bottleneck modulation: tanh(x) captures road narrowing effect\n    bottleneck = G.coord('tanh', 1.0, 0.0, 0.0)\n    \n    # Bottleneck reduces effective velocity, creating additional flux divergence\n    # The modulated flux: u(1-u)*tanh(x) with negative sign for velocity reduction\n    bottleneck_flux = G.MUL(flux, bottleneck)\n    bottleneck_div = G.prs(bottleneck_flux, 0)\n    \n    # Combined equation with the negative sign on advection terms (flux divergence convention)\n    f1_t_pred = (params[0] * advection + \n                 params[1] * rel_grad_diff + \n                 params[2] * bottleneck_div)\n    \n    return f1_t_pred"
+    },
+    {
+        "rank": 5,
+        "mse": 6.339673173788832e-10,
+        "complexity": 17,
+        "equation": "# Conservation: -\u2202/\u2202x[u * v(x,u)] where v includes speed-density and bottleneck\n    # Speed-density relation: v = (1-u) (normalized)\n    # Bottleneck modulation: tanh(x) reduces capacity\n    \n    # Combined flux: u * (1-u) * (1 - a*tanh(x))\n    # = u(1-u) - a*u(1-u)*tanh(x)\n    \n    bottleneck = G.coord('tanh', 1.0, 0.0, 0.0)\n    \n    # Conservative advection with bottleneck: \u2202/\u2202x[u(1-u)(1-a*tanh(x))]\n    flux = G.MUL(f1, G.MUL((1 - f1), (1 - params[0] * bottleneck)))\n    advection = G.prs(flux, 0)\n    \n    # Anticipation-driven relative gradient diffusion: \u2202/\u2202x[(\u2202u/\u2202x)/u]\n    rel_grad = G.DIV(G.prs(f1, 0), f1)\n    rel_grad_diff = G.prs(rel_grad, 0)\n    \n    # Combine: f1_t = -\u2202(u(1-u)(1-a*tanh(x)))/\u2202x + b*\u2202/\u2202x[(\u2202u/\u2202x)/u]\n    f1_t_pred = (-1 * advection + params[1] * rel_grad_diff)\n    \n    return f1_t_pred"
+    },
+    {
+        "rank": 6,
+        "mse": 0.00034288130678759084,
+        "complexity": 15,
+        "equation": "# Conservative advection with linear speed-density relation: -\u2202(u(1-u))/\u2202x\n    # This is the LWR model flux: f = u(1-u) for normalized density\n    advection = G.prs(G.MUL(f1, (1 - f1)), 0)  # \u2202(u - u\u00b2)/\u2202x = (1-2u)\u00b7\u2202u/\u2202x\n    \n    # Anticipation-driven relative gradient diffusion: \u2202/\u2202x[(\u2202u/\u2202x)/u]\n    # This captures the anticipatory behavior where drivers look ahead\n    rel_grad = G.DIV(G.prs(f1, 0), f1)  # (\u2202u/\u2202x)/u\n    rel_grad_diff = G.prs(rel_grad, 0)  # \u2202[(\u2202u/\u2202x)/u]/\u2202x\n    \n    # Spatial bottleneck modulation: tanh(x) creates smooth transition in road capacity\n    # This modulates the effective diffusion coefficient\n    bottleneck = G.coord('tanh', 1.0, 0.0, 0.0)\n    \n    # Combined flux with bottleneck-modulated diffusion\n    f1_t_pred = (params[0] * advection + \n                 params[1] * G.MUL(bottleneck, rel_grad_diff))\n    \n    return f1_t_pred"
+    },
+    {
+        "rank": 7,
+        "mse": 0.00034288130678759084,
+        "complexity": 15,
+        "equation": "# Conservative advection with linear speed-density: -\u2202[u(1-u)]/\u2202x\n    # This is the LWR model flux for normalized density\n    advection = G.prs(G.MUL(f1, (1 - f1)), 0)\n    \n    # Anticipation-driven relative gradient diffusion: \u2202/\u2202x[(\u2202u/\u2202x)/u]\n    # This captures the anticipatory behavior with relative density gradients\n    rel_grad = G.DIV(G.prs(f1, 0), f1)\n    rel_grad_diff = G.prs(rel_grad, 0)\n    \n    # Spatial bottleneck modulation using tanh function\n    bottleneck = G.coord('tanh', 1.0, 0.0, 0.0)\n    \n    # Combine advection with bottleneck-modulated diffusion\n    # The bottleneck term reduces effective diffusion where road narrows\n    f1_t_pred = (params[0] * advection + \n                 params[1] * G.MUL(bottleneck, rel_grad_diff))\n    \n    return f1_t_pred"
+    },
+    {
+        "rank": 8,
+        "mse": 0.00034288130678759084,
+        "complexity": 15,
+        "equation": "# Conservative advection with density-dependent flux: -\u2202[u(1-u)]/\u2202x\n    advection = G.prs(G.MUL(f1, (1 - f1)), 0)\n    \n    # Anticipation-driven relative gradient diffusion: \u2202/\u2202x[(\u2202u/\u2202x)/u]\n    rel_grad = G.DIV(G.prs(f1, 0), f1)\n    rel_grad_diff = G.prs(rel_grad, 0)\n    \n    # Spatial bottleneck modulation using tanh\n    bottleneck = G.coord('tanh', 1.0, 0.0, 0.0)\n    \n    # Combine: advection + diffusion with bottleneck-modulated coefficients\n    f1_t_pred = (params[0] * advection + \n                 params[1] * G.MUL(bottleneck, rel_grad_diff))\n    \n    return f1_t_pred"
+    },
+    {
+        "rank": 9,
+        "mse": 0.00034288130678759084,
+        "complexity": 15,
+        "equation": "\"\"\"Mathematical function for the RHS of an unknown 1D PDE.\n    \n    Physical model: Traffic flow with bottleneck and anticipation\n    f1_t = -\u2202[u(1-u)]/\u2202x + \u2202/\u2202x[(\u2202u/\u2202x)/u] * (1 + \u03b1*tanh(x))\n    \n    Args:\n        x: spatial coordinate grid, shape (Nx, 1).\n        f1: the measured field, shape (Nx, Nt).\n        params: a fixed-length array of exactly 5 entries.\n        d_axis: raw derivative operator.\n    \n    Return:\n        `f1_t_pred`, a numpy array with the grid shape.\n    \"\"\"\n    # Conservative advection (LWR flux): -\u2202[u(1-u)]/\u2202x\n    advection = G.prs(G.MUL(f1, (1 - f1)), 0)\n    \n    # Relative gradient diffusion: \u2202/\u2202x[(\u2202u/\u2202x)/u]\n    rel_grad = G.DIV(G.prs(f1, 0), f1)\n    rel_grad_diff = G.prs(rel_grad, 0)\n    \n    # Spatial bottleneck modulation: tanh(x) captures road narrowing\n    bottleneck = G.coord('tanh', 1.0, 0.0, 0.0)\n    \n    # Combine: advection + bottleneck-modulated relative gradient diffusion\n    f1_t_pred = (params[0] * advection + \n                 params[1] * G.MUL(bottleneck, rel_grad_diff))\n    \n    return f1_t_pred"
+    },
+    {
+        "rank": 10,
+        "mse": 0.0006312673962622459,
+        "complexity": 14,
+        "equation": "\"\"\"Mathematical function for the RHS of an unknown 1D PDE.\n    \n    Args:\n        x: spatial coordinate grid, shape (Nx, 1).\n        f1: the measured field, shape (Nx, Nt).\n        params: a fixed-length array of exactly 5 entries. Use only indices 0..4.\n        d_axis: raw derivative operator (primitive layer); `G.D` wraps it.\n    \n    Return:\n        `f1_t_pred`, a numpy array with the grid shape.\n    \"\"\"\n    # Conservative advection with linear speed-density: -\u2202[u(1-u)]/\u2202x\n    # The flux is u(1-u) which represents the fundamental diagram of traffic flow\n    flux = G.MUL(f1, (1 - f1))  # u*(1-u)  \n    \n    # Bottleneck modulated flux divergence: -\u2202[u(1-u)*tanh(x)]/\u2202x\n    # tanh(x) captures the spatial narrowing of the road\n    bottleneck_pattern = G.coord('tanh', 1.0, 0.0, 0.0)\n    bottleneck_flux = G.MUL(flux, bottleneck_pattern)  # u(1-u)*tanh(x)\n    \n    # Anticipation-driven relative gradient diffusion: \u2202/\u2202x[(\u2202u/\u2202x)/u]\n    # Drivers adjust speed based on density gradient ahead (anticipation)\n    rel_grad = G.DIV(G.prs(f1, 0), f1)  # (\u2202u/\u2202x)/u\n    rel_grad_diff = G.prs(rel_grad, 0)  # \u2202[(\u2202u/\u2202x)/u]/\u2202x\n    \n    # Combined PDE:\n    # f1_t = -a1*\u2202[u(1-u)*tanh(x)]/\u2202x + a2*\u2202[(\u2202u/\u2202x)/u]/\u2202x\n    # The bottleneck term combines both spatial modulation and conservative structure\n    f1_t_pred = params[0] * G.prs(bottleneck_flux, 0) + params[1] * rel_grad_diff\n    \n    return f1_t_pred"
+    },
+    {
+        "rank": 11,
+        "mse": 0.0006312673962622459,
+        "complexity": 14,
+        "equation": "# Conservative advection with bottleneck: \u2202[u(1-u)*tanh(x)]/\u2202x\n    # This combines the flux divergence with spatial bottleneck modulation\n    flux = G.MUL(f1, (1 - f1))\n    bottleneck = G.coord('tanh', 1.0, 0.0, 0.0)\n    modulated_flux = G.MUL(flux, bottleneck)\n    advection = G.prs(modulated_flux, 0)\n    \n    # Relative gradient diffusion: \u2202/\u2202x[(\u2202u/\u2202x)/u]\n    rel_grad = G.DIV(G.prs(f1, 0), f1)\n    rel_grad_diff = G.prs(rel_grad, 0)\n    \n    f1_t_pred = params[0] * advection + params[1] * rel_grad_diff\n    \n    return f1_t_pred"
+    },
+    {
+        "rank": 12,
+        "mse": 0.0043865813945822545,
+        "complexity": 3,
+        "equation": "f1_t_pred = params[0] * G.dif(f1)\n\n    return f1_t_pred"
+    }
+]

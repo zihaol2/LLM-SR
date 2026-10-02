@@ -1,0 +1,80 @@
+[
+    {
+        "rank": 1,
+        "mse": 0.00010477066704971447,
+        "complexity": 22,
+        "equation": "\"\"\"Mathematical function for the RHS of an unknown 1D PDE.\"\"\"\n    \n    f1_t_pred = (\n        params[0] * G.dif(f1) +                           # diffusion\n        params[1] * G.prs(G.cpl(f1, f1), 0) +             # nonlinear advection (Burgers)\n        params[2] * G.prs(f1, 0) +                        # linear advection\n        params[3] * G.cpl(G.coord_sin(0.1, 0, 0), \n                          G.prs(f1, 0)) +                 # velocity modulation\n        params[4] * G.cpl(G.coord_cos(0.2, 0, 0), f1)     # spatially varying source\n    )\n    \n    return f1_t_pred"
+    },
+    {
+        "rank": 2,
+        "mse": 0.00011941190653480432,
+        "complexity": 19,
+        "equation": "\"\"\" Mathematical function for the RHS of an unknown 1D PDE.\n    \n    Args:\n        x: spatial coordinate grid, shape (Nx, 1).\n        f1: the measured field, shape (Nx, Nt).\n        params: a fixed-length array of exactly 5 entries. Use only indices 0..4.\n        d_axis: raw derivative operator (primitive layer); `G.D` wraps it.\n    \n    Return:\n        `f1_t_pred`, a numpy array with the grid shape.\n    \"\"\"\n    # Simplified Burgers-Fisher type equation:\n    # f_t = \u03bd*f_xx + \u03b1*f*f_x + \u03b2*f_x + \u03b3*sin(x)*f + \u03b4*f\n    # Combines diffusion, advection, and spatially modulated source/sink\n    f1_t_pred = (\n        params[0] * G.dif(f1) +                    # diffusion\n        params[1] * G.prs(G.cpl(f1, f1), 0) +      # nonlinear advection (f^2)_x/2\n        params[2] * G.prs(f1, 0) +                 # linear advection\n        params[3] * G.cpl(G.coord_sin(0.5, 0, 0), f1) +  # spatial modulation\n        params[4] * G.rxn(f1, 'tanh')              # saturation nonlinearity\n    )\n    \n    return f1_t_pred"
+    },
+    {
+        "rank": 3,
+        "mse": 0.00011941190653480432,
+        "complexity": 19,
+        "equation": "\"\"\" Mathematical function for the RHS of an unknown 1D PDE.\n    \n    Args:\n        x: spatial coordinate grid, shape (Nx, 1).\n        f1: the measured field, shape (Nx, Nt).\n        params: a fixed-length array of exactly 5 entries. Use indices 0..4.\n        d_axis: raw derivative operator (primitive layer); `G.D` wraps it.\n    \n    Return:\n        `f1_t_pred`, a numpy array with the grid shape.\n    \"\"\"\n    # Burgers-Fisher type equation with source/sink coupling:\n    # f_t = \u03bd*f_xx + \u03b1*f*f_x + \u03b2*f_x + \u03b3*sin(x)*f + \u03b4*tanh(f)\n    f1_t_pred = (\n        params[0] * G.dif(f1) +                    # diffusion\n        params[1] * G.prs(G.cpl(f1, f1), 0) +      # nonlinear advection (f^2)_x/2\n        params[2] * G.prs(f1, 0) +                 # linear advection\n        params[3] * G.cpl(G.coord_sin(0.5, 0, 0), f1) +  # spatial modulation\n        params[4] * G.rxn(f1, 'tanh')              # saturation nonlinearity\n    )\n    \n    return f1_t_pred"
+    },
+    {
+        "rank": 4,
+        "mse": 0.00011941190653480432,
+        "complexity": 19,
+        "equation": "f1_t_pred = (\n        params[0] * G.dif(f1) +                      # diffusion\n        params[1] * G.prs(G.cpl(f1, f1), 0) +        # nonlinear advection (f\u00b2)_x\n        params[2] * G.prs(f1, 0) +                   # linear advection\n        params[3] * G.cpl(G.coord_sin(0.5, 0, 0), f1) +  # spatial modulation\n        params[4] * G.rxn(f1, 'tanh')                # saturation nonlinearity\n    )\n    return f1_t_pred"
+    },
+    {
+        "rank": 5,
+        "mse": 0.00017739541318886998,
+        "complexity": 18,
+        "equation": "\"\"\"Mathematical function for the RHS of an unknown 1D PDE.\n    \n    Args:\n        x: spatial coordinate grid, shape (Nx, 1).\n        f1: the measured field, shape (Nx, Nt).\n        params: a fixed-length array of exactly 5 entries. Use only indices 0..4.\n        d_axis: raw derivative operator (primitive layer); `G.D` wraps it.\n    \n    Return:\n        `f1_t_pred`, a numpy array with the grid shape.\n    \"\"\"\n    # Fisher-Kolmogorov type equation:\n    # f_t = \u03bd*f_xx + \u03b1*f*f_x + \u03b2*f*(1-f)\n    # Combines diffusion, nonlinear advection, and logistic growth\n    f1_t_pred = (\n        params[0] * G.dif(f1) +                    # \u03bd*f_xx: diffusion\n        params[1] * G.prs(G.cpl(f1, f1), 0) +      # \u03b1*(f\u00b2)_x/2: nonlinear advection  \n        params[2] * G.prs(f1, 0) +                 # \u03b2*f_x: linear advection\n        params[3] * G.cpl(f1, f1) +                # \u03b3*f\u00b2: quadratic reaction\n        params[4] * G.frc(f1)                      # \u03b4*f: linear growth/decay\n    )\n    \n    return f1_t_pred"
+    },
+    {
+        "rank": 6,
+        "mse": 0.0002255218591023752,
+        "complexity": 15,
+        "equation": "# Modified reaction-diffusion-advection equation:\n    # f_t = D*f_xx + a*f*f_x + b*f_x + c*f\n    # Combines linear diffusion, nonlinear advection, linear advection, and linear damping\n    f1_t_pred = (\n        params[0] * G.dif(f1) +                    # linear diffusion\n        params[1] * G.prs(G.cpl(f1, f1), 0) +      # nonlinear advection (f\u00b2)_x\n        params[2] * G.prs(f1, 0) +                 # linear advection\n        params[3] * G.frc(f1)                      # linear damping/reaction\n    )\n    \n    return f1_t_pred"
+    },
+    {
+        "rank": 7,
+        "mse": 0.0002255218591023752,
+        "complexity": 15,
+        "equation": "\"\"\"Mathematical function for the RHS of an unknown 1D PDE.\"\"\"\n    \n    f1_t_pred = (\n        params[0] * G.dif(f1) +                    # linear diffusion\n        params[1] * G.prs(G.cpl(f1, f1), 0) +      # nonlinear advection (f\u00b2)_x\n        params[2] * G.prs(f1, 0) +                 # linear advection\n        params[3] * G.frc(f1)                      # linear damping/reaction\n    )\n    \n    return f1_t_pred"
+    },
+    {
+        "rank": 8,
+        "mse": 0.0002255218591023752,
+        "complexity": 15,
+        "equation": "f1_t_pred = (\n        params[0] * G.dif(f1) +                    # linear diffusion\n        params[1] * G.prs(G.cpl(f1, f1), 0) +      # nonlinear advection (Burgers term)\n        params[2] * G.prs(f1, 0) +                 # linear advection\n        params[3] * G.frc(f1)                      # linear damping/reaction\n    )\n    \n    return f1_t_pred"
+    },
+    {
+        "rank": 9,
+        "mse": 0.0002255218591023752,
+        "complexity": 15,
+        "equation": "\"\"\" Mathematical function for the RHS of an unknown 1D PDE.\"\"\"\n    \n    f1_t_pred = (\n        params[0] * G.dif(f1) +                           # diffusion term\n        params[1] * G.prs(G.cpl(f1, f1), 0) +             # Burgers nonlinear advection\n        params[2] * G.prs(f1, 0) +                        # linear advection\n        params[3] * G.frc(f1)                             # linear damping/reaction\n    )\n    \n    return f1_t_pred"
+    },
+    {
+        "rank": 10,
+        "mse": 0.00032000879510144013,
+        "complexity": 12,
+        "equation": "f1_t_pred = (\n        params[0] * G.dif(f1) +                                # diffusion\n        params[1] * G.prs(G.cpl(f1, f1), 0) +                 # nonlinear advection f^2 * d1\n        params[2] * G.prs(f1, 0)                                # linear advection\n    )\n    return f1_t_pred"
+    },
+    {
+        "rank": 11,
+        "mse": 0.00032000879510144013,
+        "complexity": 12,
+        "equation": "\"\"\" Mathematical function for the RHS of an unknown 1D PDE.\n    \n    Args:\n        x: spatial coordinate grid, shape (Nx, 1).\n        f1: the measured field, shape (Nx, Nt).\n        params: a fixed-length array of exactly 5 entries. Use only indices 0..4.\n        d_axis: raw derivative operator (primitive layer); `G.D` wraps it.\n    \n    Return:\n        `f1_t_pred`, a numpy array with the grid shape.\n    \"\"\"\n    # Viscous Burgers-type equation: f_t = \u03bd*f_xx - \u03b1*f*f_x - \u03b2*f_x\n    f1_t_pred = (params[0] * G.dif(f1) + \n                 params[1] * G.prs(G.cpl(f1, f1), 0) + \n                 params[2] * G.prs(f1, 0))\n    \n    return f1_t_pred"
+    },
+    {
+        "rank": 12,
+        "mse": 0.00043395217927030415,
+        "complexity": 7,
+        "equation": "\"\"\" Mathematical function for the RHS of an unknown 1D PDE.\n    \"\"\"\n    f1_t_pred = params[0] * G.dif(f1) + params[1] * G.prs(f1, 0)\n\n    return f1_t_pred"
+    },
+    {
+        "rank": 13,
+        "mse": 0.0043865813945822545,
+        "complexity": 3,
+        "equation": "f1_t_pred = params[0] * G.dif(f1)\n\n    return f1_t_pred"
+    }
+]

@@ -1,0 +1,302 @@
+[
+    {
+        "rank": 1,
+        "mse": 4.5136626812136427e-07,
+        "complexity": 40,
+        "equation": "# Spatial bottleneck - smooth transition\n    bottleneck = 1 + params[3] * np.tanh(x * params[4])\n    \n    # Traffic conservation with bottleneck (Greenshields flux)\n    flux = u * (1 - u) * bottleneck\n    advection = -d_dx(flux, order=1)\n    \n    # Anticipation-driven relative gradient diffusion\n    # Cars respond to changes in normalized density\n    relative_gradient = d_dx(u / (1 + u), order=1)\n    anticipation = params[0] * d_dx((1 - u) * relative_gradient, order=1)\n    \n    # Nonlinear self-diffusion for shock formation\n    u_x = d_dx(u, order=1)\n    nonlinear_diffusion = params[1] * d_dx(u * u_x, order=1)\n    \n    # Bottleneck coupling - enhanced diffusion near bottleneck\n    bottleneck_diffusion = params[2] * d_dx(bottleneck * u_x, order=1)\n    \n    u_t_pred = advection + anticipation + nonlinear_diffusion + bottleneck_diffusion\n    \n    return u_t_pred"
+    },
+    {
+        "rank": 2,
+        "mse": 4.5136626812136427e-07,
+        "complexity": 40,
+        "equation": "# Spatial bottleneck - smooth transition in road capacity\n    bottleneck = 1 + params[3] * np.tanh(x * params[4])\n    \n    # Traffic conservation with bottleneck (Greenshields flux)\n    flux = u * (1 - u) * bottleneck\n    advection = -d_dx(flux, order=1)\n    \n    # Anticipation-driven relative gradient diffusion\n    # Cars respond to changes in normalized density relative to local conditions\n    relative_gradient = d_dx(u / (1 + u), order=1)\n    anticipation = params[0] * d_dx((1 - u) * relative_gradient, order=1)\n    \n    # Nonlinear self-diffusion for shock formation\n    u_x = d_dx(u, order=1)\n    nonlinear_diffusion = params[1] * d_dx(u * u_x, order=1)\n    \n    # Bottleneck coupling - enhanced diffusion near bottleneck\n    bottleneck_diffusion = params[2] * d_dx(bottleneck * u_x, order=1)\n    \n    u_t_pred = advection + anticipation + nonlinear_diffusion + bottleneck_diffusion\n    \n    return u_t_pred"
+    },
+    {
+        "rank": 3,
+        "mse": 6.88751998163748e-07,
+        "complexity": 38,
+        "equation": "# Spatial bottleneck: smooth transition in road capacity\n    bottleneck = 1 + params[3] * np.tanh(x * params[4])\n    \n    # Traffic conservation with bottleneck (Greenshields flux)\n    flux = u * (1 - u) * bottleneck\n    advection = -d_dx(flux, order=1)\n    \n    # Anticipation-driven relative gradient diffusion\n    # Drivers respond to relative density changes (normalized by capacity)\n    relative_density = u / (1 + u)\n    relative_gradient = d_dx(relative_density, order=1)\n    \n    # Primary anticipation diffusion: drivers slow down when relative density increases ahead\n    anticipation = params[0] * d_dx(relative_gradient, order=1)\n    \n    # Bottleneck coupling: density piles up near the bottleneck\n    bottleneck_coupling = params[1] * d_dx(bottleneck * d_dx(u, order=1), order=1)\n    \n    # Nonlinear self-diffusion for shock formation\n    nonlinear_diffusion = params[2] * d_dx(u * d_dx(u, order=1), order=1)\n    \n    # Combine all mechanisms\n    u_t_pred = advection + anticipation + bottleneck_coupling + nonlinear_diffusion\n    \n    return u_t_pred"
+    },
+    {
+        "rank": 4,
+        "mse": 6.887700307659024e-07,
+        "complexity": 34,
+        "equation": "# Spatial bottleneck modulation - smooth transition in road capacity\n    bottleneck = 1 + params[3] * np.tanh(x * params[4])\n    \n    # Traffic conservation with bottleneck (Greenshields flux)\n    flux = u * (1 - u) * bottleneck\n    advection = -d_dx(flux, order=1)\n    \n    # Anticipation-driven relative gradient diffusion\n    # Drivers respond to relative density changes (normalized by local density)\n    relative_density = u / (1 + u)\n    u_x = d_dx(u, order=1)\n    \n    # Combined diffusion mechanisms\n    anticipation_diffusion = params[0] * d_dx(relative_density, order=2)\n    bottleneck_coupling = params[1] * d_dx(bottleneck * u_x, order=1)\n    nonlinear_diffusion = params[2] * d_dx(u * u_x, order=1)\n    \n    # Combine all physical mechanisms\n    u_t_pred = advection + anticipation_diffusion + bottleneck_coupling + nonlinear_diffusion\n    \n    return u_t_pred"
+    },
+    {
+        "rank": 5,
+        "mse": 6.887700307659024e-07,
+        "complexity": 34,
+        "equation": "# Spatial bottleneck modulation - smooth transition in road capacity\n    bottleneck = 1 + params[3] * np.tanh(x * params[4])\n    \n    # Traffic conservation with bottleneck (Greenshields flux)\n    flux = u * (1 - u) * bottleneck\n    advection = -d_dx(flux, order=1)\n    \n    # Anticipation-driven relative gradient diffusion\n    relative_density = u / (1 + u)\n    u_x = d_dx(u, order=1)\n    \n    # Combined diffusion mechanisms\n    anticipation_diffusion = params[0] * d_dx(relative_density, order=2)\n    bottleneck_coupling = params[1] * d_dx(bottleneck * u_x, order=1)\n    nonlinear_diffusion = params[2] * d_dx(u * u_x, order=1)\n    \n    # Combine all physical mechanisms\n    u_t_pred = advection + anticipation_diffusion + bottleneck_coupling + nonlinear_diffusion\n    \n    return u_t_pred"
+    },
+    {
+        "rank": 6,
+        "mse": 6.887700307659024e-07,
+        "complexity": 34,
+        "equation": "# Spatial bottleneck modulation - smooth transition in road capacity\n    bottleneck = 1 + params[3] * np.tanh(x * params[4])\n    \n    # Traffic conservation with bottleneck (Greenshields flux)\n    flux = u * (1 - u) * bottleneck\n    advection = -d_dx(flux, order=1)\n    \n    # Anticipation-driven relative gradient diffusion\n    # Drivers respond to relative density changes (normalized by local density)\n    relative_density = u / (1 + u)\n    u_x = d_dx(u, order=1)\n    \n    # Combined diffusion mechanisms\n    anticipation_diffusion = params[0] * d_dx(relative_density, order=2)\n    bottleneck_coupling = params[1] * d_dx(bottleneck * u_x, order=1)\n    nonlinear_diffusion = params[2] * d_dx(u * u_x, order=1)\n    \n    # Combine all physical mechanisms\n    u_t_pred = advection + anticipation_diffusion + bottleneck_coupling + nonlinear_diffusion\n    \n    return u_t_pred"
+    },
+    {
+        "rank": 7,
+        "mse": 6.887700307659024e-07,
+        "complexity": 34,
+        "equation": "# Spatial bottleneck modulation - smooth transition in road capacity\n    bottleneck = 1 + params[3] * np.tanh(x * params[4])\n    \n    # Traffic conservation with bottleneck (Greenshields flux)\n    flux = u * (1 - u) * bottleneck\n    advection = -d_dx(flux, order=1)\n    \n    # Anticipation-driven relative gradient diffusion\n    # Drivers respond to relative density changes (normalized by local density)\n    relative_density = u / (1 + u)\n    u_x = d_dx(u, order=1)\n    \n    # Combined diffusion mechanisms\n    anticipation_diffusion = params[0] * d_dx(relative_density, order=2)\n    bottleneck_coupling = params[1] * d_dx(bottleneck * u_x, order=1)\n    nonlinear_diffusion = params[2] * d_dx(u * u_x, order=1)\n    \n    # Combine all physical mechanisms\n    u_t_pred = advection + anticipation_diffusion + bottleneck_coupling + nonlinear_diffusion\n    \n    return u_t_pred"
+    },
+    {
+        "rank": 8,
+        "mse": 6.887700307659024e-07,
+        "complexity": 34,
+        "equation": "# Spatial bottleneck modulation - smooth transition in road capacity\n    bottleneck = 1 + params[3] * np.tanh(x * params[4])\n    \n    # Traffic conservation with bottleneck (Greenshields flux)\n    flux = u * (1 - u) * bottleneck\n    advection = -d_dx(flux, order=1)\n    \n    # Anticipation-driven relative gradient diffusion\n    # Drivers respond to relative density changes (normalized by local density)\n    relative_density = u / (1 + u)\n    u_x = d_dx(u, order=1)\n    \n    # Combined diffusion mechanisms\n    anticipation_diffusion = params[0] * d_dx(relative_density, order=2)\n    bottleneck_coupling = params[1] * d_dx(bottleneck * u_x, order=1)\n    nonlinear_diffusion = params[2] * d_dx(u * u_x, order=1)\n    \n    # Combine all physical mechanisms\n    u_t_pred = advection + anticipation_diffusion + bottleneck_coupling + nonlinear_diffusion\n    \n    return u_t_pred"
+    },
+    {
+        "rank": 9,
+        "mse": 6.887700307659024e-07,
+        "complexity": 34,
+        "equation": "# Bottleneck modulation - smooth transition in road capacity\n    bottleneck = 1 + params[3] * np.tanh(x * params[4])\n    \n    # Traffic conservation with Greenshields flux and bottleneck\n    flux = u * (1 - u) * bottleneck\n    advection = -d_dx(flux, order=1)\n    \n    # Anticipation-driven relative gradient diffusion\n    # Drivers respond to relative density changes (normalized by local density)\n    relative_density = u / (1 + u)\n    u_x = d_dx(u, order=1)\n    \n    # Combined diffusion mechanisms with bottleneck coupling\n    anticipation_diffusion = params[0] * d_dx(relative_density, order=2)\n    bottleneck_coupling = params[1] * d_dx(bottleneck * u_x, order=1)\n    nonlinear_diffusion = params[2] * d_dx(u * u_x, order=1)\n    \n    # Combine all physical mechanisms\n    u_t_pred = advection + anticipation_diffusion + bottleneck_coupling + nonlinear_diffusion\n    \n    return u_t_pred"
+    },
+    {
+        "rank": 10,
+        "mse": 6.887700307659024e-07,
+        "complexity": 34,
+        "equation": "# Spatial bottleneck modulation - smooth transition in road capacity\n    bottleneck = 1 + params[3] * np.tanh(x * params[4])\n    \n    # Traffic conservation with bottleneck (Greenshields flux)\n    flux = u * (1 - u) * bottleneck\n    advection = -d_dx(flux, order=1)\n    \n    # Anticipation-driven relative gradient diffusion\n    # Drivers respond to relative density changes (normalized by local density)\n    relative_density = u / (1 + u)\n    u_x = d_dx(u, order=1)\n    \n    # Combined diffusion mechanisms\n    anticipation_diffusion = params[0] * d_dx(relative_density, order=2)\n    bottleneck_coupling = params[1] * d_dx(bottleneck * u_x, order=1)\n    nonlinear_diffusion = params[2] * d_dx(u * u_x, order=1)\n    \n    # Combine all physical mechanisms\n    u_t_pred = advection + anticipation_diffusion + bottleneck_coupling + nonlinear_diffusion\n    \n    return u_t_pred"
+    },
+    {
+        "rank": 11,
+        "mse": 6.887700307659024e-07,
+        "complexity": 34,
+        "equation": "# Spatial bottleneck modulation - smooth transition in road capacity\n    bottleneck = 1 + params[3] * np.tanh(x * params[4])\n    \n    # Traffic conservation with bottleneck (Greenshields flux)\n    flux = u * (1 - u) * bottleneck\n    advection = -d_dx(flux, order=1)\n    \n    # Anticipation-driven relative gradient diffusion\n    # Drivers respond to relative density changes (normalized by local density)\n    relative_density = u / (1 + u)\n    u_x = d_dx(u, order=1)\n    \n    # Combined diffusion mechanisms\n    anticipation_diffusion = params[0] * d_dx(relative_density, order=2)\n    bottleneck_coupling = params[1] * d_dx(bottleneck * u_x, order=1)\n    nonlinear_diffusion = params[2] * d_dx(u * u_x, order=1)\n    \n    # Combine all physical mechanisms\n    u_t_pred = advection + anticipation_diffusion + bottleneck_coupling + nonlinear_diffusion\n    \n    return u_t_pred"
+    },
+    {
+        "rank": 12,
+        "mse": 6.887700307659024e-07,
+        "complexity": 34,
+        "equation": "# Spatial bottleneck modulation - smooth transition in road capacity\n    bottleneck = 1 + params[3] * np.tanh(x * params[4])\n    \n    # Traffic conservation with bottleneck (Greenshields flux)\n    flux = u * (1 - u) * bottleneck\n    advection = -d_dx(flux, order=1)\n    \n    # Anticipation-driven relative gradient diffusion\n    # Drivers respond to relative density changes (normalized by local density)\n    relative_density = u / (1 + u)\n    u_x = d_dx(u, order=1)\n    \n    # Combined diffusion mechanisms\n    anticipation_diffusion = params[0] * d_dx(relative_density, order=2)\n    bottleneck_coupling = params[1] * d_dx(bottleneck * u_x, order=1)\n    nonlinear_diffusion = params[2] * d_dx(u * u_x, order=1)\n    \n    # Combine all physical mechanisms\n    u_t_pred = advection + anticipation_diffusion + bottleneck_coupling + nonlinear_diffusion\n    \n    return u_t_pred"
+    },
+    {
+        "rank": 13,
+        "mse": 6.887700307659024e-07,
+        "complexity": 34,
+        "equation": "# Spatial bottleneck modulation - smooth transition in road capacity\n    bottleneck = 1 + params[3] * np.tanh(x * params[4])\n    \n    # Traffic conservation with bottleneck (Greenshields flux)\n    flux = u * (1 - u) * bottleneck\n    advection = -d_dx(flux, order=1)\n    \n    # Anticipation-driven relative gradient diffusion\n    # Drivers respond to relative density changes (normalized by local density)\n    relative_density = u / (1 + u)\n    u_x = d_dx(u, order=1)\n    \n    # Combined diffusion mechanisms\n    # Primary diffusion from relative density gradients\n    anticipation_diffusion = params[0] * d_dx(relative_density, order=2)\n    \n    # Bottleneck coupling with density gradients\n    bottleneck_coupling = params[1] * d_dx(bottleneck * u_x, order=1)\n    \n    # Nonlinear diffusion for traffic flow\n    nonlinear_diffusion = params[2] * d_dx(u * u_x, order=1)\n    \n    # Combine all physical mechanisms\n    u_t_pred = advection + anticipation_diffusion + bottleneck_coupling + nonlinear_diffusion\n    \n    return u_t_pred"
+    },
+    {
+        "rank": 14,
+        "mse": 6.887700307659024e-07,
+        "complexity": 34,
+        "equation": "# Spatial bottleneck modulation - smooth transition in road capacity\n    bottleneck = 1 + params[3] * np.tanh(x * params[4])\n    \n    # Traffic conservation with bottleneck (Greenshields flux)\n    flux = u * (1 - u) * bottleneck\n    advection = -d_dx(flux, order=1)\n    \n    # Anticipation-driven relative gradient diffusion\n    # Drivers respond to relative density changes (normalized by local density)\n    relative_density = u / (1 + u)\n    u_x = d_dx(u, order=1)\n    \n    # Combined diffusion mechanisms\n    anticipation_diffusion = params[0] * d_dx(relative_density, order=2)\n    bottleneck_coupling = params[1] * d_dx(bottleneck * u_x, order=1)\n    nonlinear_diffusion = params[2] * d_dx(u * u_x, order=1)\n    \n    # Combine all physical mechanisms\n    u_t_pred = advection + anticipation_diffusion + bottleneck_coupling + nonlinear_diffusion\n    \n    return u_t_pred"
+    },
+    {
+        "rank": 15,
+        "mse": 6.887700307659024e-07,
+        "complexity": 34,
+        "equation": "# Spatial bottleneck modulation - smooth transition in road capacity\n    bottleneck = 1 + params[3] * np.tanh(x * params[4])\n    \n    # Traffic conservation with bottleneck (Greenshields flux)\n    flux = u * (1 - u) * bottleneck\n    advection = -d_dx(flux, order=1)\n    \n    # Anticipation-driven relative gradient diffusion\n    # Drivers respond to relative density changes (normalized by local density)\n    relative_density = u / (1 + u)\n    u_x = d_dx(u, order=1)\n    \n    # Combined diffusion mechanisms\n    # Primary diffusion from relative density gradients\n    anticipation_diffusion = params[0] * d_dx(relative_density, order=2)\n    \n    # Bottleneck coupling with density gradients\n    bottleneck_coupling = params[1] * d_dx(bottleneck * u_x, order=1)\n    \n    # Nonlinear diffusion for traffic flow\n    nonlinear_diffusion = params[2] * d_dx(u * u_x, order=1)\n    \n    # Combine all physical mechanisms\n    u_t_pred = advection + anticipation_diffusion + bottleneck_coupling + nonlinear_diffusion\n    \n    return u_t_pred"
+    },
+    {
+        "rank": 16,
+        "mse": 6.887700307659024e-07,
+        "complexity": 34,
+        "equation": "# Spatial bottleneck modulation - smooth transition in road capacity\n    bottleneck = 1 + params[3] * np.tanh(x * params[4])\n    \n    # Traffic conservation with bottleneck (Greenshields flux)\n    flux = u * (1 - u) * bottleneck\n    advection = -d_dx(flux, order=1)\n    \n    # Anticipation-driven relative gradient diffusion\n    # Drivers respond to relative density changes (normalized by local density)\n    relative_density = u / (1 + u)\n    u_x = d_dx(u, order=1)\n    \n    # Combined diffusion mechanisms\n    anticipation_diffusion = params[0] * d_dx(relative_density, order=2)\n    bottleneck_coupling = params[1] * d_dx(bottleneck * u_x, order=1)\n    nonlinear_diffusion = params[2] * d_dx(u * u_x, order=1)\n    \n    # Combine all physical mechanisms\n    u_t_pred = advection + anticipation_diffusion + bottleneck_coupling + nonlinear_diffusion\n    \n    return u_t_pred"
+    },
+    {
+        "rank": 17,
+        "mse": 6.887700307659024e-07,
+        "complexity": 34,
+        "equation": "# Spatial bottleneck modulation - smooth transition in road capacity\n    bottleneck = 1 + params[3] * np.tanh(x * params[4])\n    \n    # Traffic conservation with bottleneck (Greenshields flux)\n    flux = u * (1 - u) * bottleneck\n    advection = -d_dx(flux, order=1)\n    \n    # Anticipation-driven relative gradient diffusion\n    # Drivers respond to relative density changes (normalized by local density)\n    relative_density = u / (1 + u)\n    u_x = d_dx(u, order=1)\n    \n    # Combined diffusion mechanisms\n    anticipation_diffusion = params[0] * d_dx(relative_density, order=2)\n    bottleneck_coupling = params[1] * d_dx(bottleneck * u_x, order=1)\n    nonlinear_diffusion = params[2] * d_dx(u * u_x, order=1)\n    \n    # Combine all physical mechanisms\n    u_t_pred = advection + anticipation_diffusion + bottleneck_coupling + nonlinear_diffusion\n    \n    return u_t_pred"
+    },
+    {
+        "rank": 18,
+        "mse": 6.887700307659024e-07,
+        "complexity": 34,
+        "equation": "# Spatial bottleneck - smooth transition in road capacity\n    bottleneck = 1 + params[3] * np.tanh(x * params[4])\n    \n    # Traffic conservation with bottleneck (Greenshields flux)\n    flux = u * (1 - u) * bottleneck\n    advection = -d_dx(flux, order=1)\n    \n    # Anticipation-driven relative gradient diffusion\n    # Drivers respond to relative density changes (normalized by local density)\n    relative_density = u / (1 + u)\n    u_x = d_dx(u, order=1)\n    \n    # Combined diffusion mechanisms\n    anticipation_diffusion = params[0] * d_dx(relative_density, order=2)\n    bottleneck_coupling = params[1] * d_dx(bottleneck * u_x, order=1)\n    nonlinear_diffusion = params[2] * d_dx(u * u_x, order=1)\n    \n    # Combine all physical mechanisms\n    u_t_pred = advection + anticipation_diffusion + bottleneck_coupling + nonlinear_diffusion\n    \n    return u_t_pred"
+    },
+    {
+        "rank": 19,
+        "mse": 6.887700307659024e-07,
+        "complexity": 34,
+        "equation": "# Spatial bottleneck modulation - smooth transition in road capacity\n    bottleneck = 1 + params[3] * np.tanh(x * params[4])\n    \n    # Traffic conservation with bottleneck (Greenshields flux)\n    flux = u * (1 - u) * bottleneck\n    advection = -d_dx(flux, order=1)\n    \n    # Anticipation-driven relative gradient diffusion\n    # Drivers respond to relative density changes (normalized by local density)\n    relative_density = u / (1 + u)\n    u_x = d_dx(u, order=1)\n    \n    # Combined diffusion mechanisms\n    # Primary diffusion from relative density gradients\n    anticipation_diffusion = params[0] * d_dx(relative_density, order=2)\n    \n    # Bottleneck coupling with density gradients\n    bottleneck_coupling = params[1] * d_dx(bottleneck * u_x, order=1)\n    \n    # Nonlinear diffusion for traffic flow\n    nonlinear_diffusion = params[2] * d_dx(u * u_x, order=1)\n    \n    # Combine all physical mechanisms\n    u_t_pred = advection + anticipation_diffusion + bottleneck_coupling + nonlinear_diffusion\n    \n    return u_t_pred"
+    },
+    {
+        "rank": 20,
+        "mse": 6.887700307659024e-07,
+        "complexity": 34,
+        "equation": "# Spatial bottleneck modulation - smooth transition in road capacity\n    bottleneck = 1 + params[3] * np.tanh(x * params[4])\n    \n    # Traffic conservation with bottleneck (Greenshields flux)\n    flux = u * (1 - u) * bottleneck\n    advection = -d_dx(flux, order=1)\n    \n    # Anticipation-driven relative gradient diffusion\n    # Drivers respond to relative density changes (normalized by local density)\n    relative_density = u / (1 + u)\n    u_x = d_dx(u, order=1)\n    \n    # Combined diffusion mechanisms\n    anticipation_diffusion = params[0] * d_dx(relative_density, order=2)\n    bottleneck_coupling = params[1] * d_dx(bottleneck * u_x, order=1)\n    nonlinear_diffusion = params[2] * d_dx(u * u_x, order=1)\n    \n    # Combine all physical mechanisms\n    u_t_pred = advection + anticipation_diffusion + bottleneck_coupling + nonlinear_diffusion\n    \n    return u_t_pred"
+    },
+    {
+        "rank": 21,
+        "mse": 6.887700307659024e-07,
+        "complexity": 34,
+        "equation": "# Spatial bottleneck modulation - smooth transition in road capacity\n    bottleneck = 1 + params[3] * np.tanh(x * params[4])\n    \n    # Traffic conservation with bottleneck (Greenshields flux)\n    flux = u * (1 - u) * bottleneck\n    advection = -d_dx(flux, order=1)\n    \n    # Anticipation-driven relative gradient diffusion\n    # Drivers respond to relative density changes (normalized by local density)\n    relative_density = u / (1 + u)\n    u_x = d_dx(u, order=1)\n    \n    # Combined diffusion mechanisms\n    anticipation_diffusion = params[0] * d_dx(relative_density, order=2)\n    bottleneck_coupling = params[1] * d_dx(bottleneck * u_x, order=1)\n    nonlinear_diffusion = params[2] * d_dx(u * u_x, order=1)\n    \n    # Combine all physical mechanisms\n    u_t_pred = advection + anticipation_diffusion + bottleneck_coupling + nonlinear_diffusion\n    \n    return u_t_pred"
+    },
+    {
+        "rank": 22,
+        "mse": 6.887700307659024e-07,
+        "complexity": 34,
+        "equation": "# Spatial bottleneck modulation - smooth transition in road capacity\n    bottleneck = 1 + params[3] * np.tanh(x * params[4])\n    \n    # Traffic conservation with bottleneck (Greenshields flux)\n    flux = u * (1 - u) * bottleneck\n    advection = -d_dx(flux, order=1)\n    \n    # Anticipation-driven relative gradient diffusion\n    # Drivers respond to relative density changes (normalized by local density)\n    relative_density = u / (1 + u)\n    u_x = d_dx(u, order=1)\n    \n    # Combined diffusion mechanisms\n    anticipation_diffusion = params[0] * d_dx(relative_density, order=2)\n    bottleneck_coupling = params[1] * d_dx(bottleneck * u_x, order=1)\n    nonlinear_diffusion = params[2] * d_dx(u * u_x, order=1)\n    \n    # Combine all physical mechanisms\n    u_t_pred = advection + anticipation_diffusion + bottleneck_coupling + nonlinear_diffusion\n    \n    return u_t_pred"
+    },
+    {
+        "rank": 23,
+        "mse": 6.887700307659024e-07,
+        "complexity": 34,
+        "equation": "# Spatial bottleneck - smooth transition in road capacity\n    bottleneck = 1 + params[3] * np.tanh(x * params[4])\n    \n    # Traffic conservation with bottleneck (Greenshields flux)\n    flux = u * (1 - u) * bottleneck\n    advection = -d_dx(flux, order=1)\n    \n    # Anticipation-driven relative gradient diffusion\n    # Drivers respond to relative density changes (normalized by local density)\n    relative_density = u / (1 + u)\n    \n    # Diffusion of relative density gradient\n    anticipation_diffusion = params[0] * d_dx(relative_density, order=2)\n    \n    # Bottleneck coupling with density gradient\n    u_x = d_dx(u, order=1)\n    bottleneck_coupling = params[1] * d_dx(bottleneck * u_x, order=1)\n    \n    # Nonlinear diffusion term\n    nonlinear_diffusion = params[2] * d_dx(u * u_x, order=1)\n    \n    # Combine all physical mechanisms\n    u_t_pred = advection + anticipation_diffusion + bottleneck_coupling + nonlinear_diffusion\n    \n    return u_t_pred"
+    },
+    {
+        "rank": 24,
+        "mse": 6.887700307659024e-07,
+        "complexity": 34,
+        "equation": "# Spatial bottleneck - smooth transition in road capacity\n    bottleneck = 1 + params[3] * np.tanh(x * params[4])\n    \n    # Traffic conservation with bottleneck (Greenshields flux)\n    flux = u * (1 - u) * bottleneck\n    advection = -d_dx(flux, order=1)\n    \n    # Anticipation-driven relative gradient diffusion\n    # Drivers respond to relative density changes (normalized by local density)\n    relative_density = u / (1 + u)\n    u_x = d_dx(u, order=1)\n    \n    # Combined diffusion mechanisms\n    anticipation_diffusion = params[0] * d_dx(relative_density, order=2)\n    bottleneck_coupling = params[1] * d_dx(bottleneck * u_x, order=1)\n    nonlinear_diffusion = params[2] * d_dx(u * u_x, order=1)\n    \n    # Combine all physical mechanisms\n    u_t_pred = advection + anticipation_diffusion + bottleneck_coupling + nonlinear_diffusion\n    \n    return u_t_pred"
+    },
+    {
+        "rank": 25,
+        "mse": 6.887700307659024e-07,
+        "complexity": 34,
+        "equation": "# Spatial bottleneck - smooth hyperbolic tangent transition\n    bottleneck = 1 + params[3] * np.tanh(x * params[4])\n    \n    # Traffic conservation with Greenshields flux modulated by bottleneck\n    flux = u * (1 - u) * bottleneck\n    advection = -d_dx(flux, order=1)\n    \n    # Relative density for anticipation effect\n    relative_density = u / (1 + u)\n    \n    # Spatial derivatives needed\n    u_x = d_dx(u, order=1)\n    \n    # Anticipation-driven diffusion (relative density gradient)\n    anticipation_diffusion = params[0] * d_dx(relative_density, order=2)\n    \n    # Bottleneck coupling with density gradients\n    bottleneck_coupling = params[1] * d_dx(bottleneck * u_x, order=1)\n    \n    # Nonlinear diffusion term\n    nonlinear_diffusion = params[2] * d_dx(u * u_x, order=1)\n    \n    # Combine all physical mechanisms\n    u_t_pred = advection + anticipation_diffusion + bottleneck_coupling + nonlinear_diffusion\n    \n    return u_t_pred"
+    },
+    {
+        "rank": 26,
+        "mse": 6.887700307659024e-07,
+        "complexity": 34,
+        "equation": "# Spatial bottleneck - smooth transition in road capacity\n    bottleneck = 1 + params[3] * np.tanh(x * params[4])\n    \n    # Traffic conservation with bottleneck (Greenshields flux)\n    flux = u * (1 - u) * bottleneck\n    advection = -d_dx(flux, order=1)\n    \n    # Anticipation-driven relative gradient diffusion\n    relative_density = u / (1 + u)\n    u_x = d_dx(u, order=1)\n    \n    # Combined diffusion mechanisms\n    anticipation_diffusion = params[0] * d_dx(relative_density, order=2)\n    bottleneck_coupling = params[1] * d_dx(bottleneck * u_x, order=1)\n    nonlinear_diffusion = params[2] * d_dx(u * u_x, order=1)\n    \n    # Combine all physical mechanisms\n    u_t_pred = advection + anticipation_diffusion + bottleneck_coupling + nonlinear_diffusion\n    \n    return u_t_pred"
+    },
+    {
+        "rank": 27,
+        "mse": 6.887700307659024e-07,
+        "complexity": 34,
+        "equation": "# Spatial bottleneck modulation - smooth transition in road capacity\n    bottleneck = 1 + params[3] * np.tanh(x * params[4])\n    \n    # Traffic conservation with bottleneck (Greenshields flux)\n    flux = u * (1 - u) * bottleneck\n    advection = -d_dx(flux, order=1)\n    \n    # Anticipation-driven relative gradient diffusion\n    # Drivers respond to relative density changes (normalized by local density)\n    relative_density = u / (1 + u)\n    u_x = d_dx(u, order=1)\n    \n    # Combined diffusion mechanisms\n    # Primary diffusion from relative density gradients\n    anticipation_diffusion = params[0] * d_dx(relative_density, order=2)\n    \n    # Bottleneck coupling with density gradients  \n    bottleneck_coupling = params[1] * d_dx(bottleneck * u_x, order=1)\n    \n    # Nonlinear diffusion for traffic flow\n    nonlinear_diffusion = params[2] * d_dx(u * u_x, order=1)\n    \n    # Combine all physical mechanisms\n    u_t_pred = advection + anticipation_diffusion + bottleneck_coupling + nonlinear_diffusion\n    \n    return u_t_pred"
+    },
+    {
+        "rank": 28,
+        "mse": 6.887700307659024e-07,
+        "complexity": 34,
+        "equation": "# Spatial bottleneck modulation - smooth transition in road capacity\n    bottleneck = 1 + params[3] * np.tanh(x * params[4])\n    \n    # Traffic conservation with bottleneck (Greenshields flux)\n    flux = u * (1 - u) * bottleneck\n    advection = -d_dx(flux, order=1)\n    \n    # Anticipation-driven relative gradient diffusion\n    # Drivers respond to relative density changes (normalized by local density)\n    relative_density = u / (1 + u)\n    u_x = d_dx(u, order=1)\n    \n    # Combined diffusion mechanisms\n    # Primary diffusion from relative density gradients\n    anticipation_diffusion = params[0] * d_dx(relative_density, order=2)\n    \n    # Bottleneck coupling with density gradients  \n    bottleneck_coupling = params[1] * d_dx(bottleneck * u_x, order=1)\n    \n    # Nonlinear diffusion for traffic flow\n    nonlinear_diffusion = params[2] * d_dx(u * u_x, order=1)\n    \n    # Combine all physical mechanisms\n    u_t_pred = advection + anticipation_diffusion + bottleneck_coupling + nonlinear_diffusion\n    \n    return u_t_pred"
+    },
+    {
+        "rank": 29,
+        "mse": 6.887700307659024e-07,
+        "complexity": 34,
+        "equation": "# Spatial bottleneck modulation - smooth transition in road capacity\n    bottleneck = 1 + params[3] * np.tanh(x * params[4])\n    \n    # Traffic conservation with bottleneck (Greenshields flux)\n    flux = u * (1 - u) * bottleneck\n    advection = -d_dx(flux, order=1)\n    \n    # Anticipation-driven relative gradient diffusion\n    # Drivers respond to relative density changes (normalized by local density)\n    relative_density = u / (1 + u)\n    u_x = d_dx(u, order=1)\n    \n    # Combined diffusion mechanisms\n    anticipation_diffusion = params[0] * d_dx(relative_density, order=2)\n    bottleneck_coupling = params[1] * d_dx(bottleneck * u_x, order=1)\n    nonlinear_diffusion = params[2] * d_dx(u * u_x, order=1)\n    \n    # Combine all physical mechanisms\n    u_t_pred = advection + anticipation_diffusion + bottleneck_coupling + nonlinear_diffusion\n    \n    return u_t_pred"
+    },
+    {
+        "rank": 30,
+        "mse": 6.887700307659024e-07,
+        "complexity": 34,
+        "equation": "# Spatial bottleneck modulation - smooth transition in road capacity\n    bottleneck = 1 + params[3] * np.tanh(x * params[4])\n    \n    # Traffic conservation with bottleneck (Greenshields flux)\n    flux = u * (1 - u) * bottleneck\n    advection = -d_dx(flux, order=1)\n    \n    # Anticipation-driven relative gradient diffusion\n    # Drivers respond to relative density changes (normalized by local density)\n    relative_density = u / (1 + u)\n    u_x = d_dx(u, order=1)\n    \n    # Combined diffusion mechanisms\n    anticipation_diffusion = params[0] * d_dx(relative_density, order=2)\n    bottleneck_coupling = params[1] * d_dx(bottleneck * u_x, order=1)\n    nonlinear_diffusion = params[2] * d_dx(u * u_x, order=1)\n    \n    # Combine all physical mechanisms\n    u_t_pred = advection + anticipation_diffusion + bottleneck_coupling + nonlinear_diffusion\n    \n    return u_t_pred"
+    },
+    {
+        "rank": 31,
+        "mse": 6.887700307659024e-07,
+        "complexity": 34,
+        "equation": "# Spatial bottleneck modulation - smooth transition in road capacity\n    bottleneck = 1 + params[3] * np.tanh(x * params[4])\n    \n    # Traffic conservation with bottleneck (Greenshields flux)\n    flux = u * (1 - u) * bottleneck\n    advection = -d_dx(flux, order=1)\n    \n    # Anticipation-driven relative gradient diffusion\n    # Drivers respond to relative density changes (normalized by local density)\n    relative_density = u / (1 + u)\n    u_x = d_dx(u, order=1)\n    \n    # Combined diffusion mechanisms\n    anticipation_diffusion = params[0] * d_dx(relative_density, order=2)\n    bottleneck_coupling = params[1] * d_dx(bottleneck * u_x, order=1)\n    nonlinear_diffusion = params[2] * d_dx(u * u_x, order=1)\n    \n    # Combine all physical mechanisms\n    u_t_pred = advection + anticipation_diffusion + bottleneck_coupling + nonlinear_diffusion\n    \n    return u_t_pred"
+    },
+    {
+        "rank": 32,
+        "mse": 6.887700307659024e-07,
+        "complexity": 34,
+        "equation": "# Spatial bottleneck - smooth transition in road capacity\n    bottleneck = 1 + params[3] * np.tanh(x * params[4])\n    \n    # Traffic conservation with Greenshields flux\n    flux = u * (1 - u) * bottleneck\n    advection = -d_dx(flux, order=1)\n    \n    # Anticipation-driven relative gradient diffusion\n    # Drivers respond to relative density changes (normalized by local density)\n    relative_density = u / (1 + u)\n    anticipation_diffusion = params[0] * d_dx(relative_density, order=2)\n    \n    # Nonlinear diffusion with bottleneck coupling\n    u_x = d_dx(u, order=1)\n    bottleneck_coupling = params[1] * d_dx(bottleneck * u_x, order=1)\n    nonlinear_diffusion = params[2] * d_dx(u * u_x, order=1)\n    \n    # Combine all physical mechanisms\n    u_t_pred = advection + anticipation_diffusion + bottleneck_coupling + nonlinear_diffusion\n    \n    return u_t_pred"
+    },
+    {
+        "rank": 33,
+        "mse": 6.887700307659024e-07,
+        "complexity": 34,
+        "equation": "# Spatial bottleneck modulation - smooth transition in road capacity\n    bottleneck = 1 + params[3] * np.tanh(x * params[4])\n    \n    # Traffic conservation with bottleneck (Greenshields flux)\n    flux = u * (1 - u) * bottleneck\n    advection = -d_dx(flux, order=1)\n    \n    # Anticipation-driven relative gradient diffusion\n    # Drivers respond to relative density changes (normalized by local density)\n    relative_density = u / (1 + u)\n    u_x = d_dx(u, order=1)\n    \n    # Combined diffusion mechanisms\n    anticipation_diffusion = params[0] * d_dx(relative_density, order=2)\n    bottleneck_coupling = params[1] * d_dx(bottleneck * u_x, order=1)\n    nonlinear_diffusion = params[2] * d_dx(u * u_x, order=1)\n    \n    # Combine all physical mechanisms\n    u_t_pred = advection + anticipation_diffusion + bottleneck_coupling + nonlinear_diffusion\n    \n    return u_t_pred"
+    },
+    {
+        "rank": 34,
+        "mse": 6.887700307659024e-07,
+        "complexity": 34,
+        "equation": "# Spatial bottleneck modulation - smooth transition in road capacity\n    bottleneck = 1 + params[3] * np.tanh(x * params[4])\n    \n    # Traffic conservation with bottleneck (Greenshields flux)\n    flux = u * (1 - u) * bottleneck\n    advection = -d_dx(flux, order=1)\n    \n    # Anticipation-driven relative gradient diffusion\n    # Drivers respond to relative density changes (normalized by local density)\n    relative_density = u / (1 + u)\n    u_x = d_dx(u, order=1)\n    \n    # Combined diffusion mechanisms\n    anticipation_diffusion = params[0] * d_dx(relative_density, order=2)\n    bottleneck_coupling = params[1] * d_dx(bottleneck * u_x, order=1)\n    nonlinear_diffusion = params[2] * d_dx(u * u_x, order=1)\n    \n    # Combine all physical mechanisms\n    u_t_pred = advection + anticipation_diffusion + bottleneck_coupling + nonlinear_diffusion\n    \n    return u_t_pred"
+    },
+    {
+        "rank": 35,
+        "mse": 6.887700307659024e-07,
+        "complexity": 34,
+        "equation": "\"\"\" Mathematical function for the RHS of a 1D PDE.\n\n    Args:\n        x: Spatial coordinates (1D array).\n        u: Field variable (2D grid).\n        dx: Grid spacing.\n        params: Array of numeric constants to be optimized.\n        d_dx: A mathematical operator to calculate spatial derivatives.\n\n    Return:\n        A numpy array representing the time derivative u_t.\n    \"\"\"\n    # Spatial bottleneck - smooth transition in road capacity\n    bottleneck = 1 + params[3] * np.tanh(x * params[4])\n    \n    # Traffic conservation with bottleneck (Greenshields flux)\n    flux = u * (1 - u) * bottleneck\n    advection = -d_dx(flux, order=1)\n    \n    # Anticipation-driven relative gradient diffusion\n    # Drivers respond to relative density changes (normalized by local density)\n    relative_density = u / (1 + u)\n    u_x = d_dx(u, order=1)\n    \n    # Combined diffusion mechanisms\n    # Primary: anticipation diffusion on relative density\n    anticipation_diffusion = params[0] * d_dx(relative_density, order=2)\n    \n    # Secondary: bottleneck coupling with density gradient\n    bottleneck_coupling = params[1] * d_dx(bottleneck * u_x, order=1)\n    \n    # Nonlinear diffusion term\n    nonlinear_diffusion = params[2] * d_dx(u * u_x, order=1)\n    \n    # Combine all physical mechanisms\n    u_t_pred = advection + anticipation_diffusion + bottleneck_coupling + nonlinear_diffusion\n    \n    return u_t_pred"
+    },
+    {
+        "rank": 36,
+        "mse": 6.887700307659024e-07,
+        "complexity": 34,
+        "equation": "# Spatial bottleneck modulation - smooth transition in road capacity\n    bottleneck = 1 + params[3] * np.tanh(x * params[4])\n    \n    # Traffic conservation with bottleneck (Greenshields flux)\n    flux = u * (1 - u) * bottleneck\n    advection = -d_dx(flux, order=1)\n    \n    # Anticipation-driven relative gradient diffusion\n    # Drivers respond to relative density gradient normalized by density\n    relative_density = u / (1 + u)\n    \n    # Core diffusion mechanism: spatial derivative of relative density gradient\n    anticipation_diffusion = params[0] * d_dx(relative_density, order=2)\n    \n    # Additional coupling with bottleneck and density gradient\n    u_x = d_dx(u, order=1)\n    bottleneck_coupling = params[1] * d_dx(bottleneck * u_x, order=1)\n    \n    # Minimal nonlinear diffusion for stability\n    nonlinear_diffusion = params[2] * d_dx(u * u_x, order=1)\n    \n    # Combine all physical mechanisms\n    u_t_pred = advection + anticipation_diffusion + bottleneck_coupling + nonlinear_diffusion\n    \n    return u_t_pred"
+    },
+    {
+        "rank": 37,
+        "mse": 6.887700307659024e-07,
+        "complexity": 34,
+        "equation": "\"\"\" Mathematical function for the RHS of a 1D PDE.\n\n    Args:\n        x: Spatial coordinates (1D array).\n        u: Field variable (2D grid).\n        dx: Grid spacing.\n        params: Array of numeric constants to be optimized.\n        d_dx: A mathematical operator to calculate spatial derivatives.\n\n    Returns:\n        A numpy array representing the time derivative u_t.\n    \"\"\"\n    # Spatial bottleneck - smooth transition in road capacity\n    bottleneck = 1 + params[3] * np.tanh(x * params[4])\n    \n    # Traffic conservation with bottleneck (Greenshields flux)\n    flux = u * (1 - u) * bottleneck\n    advection = -d_dx(flux, order=1)\n    \n    # Anticipation-driven relative gradient diffusion\n    relative_density = u / (1 + u)\n    u_x = d_dx(u, order=1)\n    \n    # Combined diffusion mechanisms\n    anticipation_diffusion = params[0] * d_dx(relative_density, order=2)\n    bottleneck_coupling = params[1] * d_dx(bottleneck * u_x, order=1)\n    nonlinear_diffusion = params[2] * d_dx(u * u_x, order=1)\n    \n    # Combine all physical mechanisms\n    u_t_pred = advection + anticipation_diffusion + bottleneck_coupling + nonlinear_diffusion\n    \n    return u_t_pred"
+    },
+    {
+        "rank": 38,
+        "mse": 6.887700307659024e-07,
+        "complexity": 34,
+        "equation": "# Spatial bottleneck - smooth transition in road capacity\n    bottleneck = 1 + params[3] * np.tanh(x * params[4])\n    \n    # Traffic conservation with bottleneck (Greenshields flux)\n    flux = u * (1 - u) * bottleneck\n    advection = -d_dx(flux, order=1)\n    \n    # Anticipation-driven relative gradient diffusion\n    # Drivers respond to relative density changes (normalized by local density)\n    relative_density = u / (1 + u)\n    u_x = d_dx(u, order=1)\n    \n    # Combined diffusion mechanisms\n    anticipation_diffusion = params[0] * d_dx(relative_density, order=2)\n    bottleneck_coupling = params[1] * d_dx(bottleneck * u_x, order=1)\n    nonlinear_diffusion = params[2] * d_dx(u * u_x, order=1)\n    \n    # Combine all physical mechanisms\n    u_t_pred = advection + anticipation_diffusion + bottleneck_coupling + nonlinear_diffusion\n    \n    return u_t_pred"
+    },
+    {
+        "rank": 39,
+        "mse": 6.887700307659024e-07,
+        "complexity": 34,
+        "equation": "# Spatial bottleneck - smooth hyperbolic tangent transition\n    bottleneck = 1 + params[3] * np.tanh(x * params[4])\n    \n    # Traffic conservation with Greenshields flux modulated by bottleneck\n    flux = u * (1 - u) * bottleneck\n    advection = -d_dx(flux, order=1)\n    \n    # Relative density for anticipation effect\n    relative_density = u / (1 + u)\n    \n    # Spatial derivatives needed\n    u_x = d_dx(u, order=1)\n    \n    # Anticipation-driven diffusion (relative density gradient)\n    anticipation_diffusion = params[0] * d_dx(relative_density, order=2)\n    \n    # Bottleneck coupling with density gradients\n    bottleneck_coupling = params[1] * d_dx(bottleneck * u_x, order=1)\n    \n    # Nonlinear diffusion term (traffic flow nonlinearity)\n    nonlinear_diffusion = params[2] * d_dx(u * u_x, order=1)\n    \n    # Combine all physical mechanisms\n    u_t_pred = advection + anticipation_diffusion + bottleneck_coupling + nonlinear_diffusion\n    \n    return u_t_pred"
+    },
+    {
+        "rank": 40,
+        "mse": 6.887700307659024e-07,
+        "complexity": 34,
+        "equation": "# Spatial bottleneck - smooth transition in road capacity\n    bottleneck = 1 + params[3] * np.tanh(x * params[4])\n    \n    # Traffic conservation with bottleneck (Greenshields flux)\n    flux = u * (1 - u) * bottleneck\n    advection = -d_dx(flux, order=1)\n    \n    # Anticipation-driven relative gradient diffusion\n    relative_density = u / (1 + u)\n    u_x = d_dx(u, order=1)\n    \n    # Combined diffusion mechanisms\n    anticipation_diffusion = params[0] * d_dx(relative_density, order=2)\n    bottleneck_coupling = params[1] * d_dx(bottleneck * u_x, order=1)\n    nonlinear_diffusion = params[2] * d_dx(u * u_x, order=1)\n    \n    # Combine all physical mechanisms\n    u_t_pred = advection + anticipation_diffusion + bottleneck_coupling + nonlinear_diffusion\n    \n    return u_t_pred"
+    },
+    {
+        "rank": 41,
+        "mse": 6.887700307659024e-07,
+        "complexity": 34,
+        "equation": "# Smooth bottleneck transition in road capacity\n    bottleneck = 1 + params[3] * np.tanh(x * params[4])\n    \n    # Greenshields traffic flux with bottleneck modulation\n    flux = u * (1 - u) * bottleneck\n    \n    # Conservation law: advection of traffic\n    advection = -d_dx(flux, order=1)\n    \n    # Relative density for anticipation effect\n    relative_density = u / (1 + u)\n    \n    # Primary velocity gradient\n    u_x = d_dx(u, order=1)\n    \n    # Anticipation-driven diffusion (relative gradient response)\n    # Drivers respond to density changes relative to local density\n    anticipation_diffusion = params[0] * d_dx(relative_density, order=2)\n    \n    # Bottleneck-coupled diffusion\n    # Enhanced mixing near bottleneck transitions\n    bottleneck_diffusion = params[1] * d_dx(bottleneck * u_x, order=1)\n    \n    # Nonlinear diffusion with density dependence\n    nonlinear_diffusion = params[2] * d_dx(u * u_x, order=1)\n    \n    # Combine all physical mechanisms\n    u_t_pred = advection + anticipation_diffusion + bottleneck_diffusion + nonlinear_diffusion\n    \n    return u_t_pred"
+    },
+    {
+        "rank": 42,
+        "mse": 6.887700307659024e-07,
+        "complexity": 34,
+        "equation": "# Spatial bottleneck modulation - smooth transition in road capacity\n    bottleneck = 1 + params[3] * np.tanh(x * params[4])\n    \n    # Traffic conservation with bottleneck (Greenshields flux)\n    flux = u * (1 - u) * bottleneck  \n    advection = -d_dx(flux, order=1)\n    \n    # Anticipation-driven relative gradient diffusion\n    # Drivers respond to relative density changes (normalized by local density)\n    relative_density = u / (1 + u)\n    u_x = d_dx(u, order=1)\n    \n    # Combined diffusion mechanisms\n    # Primary diffusion from relative density gradients\n    anticipation_diffusion = params[0] * d_dx(relative_density, order=2)\n    \n    # Bottleneck coupling with density gradients\n    bottleneck_coupling = params[1] * d_dx(bottleneck * u_x, order=1)\n    \n    # Nonlinear diffusion for traffic flow\n    nonlinear_diffusion = params[2] * d_dx(u * u_x, order=1)\n    \n    # Combine all physical mechanisms\n    u_t_pred = advection + anticipation_diffusion + bottleneck_coupling + nonlinear_diffusion\n    \n    return u_t_pred"
+    },
+    {
+        "rank": 43,
+        "mse": 6.961632563128365e-07,
+        "complexity": 27,
+        "equation": "# Spatial bottleneck - smooth transition in road capacity using tanh\n    bottleneck = 1 + params[2] * np.tanh(x * params[3])\n    \n    # Traffic conservation with Greenshields flux modulated by bottleneck\n    flux = u * (1 - u) * bottleneck\n    advection = -d_dx(flux, order=1)\n    \n    # Anticipation-driven relative gradient diffusion\n    # Relative density (normalized between 0 and 1)\n    relative_density = u / (1 + u)\n    \n    # Combined diffusion: standard diffusion + relative density diffusion\n    standard_diffusion = params[0] * d_dx(u, order=2)\n    relative_diffusion = params[1] * d_dx(relative_density, order=2)\n    \n    # Combine all physical mechanisms\n    u_t_pred = advection + standard_diffusion + relative_diffusion\n    \n    return u_t_pred"
+    },
+    {
+        "rank": 44,
+        "mse": 6.961632657406628e-07,
+        "complexity": 25,
+        "equation": "# Spatial bottleneck modulation - smooth transition in road capacity\n    bottleneck = 1 + params[2] * np.tanh(x * params[3])\n    \n    # Traffic conservation with bottleneck (Greenshields flux)\n    flux = u * (1 - u) * bottleneck\n    advection = -d_dx(flux, order=1)\n    \n    # Anticipation-driven relative gradient diffusion\n    # Drivers respond to relative density changes (normalized by local density)\n    relative_gradient = u / (1 + u)\n    anticipation_diffusion = params[0] * d_dx(relative_gradient, order=2)\n    \n    # Simple diffusion as baseline\n    simple_diffusion = params[1] * d_dx(u, order=2)\n    \n    # Combine physical terms with optimized weights\n    u_t_pred = advection + anticipation_diffusion + simple_diffusion\n    \n    return u_t_pred"
+    },
+    {
+        "rank": 45,
+        "mse": 6.961632657406628e-07,
+        "complexity": 25,
+        "equation": "# Spatial bottleneck modulation - smooth transition in road capacity\n    bottleneck = 1 + params[2] * np.tanh(x * params[3])\n    \n    # Traffic conservation with bottleneck (Greenshields flux)\n    flux = u * (1 - u) * bottleneck\n    advection = -d_dx(flux, order=1)\n    \n    # Anticipation-driven relative gradient diffusion\n    # Drivers respond to relative density changes\n    relative_density = u / (1 + u)\n    anticipation_diffusion = params[0] * d_dx(relative_density, order=2)\n    \n    # Simple diffusion as baseline\n    simple_diffusion = params[1] * d_dx(u, order=2)\n    \n    # Combine physical terms with optimized weights\n    u_t_pred = advection + anticipation_diffusion + simple_diffusion\n    \n    return u_t_pred"
+    },
+    {
+        "rank": 46,
+        "mse": 6.961632657406628e-07,
+        "complexity": 25,
+        "equation": "# Spatial bottleneck modulation - smooth transition in road capacity\n    bottleneck = 1 + params[2] * np.tanh(x * params[3])\n    \n    # Traffic conservation with bottleneck (Greenshields flux)\n    flux = u * (1 - u) * bottleneck\n    advection = -d_dx(flux, order=1)\n    \n    # Anticipation-driven relative gradient diffusion\n    # Drivers respond to relative density changes (normalized by local density)\n    relative_gradient = u / (1 + u)\n    anticipation_diffusion = params[0] * d_dx(relative_gradient, order=2)\n    \n    # Simple diffusion as baseline for numerical stability\n    simple_diffusion = params[1] * d_dx(u, order=2)\n    \n    # Combine physical mechanisms with optimized weights\n    u_t_pred = advection + anticipation_diffusion + simple_diffusion\n    \n    return u_t_pred"
+    },
+    {
+        "rank": 47,
+        "mse": 6.961632657406628e-07,
+        "complexity": 25,
+        "equation": "# Spatial bottleneck modulation - smooth transition in road capacity\n    bottleneck = 1 + params[2] * np.tanh(x * params[3])\n    \n    # Traffic conservation with bottleneck (Greenshields flux)\n    flux = u * (1 - u) * bottleneck\n    advection = -d_dx(flux, order=1)\n    \n    # Anticipation-driven relative gradient diffusion\n    # Drivers respond to relative density changes (normalized by local density)\n    relative_gradient = u / (1 + u)\n    anticipation_diffusion = params[0] * d_dx(relative_gradient, order=2)\n    \n    # Simple diffusion as baseline  \n    simple_diffusion = params[1] * d_dx(u, order=2)\n    \n    # Combine physical terms with optimized weights\n    u_t_pred = advection + anticipation_diffusion + simple_diffusion\n    \n    return u_t_pred"
+    },
+    {
+        "rank": 48,
+        "mse": 5.080657687386466e-06,
+        "complexity": 20,
+        "equation": "# Spatial bottleneck modulation - smooth transition in road capacity\n    bottleneck = 1 + params[1] * np.tanh(x * params[2])\n    \n    # Traffic conservation with bottleneck (Greenshields flux)\n    flux = u * (1 - u) * bottleneck\n    advection = -d_dx(flux, order=1)\n    \n    # Anticipation-driven relative gradient diffusion\n    # Drivers respond to relative density changes (normalized by local density)\n    relative_density = u / (1 + u)\n    \n    # Primary diffusion from relative density gradients\n    anticipation_diffusion = params[0] * d_dx(relative_density, order=2)\n    \n    # Combine all physical mechanisms\n    u_t_pred = advection + anticipation_diffusion\n    \n    return u_t_pred"
+    },
+    {
+        "rank": 49,
+        "mse": 0.0039325605020077104,
+        "complexity": 15,
+        "equation": "u_t_pred = params[0] * d_dx(u, order=2) + params[1] * u * d_dx(u, order=2) + params[2] * d_dx(u, order=4)\n    return u_t_pred"
+    },
+    {
+        "rank": 50,
+        "mse": 0.0043865813945822545,
+        "complexity": 4,
+        "equation": "u_t_pred = params[0] * d_dx(u, order=2)\n\n    return u_t_pred"
+    }
+]

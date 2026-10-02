@@ -1,0 +1,128 @@
+"""
+Find the mathematical function skeleton that represents the time derivative of the
+field variable (f1_t), given data on one spatial coordinate (x1) and the single
+field variable (f1) of an UNKNOWN one-dimensional dynamical system.
+
+Nothing about the physical meaning of the field is provided on purpose. The symbols
+carry no interpretation beyond their numerical values, and the data comes from a
+numerical simulation and is noise free.
+"""
+import numpy as np
+from scipy.interpolate import make_interp_spline
+from scipy.optimize import minimize
+import pde_grammar as G
+
+MAX_NPARAMS = 5
+
+# ======================================================================
+# SEARCH GRAMMAR (module `pde_grammar`, imported above as G)
+#
+# A candidate must be assembled from the constructors below, called as G.<name>(...).
+# Each mechanism is ONE fixed differential operator; its differential order is part of
+# the operator and is not an argument.
+#
+#   primitives
+#     D(f, axis, order)          derivative of order `order` along an axis
+#     S(f, func)                 func in {'id', 'sin', 'cos', 'exp', 'tanh'}
+#     MUL(a, b)                  pointwise product
+#     DIV(a, b)                  pointwise ratio
+#     T(f)                       pointwise tanh of one field
+#     coord(func, k1, k2, k3)    func(k1*x1 + k2*x2 + k3*x3), func as above
+#
+#   mechanisms
+#     prs(phi, axis)             first-order derivative of one field
+#     dif(phi)                   second-order isotropic operator
+#     disp(phi, axis)            third-order derivative
+#     hdif(phi, axis)            fourth-order derivative
+#     rxn(phi, func)             scalar function of one field
+#     frc(phi)                   the field itself
+#     cpl(a, b)                  pointwise product of two fields
+#     wave(k1, k2, func, k3)     coordinate function of a linear combination
+#     coord_sin(k1, k2, k3) / coord_cos(k1, k2, k3)   aliases
+#
+# This is a SCALAR problem: no vector field is declared, so `adv` is unavailable and
+# `dif` is the second derivative along the single axis x1.
+# ======================================================================
+
+
+def _bump_matrix(coord: np.ndarray, n_windows: int) -> np.ndarray:
+    """Overlapping sin^4 test functions used for the weak (integral) form."""
+    n = len(coord)
+    width = 2.0 * (coord[-1] - coord[0]) / n_windows
+    phi = np.zeros((n, n_windows))
+    for i in range(n_windows):
+        center = coord[0] + (i + 0.5) * (coord[-1] - coord[0]) / n_windows
+        mask = np.abs(coord - center) < (width / 2.0)
+        phi[mask, i] = np.sin(np.pi * (coord[mask] - (center - width / 2.0)) / width) ** 4
+    return phi
+
+
+@evaluate.run
+def evaluate(data: dict) -> float:
+    x_1d = np.asarray(data['x1'], dtype=float)
+    f1 = np.asarray(data['f1'], dtype=float)
+    f1_t_true = np.asarray(data['f1_t_true'], dtype=float)
+    h1 = float(data['h1'])
+
+    x_b = x_1d.reshape(-1, 1)
+
+    def d_axis(array: np.ndarray, axis: int, order: int) -> np.ndarray:
+        if order == 0:
+            return array
+        if axis != 0:
+            raise ValueError("unknown axis")
+        if order > 4:
+            raise ValueError("Quintic spline allowed up to 4th order only.")
+        return make_interp_spline(x_1d, array, k=5, axis=0)(x_1d, nu=order)
+
+    G.bind((0,), d_axis, coords=(x_b, np.zeros_like(x_b)))
+
+    K = 10
+    Phi = _bump_matrix(x_1d, K)
+    target = np.stack([np.trapz(f1_t_true * Phi[:, [i]], dx=h1, axis=0)
+                       for i in range(K)], axis=0)
+
+    def loss(params):
+        f1_t_pred = equation(x_b, f1, params, d_axis)
+        pred = np.stack([np.trapz(f1_t_pred * Phi[:, [i]], dx=h1, axis=0)
+                         for i in range(K)], axis=0)
+        return np.mean((pred - target) ** 2)
+
+    result = minimize(loss, [1.0] * MAX_NPARAMS, method='BFGS')
+    base_mse = float(result.fun)
+    if np.isnan(base_mse) or np.isinf(base_mse):
+        return float('inf')
+    print(f"✅ [EVALUATED] MSE: {base_mse:.2e} | Params: {np.round(result.x, 6)}")
+    return base_mse
+
+
+@equation.evolve
+def equation(x: np.ndarray, f1: np.ndarray, params: np.ndarray,
+             d_axis: callable) -> np.ndarray:
+    """ Mathematical function for the RHS of an unknown 1D PDE.
+
+    Args:
+        x: spatial coordinate grid, shape (Nx, 1).
+        f1: the measured field, shape (Nx, Nt).
+        params: a fixed-length array of exactly 5 entries. Use only indices 0..4.
+        d_axis: raw derivative operator (primitive layer); `G.D` wraps it.
+
+    Return:
+        `f1_t_pred`, a numpy array with the grid shape.
+
+    STRICT CONSTRAINT:
+        1. BUILD FROM THE GRAMMAR: every differential construction must come from
+           `pde_grammar` (imported as `G`), called as `G.<name>(...)`. Do not write
+           your own finite differences and do not call any `np.*` routine. The
+           operator algebra is closed; anything outside it is rejected before
+           evaluation.
+        2. OUTPUT FORMAT: assign the result to `f1_t_pred` and strictly end with
+           `return f1_t_pred`. No placeholders.
+        3. PARETO EVOLUTION: MSE against complexity. A mechanism call costs one unit
+           and is preferred over the same term hand-expanded from primitives.
+        4. OPTIMIZATION STRATEGY:{PARETO_FRONTIER_PLACEHOLDER}
+    """
+    # Version 0 (Baseline): second-order operator on the target field.
+    f1_t_pred = params[0] * G.dif(f1)
+
+    return f1_t_pred

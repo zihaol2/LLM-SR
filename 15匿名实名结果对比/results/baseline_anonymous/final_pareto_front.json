@@ -1,0 +1,104 @@
+[
+    {
+        "rank": 1,
+        "mse": 0.0001336031417295665,
+        "complexity": 27,
+        "equation": "u_x = d_dx(u, order=1)\n    u_xx = d_dx(u, order=2)\n    u_xxx = d_dx(u, order=3)\n    \n    # Complete reaction-diffusion-advection with nonlinear interactions\n    u_t_pred = (params[0] * u_xx +           # Linear diffusion\n                params[1] * u_x +             # Linear advection\n                params[2] * u * u_x +        # Burgers nonlinearity\n                params[3] * u * u_xx +        # Concentration-dependent diffusion\n                params[4] * u * u * u)        # Cubic reaction\n    \n    return u_t_pred"
+    },
+    {
+        "rank": 2,
+        "mse": 0.0001336031417295665,
+        "complexity": 27,
+        "equation": "\"\"\" Mathematical function for the RHS of a 1D PDE.\n\n    Args:\n        x: Spatial coordinates (1D array).\n        u: Field variable (2D grid).\n        dx: Grid spacing.\n        params: Array of numeric constants to be optimized.\n        d_dx: A mathematical operator to calculate spatial derivatives.\n\n    Return:\n        A numpy array representing the time derivative u_t.\n\n    STRICT CONSTRAINT:\n        1. SPATIAL DERIVATIVES & MATH: Use ONLY the provided `d_dx(u_array, order)` for derivatives (max order=4). \n           For mathematical functions, you are STRICTLY LIMITED to `np.sin`, `np.cos`, `np.tanh`, and `np.exp`. \n           \n        2. OUTPUT FORMAT: Write the complete formula, assign it to `u_t_pred`, and strictly end with `return u_t_pred`.\n\n        3. PARETO EVOLUTION MECHANISM: Focus on identifying core physical mechanisms with minimal complexity.\n\n        4. OPTIMIZATION STRATEGY: Discover the simplest basis terms that drastically minimize MSE.\n\n    \"\"\"\n    u_x = d_dx(u, order=1)\n    u_xx = d_dx(u, order=2)\n    u_xxx = d_dx(u, order=3)\n    \n    # Complete reaction-diffusion-advection with nonlinear interactions\n    u_t_pred = (params[0] * u_xx +           # Linear diffusion\n                params[1] * u_x +             # Linear advection  \n                params[2] * u * u_x +        # Burgers nonlinearity\n                params[3] * u * u_xx +        # Concentration-dependent diffusion\n                params[4] * u * u * u)        # Cubic reaction\n    \n    return u_t_pred"
+    },
+    {
+        "rank": 3,
+        "mse": 0.00013360314182530754,
+        "complexity": 26,
+        "equation": "u_x = d_dx(u, order=1)\n    u_xx = d_dx(u, order=2)\n    \n    # Reaction-diffusion with cubic nonlinearity and cross-diffusion effects\n    u_t_pred = (params[0] * u_xx +           # Diffusion\n                params[1] * u_x +             # Advection  \n                params[2] * u * u * u +       # Cubic nonlinearity (bistability)\n                params[3] * u * u_xx +        # Cross-diffusion (concentration-dependent diffusion)\n                params[4] * u * u_x)          # Nonlinear advection\n    \n    return u_t_pred"
+    },
+    {
+        "rank": 4,
+        "mse": 0.00013360314182530754,
+        "complexity": 26,
+        "equation": "\"\"\" Mathematical function for the RHS of a 1D PDE.\n    \n    Args:\n        x: Spatial coordinates (1D array).\n        u: Field variable (2D grid).\n        dx: Grid spacing.\n        params: Array of numeric constants to be optimized.\n        d_dx: A mathematical operator to calculate spatial derivatives.\n    \n    Return:\n        A numpy array representing the time derivative u_t.\n    \"\"\"\n    # Calculate spatial derivatives\n    u_x = d_dx(u, order=1)\n    u_xx = d_dx(u, order=2)\n    \n    # Reaction-diffusion with cubic nonlinearity and cross-diffusion effects\n    u_t_pred = (params[0] * u_xx +           # Diffusion\n                params[1] * u_x +             # Advection  \n                params[2] * u * u * u +       # Cubic nonlinearity (bistability)\n                params[3] * u * u_xx +        # Cross-diffusion (concentration-dependent diffusion)\n                params[4] * u * u_x)          # Nonlinear advection\n    \n    return u_t_pred"
+    },
+    {
+        "rank": 5,
+        "mse": 0.0001503670184928175,
+        "complexity": 23,
+        "equation": "u_x = d_dx(u, order=1)\n    u_xx = d_dx(u, order=2)\n    u_xxx = d_dx(u, order=3)\n    \n    # This captures diffusion, advection, dispersion, and nonlinearity\n    u_t_pred = (params[0] * u_xx +           # Diffusion\n                params[1] * u_x +             # Advection  \n                params[2] * u * u_x +        # Nonlinear advection\n                params[3] * u_xxx +          # Dispersion (KdV-like)\n                params[4] * u * u)           # Quadratic reaction\n    \n    return u_t_pred"
+    },
+    {
+        "rank": 6,
+        "mse": 0.00017738572028504042,
+        "complexity": 22,
+        "equation": "u_x = d_dx(u, order=1)\n    u_xx = d_dx(u, order=2)\n    \n    # Combination of diffusion, advection, and nonlinear reaction\n    u_t_pred = (params[0] * u_xx +           # Diffusion\n                params[1] * u_x +             # Advection\n                params[2] * u * (1 - u) +     # Logistic reaction\n                params[3] * u * u_x +         # Nonlinear advection\n                params[4] * u * u)              # Quadratic term\n    \n    return u_t_pred"
+    },
+    {
+        "rank": 7,
+        "mse": 0.00017738572028504042,
+        "complexity": 22,
+        "equation": "u_x = d_dx(u, order=1)\n    u_xx = d_dx(u, order=2)\n    \n    # Combination of linear and nonlinear dynamics\n    u_t_pred = (params[0] * u_xx +           # Diffusion\n                params[1] * u_x +             # Advection\n                params[2] * u * (1 - u) +     # Logistic reaction\n                params[3] * u * u_x +         # Nonlinear advection\n                params[4] * u * u)              # Quadratic term\n    \n    return u_t_pred"
+    },
+    {
+        "rank": 8,
+        "mse": 0.00018864062188884317,
+        "complexity": 19,
+        "equation": "u_x = d_dx(u, order=1)\n    u_xx = d_dx(u, order=2)\n    \n    # Complete reaction-diffusion-advection with quadratic nonlinearity\n    u_t_pred = (params[0] * u_xx +           # Linear diffusion\n                params[1] * u_x +             # Linear advection\n                params[2] * u * u_x +         # Burgers nonlinearity\n                params[3] * u * u)            # Quadratic reaction\n    \n    return u_t_pred"
+    },
+    {
+        "rank": 9,
+        "mse": 0.00019557560948560898,
+        "complexity": 18,
+        "equation": "\"\"\" Mathematical function for the RHS of a 1D PDE.\n    \n    Proposed: u_t = params[0]*u_xx + params[1]*u_x + params[2]*u*u_x + params[3]*u*u*u\n    This captures diffusion, linear advection, nonlinear Burgers advection, \n    and cubic nonlinearity (reaction term).\n    \"\"\"\n    u_x = d_dx(u, order=1)\n    u_xx = d_dx(u, order=2)\n    \n    u_t_pred = (params[0] * u_xx +      # Diffusion\n                params[1] * u_x +        # Linear advection\n                params[2] * u * u_x +    # Nonlinear advection (Burgers)\n                params[3] * u * u * u)   # Cubic reaction (bistability)\n    \n    return u_t_pred"
+    },
+    {
+        "rank": 10,
+        "mse": 0.0002255361468234562,
+        "complexity": 16,
+        "equation": "u_x = d_dx(u, order=1)\n    u_xx = d_dx(u, order=2)\n    \n    # Burgers equation with linear reaction\n    u_t_pred = params[0] * u_xx + params[1] * u_x + params[2] * u * u_x + params[3] * u\n    \n    return u_t_pred"
+    },
+    {
+        "rank": 11,
+        "mse": 0.00032000808434332913,
+        "complexity": 13,
+        "equation": "\"\"\"\n    Mathematical function for the RHS of a 1D PDE.\n    \n    Proposed: u_t = params[0] * u_xx + params[1] * u_x + params[2] * u * u_x\n    This captures diffusion, linear advection, and nonlinear Burgers-type advection.\n    \"\"\"\n    u_x = d_dx(u, order=1)\n    u_xx = d_dx(u, order=2)\n    \n    u_t_pred = params[0] * u_xx + params[1] * u_x + params[2] * u * u_x\n    \n    return u_t_pred"
+    },
+    {
+        "rank": 12,
+        "mse": 0.00032000808434332913,
+        "complexity": 13,
+        "equation": "\"\"\" Burgers-type equation: diffusion + advection + nonlinear advection \"\"\"\n    u_x = d_dx(u, order=1)\n    u_xx = d_dx(u, order=2)\n    \n    u_t_pred = params[0] * u_xx + params[1] * u_x + params[2] * u * u_x\n    \n    return u_t_pred"
+    },
+    {
+        "rank": 13,
+        "mse": 0.00032000808434332913,
+        "complexity": 13,
+        "equation": "# Compute spatial derivatives\n    u_x = d_dx(u, order=1)\n    u_xx = d_dx(u, order=2)\n    \n    # Try combination of diffusion, advection, and nonlinear advection\n    u_t_pred = (params[0] * u_xx +           # Diffusion\n                params[1] * u_x +             # Linear advection\n                params[2] * u * u_x)          # Nonlinear advection (Burgers)\n    \n    return u_t_pred"
+    },
+    {
+        "rank": 14,
+        "mse": 0.00032000808434332913,
+        "complexity": 13,
+        "equation": "u_x = d_dx(u, order=1)\n    u_xx = d_dx(u, order=2)\n    \n    # Burgers equation with linear advection\n    u_t_pred = params[0] * u_xx + params[1] * u_x + params[2] * u * u_x\n    \n    return u_t_pred"
+    },
+    {
+        "rank": 15,
+        "mse": 0.00043395217927030415,
+        "complexity": 9,
+        "equation": "\"\"\" Mathematical function for the RHS of a 1D PDE.\n    \n    Proposed: u_t = params[0] * u_xx + params[1] * u_x\n    This captures both diffusion and advection effects.\n    \"\"\"\n    u_t_pred = params[0] * d_dx(u, order=2) + params[1] * d_dx(u, order=1)\n    \n    return u_t_pred"
+    },
+    {
+        "rank": 16,
+        "mse": 0.0043865813945822545,
+        "complexity": 4,
+        "equation": "u_t_pred = params[0] * d_dx(u, order=2)\n\n    return u_t_pred"
+    },
+    {
+        "rank": 17,
+        "mse": 0.0043865813945822545,
+        "complexity": 4,
+        "equation": "\"\"\" Mathematical function for the RHS of a 1D PDE.\n    \n    Args:\n        x: Spatial coordinates (1D array).\n        u: Field variable (2D grid).\n        dx: Grid spacing.\n        params: Array of numeric constants to be optimized.\n        d_dx: A mathematical operator to calculate spatial derivatives.\n    \n    Return:\n        A numpy array representing the time derivative u_t.\n    \"\"\"\n    u_xx = d_dx(u, order=2)\n    \n    # Pure diffusion equation\n    u_t_pred = params[0] * u_xx\n    \n    return u_t_pred"
+    }
+]
