@@ -1,0 +1,47 @@
+{
+ "coefficients": "u_xx +0.1, flux -0.5, logistic +1.0",
+ "parents": [
+  {
+   "name": "Fisher-KPP equation (with diffusion and logistic growth)",
+   "canonical_form": "u_t = D u_xx + r u(1-u)",
+   "term_mapping": "parent diffusion D u_xx === discovered 0.1 u_xx (coefficient D=0.1); parent logistic r u(1-u) === discovered 1.0 u(1-u) (coefficient r=1.0); added term: transport term -0.5 ∂_x[u(1-u) cos(x)] which is not present in Fisher-KPP.",
+   "symbol_roles": "u is a population density or concentration (0<u<1); D is diffusivity, r is intrinsic growth rate.",
+   "fit": "high"
+  },
+  {
+   "name": "Reaction-diffusion equation with non-Fickian advection",
+   "canonical_form": "u_t = ∇·(D(u)∇u) + f(u) + ∇·g(x,u)",
+   "term_mapping": "the diffusion term matches a linear diffusivity D=0.1; logistic term matches reaction f(u)=u(1-u); added/modified term: the flux -0.5 u(1-u) cos(x) is an added advection-like flux (not diffusive in gradient).",
+   "symbol_roles": "u: concentration or density; D(u): diffusion coefficient; f(u): source/sink; g: space-dependent flux vector.",
+   "fit": "high"
+  },
+  {
+   "name": "Cahn-Hilliard type equation with nonlinear phase separation and external potential",
+   "canonical_form": "u_t = ∇·[M(u)∇(μ(u) - λ∇^2 u)] + ...",
+   "term_mapping": "discovered equation has ∇·[flux] where flux is -0.5 u(1-u) cos(x) — resembles a Cahn-Hilliard flux with concentration-dependent mobility and a sinusoidal potential; but the second derivative is exactly linear (no fourth-order term) so the parent is heavily modified.",
+   "symbol_roles": "u: phase field (0↔1); M(u): mobility; μ(u): chemical potential; λ: gradient energy coefficient.",
+   "fit": "low"
+  },
+  {
+   "name": "Anisotropic diffusion with drift in a periodic potential",
+   "canonical_form": "u_t = ∂_x(D(x,u)∂_x u) - ∂_x(v(x,u)u)",
+   "term_mapping": "the diffusion term matches D=0.1 constant; transport term -0.5 ∂_x[u(1-u)cos(x)] is a drift with velocity v(x,u)=0.5(1-u)cos(x); logistic term is an extra source.",
+   "symbol_roles": "u: particle density or concentration; D: diffusion constant; v: drift velocity due to external potential.",
+   "fit": "high"
+  },
+  {
+   "name": "Keller-Segel type chemotaxis model (with logistic growth)",
+   "canonical_form": "∂_t u = D ∇^2 u - ∇·(χ u ∇φ) + r u(1-u)",
+   "term_mapping": "the diffusion term matches D=0.1; the logistic term matches r=1.0; the transport term -0.5 ∇·[u(1-u) cos(x)] is a modified chemotactic flux where χ∇φ is replaced by 0.5(1-u)cos(x) (so the advection velocity depends on local carrying capacity and the chemical gradient is sinusoidal).",
+   "symbol_roles": "u: cell density; D: random motility; χ: chemotactic sensitivity; φ: chemical concentration; r: growth rate.",
+   "fit": "medium"
+  },
+  {
+   "name": "Reaction-convection-diffusion (population with directed movement)",
+   "canonical_form": "u_t + ∇·(v(u,x) u) = D ∇^2 u + f(u)",
+   "term_mapping": "parent has advection ∇·(v u); discovered has flux -0.5 u(1-u)cos(x) so v = -0.5(1-u)cos(x) (an added density-dependent drift); diffusion and logistic carried over; no other terms.",
+   "symbol_roles": "u: population density; v: velocity field (may depend on u and x); D: diffusion; f: birth/death.",
+   "fit": "high"
+  }
+ ]
+}

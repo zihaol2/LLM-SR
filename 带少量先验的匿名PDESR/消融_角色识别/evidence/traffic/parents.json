@@ -1,0 +1,47 @@
+{
+ "coefficients": "params[0] = 0.5, params[1] = 1.0, params[2] = 1.0, params[3] = 0.05, params[4] = 1.0",
+ "parents": [
+  {
+   "name": "Nonlinear advection-diffusion equation with spatially varying velocity and density-dependent diffusivity",
+   "canonical_form": "u_t + (c(u,x) u)_x = (D(u) u_x)_x",
+   "term_mapping": "u ≈ f1; c(u,x) ≈ geometry(x)*crowding(u) with geometry=1-0.5 tanh(x), crowding=1-u; advection term -(c u)_x is the discovered advection; diffusion term (D(u) u_x)_x with D(u)=0.05/u is the discovered relative-gradient diffusion; no source terms added.",
+   "symbol_roles": "u = concentration or field quantity; x = spatial coordinate; c = advection speed (here reduced by geometry and crowding); D = density-dependent diffusivity (larger where u small).",
+   "fit": "high"
+  },
+  {
+   "name": "Fokker-Planck equation with multiplicative noise and spatially varying drift",
+   "canonical_form": "∂p/∂t = -∂[v(x,t) p]/∂x + ∂²[D(x,t) p]/∂x²",
+   "term_mapping": "p ≈ f1; v(x,t) ≈ geometry*crowding = (1-0.5 tanh(x))(1-f1); first term -∂(v p)/∂x matches advection; diffusion term ∂²[D(x,t) p]/∂x² with D(x,t)=0.05/f1 matches relative-gradient diffusion; noise term is implicit in density-dependent D.",
+   "symbol_roles": "p = probability density; x = state variable; v = drift velocity; D = diffusion coefficient, possibly state-dependent; time t is not explicit.",
+   "fit": "medium"
+  },
+  {
+   "name": "Traffic flow model with bottleneck and anticipation",
+   "canonical_form": "ρ_t + (ρ V(ρ, x))_x = ε ρ_x/ρ (diffusive anticipation) or equivalent viscous traffic model",
+   "term_mapping": "ρ ≈ f1; V(ρ,x) ≈ (1-0.5 tanh(x))*(1-ρ) is speed function with road bottleneck (geometry) and crowding; flux = ρ V is exactly the advection flux; anticipation term ε ∂ₓ(ρ_x/ρ) matches the discovered relative-gradient diffusion with ε=0.05.",
+   "symbol_roles": "ρ = traffic density; V = average velocity; x = road position; ε = anticipation constant; the bottleneck term represents a narrowing road.",
+   "fit": "high"
+  },
+  {
+   "name": "Reaction-diffusion-chemotaxis type equation with self-limiting logistic-like velocity",
+   "canonical_form": "u_t = ∇·(D(u)∇u) - ∇·(χ(u) u ∇V) or u_t = -∇·(u (a(x)-b u)) + ∇·(D(u)∇u)",
+   "term_mapping": "u ≈ f1; chemotactic/drift velocity χ(u)∇V ≈ (1-0.5 tanh(x))(1-f1) (spatial cue plus density limitation); advection term -∇·(u χ ∇V) matches discovered flux; diffusion ∇·(D(u)∇u) with D(u)=0.05/u matches relative gradient diffusion; no explicit reaction terms added.",
+   "symbol_roles": "u = population density or chemical concentration; V = environmental potential (here bottleneck geometry); χ = chemotactic sensitivity; D = diffusivity; x = spatial coordinate.",
+   "fit": "medium"
+  },
+  {
+   "name": "Burgers-type equation with nonlinear non-homogeneous flux and diffusion",
+   "canonical_form": "u_t + (a(x) u - b u^2)_x = ε (u_x/u)_x",
+   "term_mapping": "u ≈ f1; a(x)=1-0.5 tanh(x), b=1: flux term (a(x)u - b u²)_x matches geometry*crowding*field; diffusion ε(u_x/u)_x with ε=0.05 matches discovered diffusion; no linear viscosity term (u_xx) is present; nonlinearity appears in both advection and diffusion.",
+   "symbol_roles": "u = velocity or conserved field; a(x) = spatially varying advection coefficient (channel); b = crowding strength; ε = small effective diffusion parameter; x = coordinate.",
+   "fit": "high"
+  },
+  {
+   "name": "Porosity/permeability flow equation with pressure-dependent mobility",
+   "canonical_form": "u_t + ∇·(u k(x,u) ∇p) = ∇·(D(u)∇u) [simplified Darcy-type transport]",
+   "term_mapping": "u ≈ f1; the advective flux is u k(x,u) with k = geometry*crowding (treated as a scalar speed instead of ∇p); diffusion term with D=0.05/u corresponds to a state-dependent effective diffusivity; p gradient not present—implicitly absorbed into x variation.",
+   "symbol_roles": "u = fluid saturation or concentration; k = permeability/mobility depending on position and occupancy; p = pressure (not explicitly modeled); D = diffusion; x = spatial direction.",
+   "fit": "low"
+  }
+ ]
+}

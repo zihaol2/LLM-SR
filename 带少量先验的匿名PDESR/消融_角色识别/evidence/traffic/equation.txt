@@ -1,0 +1,27 @@
+# Geometry bottleneck: tanh profile for channel narrowing along x1
+    geometry = 1.0 - 0.5 * np.tanh(1 * x[:, 0:1])
+
+    # Crowding factor: linear decrease with field, always positive
+    crowding = 1.0 - 1 * f1
+
+    # Combined multiplicative speed reduction (independent factors)
+    speed = geometry * crowding
+
+    # Advection flux
+    flux = f1 * speed
+
+    # Advection contribution (negative divergence for transport)
+    advection = -d_axis(flux, 0, 1)
+
+    # Anticipation: relative gradient diffusion (gradient divided by field)
+    f1_safe = f1 + 1e-10  # safety for division
+    relative_gradient = d_axis(f1, 0, 1) / f1_safe
+    diffusion = d_axis(relative_gradient, 0, 1)
+
+    # Combine advection and anticipation diffusion
+    f1_t_pred = advection + 0.05 * diffusion
+
+    return f1_t_pred
+
+### FITTED COEFFICIENTS
+The search fitted params[0] = 0.5, params[1] = 1, params[2] = 1, params[3] = 0.05, params[4] = 1, and those values are written in place above.

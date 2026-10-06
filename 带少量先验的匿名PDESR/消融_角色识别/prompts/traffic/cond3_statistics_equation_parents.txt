@@ -1,0 +1,129 @@
+You are a physicist doing inverse identification on ONE anonymous 1D dataset.
+The dataset holds a single field, f1, sampled on one spatial axis x1, together with
+its measured time derivative. Nothing here names the dataset: whatever naming comes
+out has to be forced by the evidence below.
+
+### EVIDENCE 1 -- MEASURED STATISTICS
+These statistics were computed on the data itself. They describe the field f1,
+its measured time derivative, and how the two relate. Nothing about the subject
+matter was given to whoever asked for them.
+
+  summary f1: min +0.1000 max +0.6995 mean +0.1576 std 0.1162 rms 0.1958 negative fraction 0.000 quartiles +0.1000/+0.1002/+0.1386
+  summary f1_t_true: min -0.3638 max +0.1932 mean +0.0030 std 0.0463 rms 0.0464 negative fraction 0.349 quartiles -0.0000/+0.0000/+0.0059
+  space_spectrum f1 at_time=mid: k=1 (45%), k=2 (25%), k=3 (10%), k=4 (5%)
+  time_spectrum f1 at_x=mid: mode 1 (64%), mode 2 (14%), mode 3 (6%), mode 4 (3%)
+  derivative_rms f1: order 1: rms 0.0868, order 2: rms 0.2254
+  correlate_with_target f1 order 1: -0.788
+  balance_test f1: domain average of f1_t_true is +0.003000 (std 0.000000), |domain average| / rms(target) = 0.06472; the domain average of f1 changes by +7.66% of its rms over the record
+  nested_fit f1: [d1] R2 0.6166, [d1,f*d1] R2 0.7092, [d1,f*d1,f^2*d1] R2 0.7187, [d1,d2] R2 0.6209, [d1,f*d1,d2] R2 0.8052
+  state_conditioned_response f1: state +0.106 (n=81093) -> response -0.664, state +0.210 (n=5056) -> response -0.597, state +0.288 (n=4152) -> response -0.538, state +0.363 (n=4967) -> response -0.473, state +0.434 (n=3763) -> response -0.396, state +0.508 (n=1692) -> response -0.279, state +0.584 (n=1008) -> response -0.076, state +0.657 (n=669) -> response +0.248
+  segmented_response f1: segment 1 coefficient -0.386, segment 2 coefficient -0.468, segment 3 coefficient -0.797
+  correlate_with_target f1 order 2: +0.066
+  sample_profile: failed (TypeError)
+
+Read off those measurements alone, before any equation existed:
+the underlying field is strictly non-negative and strongly localized around a small positive value, with occasional excursions to higher levels; its dynamics are dominated by a linear response to its own value (nonlinear terms are weak), with a negative derivative feedback that drives the field back toward its small baseline. The evolution is structured as a relaxation process: positive departures of f1 trigger negative time-derivatives, and the magnitude of this damping increases as f1 grows, until at the highest observed states the response reverses sign.
+
+The measurements that reading was based on:
+f1 is non-negative (min 0.1, mean 0.158, 0% negative), highly skewed (median near min). f1_t_true is zero-mean, symmetric, and almost always near zero except for occasional negative bursts (negative fraction 0.349, quartiles 0.0). The correlation between f1 and f1_t_true is strongly negative (-0.788), and the state-conditioned response shows increasingly negative responses for states up to ~0.66, with response turning positive only at the very highest state (0.657→+0.248). The nested_fit shows d1 alone explains 61.7% of f1_t_true, adding f*d1 improves R2 to 0.709, adding f^2*d1 or d2 yields only small additional gains; the best 2-term model is d1+f*d1 (R2=0.805). Space and time spectra are dominated by the first few modes, consistent with a smooth, slowly varying field. The domain average of f1_t_true is ~0 (|ar{f1_t}|/rms=0.065), but the domain average of f1 changes by +7.66% of its rms over the record, indicating a slow drift in baseline. The data cannot cleanly separate a pure linear relaxation from a slightly nonlinear damping model; the evidence favours a linear first-order relaxation (f_t ≈ -a f) with minor nonlinear damping, but the sign reversal at high states suggests a more complex mechanism. To separate would require data at higher f1 states or longer records.
+
+### EVIDENCE 2 -- THE DISCOVERED EQUATION
+An automated search found the equation below for the measured time derivative.
+It reproduces the data down to the loss floor, so this is the equation the data
+supports. The coefficients the search fitted are written in place.
+
+# Geometry bottleneck: tanh profile for channel narrowing along x1
+    geometry = 1.0 - 0.5 * np.tanh(1 * x[:, 0:1])
+
+    # Crowding factor: linear decrease with field, always positive
+    crowding = 1.0 - 1 * f1
+
+    # Combined multiplicative speed reduction (independent factors)
+    speed = geometry * crowding
+
+    # Advection flux
+    flux = f1 * speed
+
+    # Advection contribution (negative divergence for transport)
+    advection = -d_axis(flux, 0, 1)
+
+    # Anticipation: relative gradient diffusion (gradient divided by field)
+    f1_safe = f1 + 1e-10  # safety for division
+    relative_gradient = d_axis(f1, 0, 1) / f1_safe
+    diffusion = d_axis(relative_gradient, 0, 1)
+
+    # Combine advection and anticipation diffusion
+    f1_t_pred = advection + 0.05 * diffusion
+
+    return f1_t_pred
+
+### FITTED COEFFICIENTS
+The search fitted params[0] = 0.5, params[1] = 1, params[2] = 1, params[3] = 0.05, params[4] = 1, and those values are written in place above.
+
+### EVIDENCE 3 -- CLASSICAL PARENT PDES
+The same equation, matched against the classical PDE families it could be a
+modification of. Each entry gives the family, its canonical form, how the
+discovered terms map onto it, and the standard physical role of its symbols.
+
+[
+ {
+  "name": "Nonlinear advection-diffusion equation with spatially varying velocity and density-dependent diffusivity",
+  "canonical_form": "u_t + (c(u,x) u)_x = (D(u) u_x)_x",
+  "term_mapping": "u ≈ f1; c(u,x) ≈ geometry(x)*crowding(u) with geometry=1-0.5 tanh(x), crowding=1-u; advection term -(c u)_x is the discovered advection; diffusion term (D(u) u_x)_x with D(u)=0.05/u is the discovered relative-gradient diffusion; no source terms added.",
+  "symbol_roles": "u = concentration or field quantity; x = spatial coordinate; c = advection speed (here reduced by geometry and crowding); D = density-dependent diffusivity (larger where u small).",
+  "fit": "high"
+ },
+ {
+  "name": "Fokker-Planck equation with multiplicative noise and spatially varying drift",
+  "canonical_form": "∂p/∂t = -∂[v(x,t) p]/∂x + ∂²[D(x,t) p]/∂x²",
+  "term_mapping": "p ≈ f1; v(x,t) ≈ geometry*crowding = (1-0.5 tanh(x))(1-f1); first term -∂(v p)/∂x matches advection; diffusion term ∂²[D(x,t) p]/∂x² with D(x,t)=0.05/f1 matches relative-gradient diffusion; noise term is implicit in density-dependent D.",
+  "symbol_roles": "p = probability density; x = state variable; v = drift velocity; D = diffusion coefficient, possibly state-dependent; time t is not explicit.",
+  "fit": "medium"
+ },
+ {
+  "name": "Traffic flow model with bottleneck and anticipation",
+  "canonical_form": "ρ_t + (ρ V(ρ, x))_x = ε ρ_x/ρ (diffusive anticipation) or equivalent viscous traffic model",
+  "term_mapping": "ρ ≈ f1; V(ρ,x) ≈ (1-0.5 tanh(x))*(1-ρ) is speed function with road bottleneck (geometry) and crowding; flux = ρ V is exactly the advection flux; anticipation term ε ∂ₓ(ρ_x/ρ) matches the discovered relative-gradient diffusion with ε=0.05.",
+  "symbol_roles": "ρ = traffic density; V = average velocity; x = road position; ε = anticipation constant; the bottleneck term represents a narrowing road.",
+  "fit": "high"
+ },
+ {
+  "name": "Reaction-diffusion-chemotaxis type equation with self-limiting logistic-like velocity",
+  "canonical_form": "u_t = ∇·(D(u)∇u) - ∇·(χ(u) u ∇V) or u_t = -∇·(u (a(x)-b u)) + ∇·(D(u)∇u)",
+  "term_mapping": "u ≈ f1; chemotactic/drift velocity χ(u)∇V ≈ (1-0.5 tanh(x))(1-f1) (spatial cue plus density limitation); advection term -∇·(u χ ∇V) matches discovered flux; diffusion ∇·(D(u)∇u) with D(u)=0.05/u matches relative gradient diffusion; no explicit reaction terms added.",
+  "symbol_roles": "u = population density or chemical concentration; V = environmental potential (here bottleneck geometry); χ = chemotactic sensitivity; D = diffusivity; x = spatial coordinate.",
+  "fit": "medium"
+ },
+ {
+  "name": "Burgers-type equation with nonlinear non-homogeneous flux and diffusion",
+  "canonical_form": "u_t + (a(x) u - b u^2)_x = ε (u_x/u)_x",
+  "term_mapping": "u ≈ f1; a(x)=1-0.5 tanh(x), b=1: flux term (a(x)u - b u²)_x matches geometry*crowding*field; diffusion ε(u_x/u)_x with ε=0.05 matches discovered diffusion; no linear viscosity term (u_xx) is present; nonlinearity appears in both advection and diffusion.",
+  "symbol_roles": "u = velocity or conserved field; a(x) = spatially varying advection coefficient (channel); b = crowding strength; ε = small effective diffusion parameter; x = coordinate.",
+  "fit": "high"
+ },
+ {
+  "name": "Porosity/permeability flow equation with pressure-dependent mobility",
+  "canonical_form": "u_t + ∇·(u k(x,u) ∇p) = ∇·(D(u)∇u) [simplified Darcy-type transport]",
+  "term_mapping": "u ≈ f1; the advective flux is u k(x,u) with k = geometry*crowding (treated as a scalar speed instead of ∇p); diffusion term with D=0.05/u corresponds to a state-dependent effective diffusivity; p gradient not present—implicitly absorbed into x variation.",
+  "symbol_roles": "u = fluid saturation or concentration; k = permeability/mobility depending on position and occupancy; p = pressure (not explicitly modeled); D = diffusion; x = spatial direction.",
+  "fit": "low"
+ }
+]
+
+### YOUR TASK
+1. NAME IT. State the concrete physical quantity f1 most likely represents, and the
+   discipline and sub-field it belongs to. Point to the specific piece of evidence
+   that pins the naming down.
+2. PARENT FAMILY. If classical PDE families were supplied above, say which one the
+   evidence points to and why. If none were supplied, leave "parent_family" empty.
+3. CONFIDENCE. Give high | medium | low, and the single measurement or term that
+   would most change your answer.
+
+Answer with ONE JSON object, nothing else:
+{
+  "variable": {"symbol": "f1", "quantity": "...", "parent_family": "...", "reasoning": "..."},
+  "discipline": {"field": "...", "subfield": "...", "reasoning": "..."},
+  "confidence": "high|medium|low",
+  "key_evidence": ["...", "..."],
+  "would_change_if": "..."
+}

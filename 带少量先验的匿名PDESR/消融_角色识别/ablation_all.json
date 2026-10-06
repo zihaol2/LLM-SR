@@ -1,0 +1,721 @@
+{
+ "traffic": {
+  "truth_role": "vehicle density on a road with a bottleneck",
+  "truth_keywords": [
+   "traffic",
+   "vehicle",
+   "road",
+   "car",
+   "congestion"
+  ],
+  "conditions": {
+   "cond1_statistics_only": [
+    {
+     "raw_response": {
+      "variable": {
+       "symbol": "f1",
+       "quantity": "Likely a concentration or density of a tracer, species, or thermal anomaly (e.g., temperature anomaly) in a quasi-1D advection-diffusion or reaction-diffusion system, but the evidence is too generic to uniquely pin the physical meaning.",
+       "parent_family": "reaction-diffusion or advection-diffusion (relaxation toward a stable baseline with nonlinear damping)",
+       "reasoning": "Non-negative field, strongly peaked near a small positive value (suggesting a background level), with occasional excursions upward; dynamics dominated by a strong negative feedback proportional to the field itself (d1 explains >60% variance of the time derivative) and with mild nonlinear damping (f*d1 adds significant improvement). The sign reversal at very high states suggests a saturating or nonlinear source. The slow drift of domain average and spectral dominance by low modes are consistent with a smooth, slowly varying field in a confined domain. But no evidence of spatial transport (e.g., advection vs diffusion) or specific coupling, so the variable could be a temperature anomaly in a convective loop, species concentration in a reactor, or even a biochemical concentration."
+      },
+      "discipline": {
+       "field": "Physics (also applied mathematics / nonlinear dynamics)",
+       "subfield": "Pattern formation / reaction-diffusion systems or climate dynamics (e.g., temperature anomaly in a box model)",
+       "reasoning": "The evidence of linear relaxation with nonlinear damping and a gradient-driven correlation is typical of nonlinear relaxation processes in continuum mechanics, chemical kinetics, or climate science. The fact that the field is non-negative and has a baseline suggests a concentration or deviation from a stable steady state. However, the dataset is anonymous and lacks spatial/temporal scales, so the specific discipline is guesswork."
+      },
+      "confidence": "low",
+      "key_evidence": [
+       "correlate_with_target f1 order 1: -0.788 (strong negative feedback)",
+       "nested_fit: [d1] R2 0.6166, [d1,f*d1] R2 0.7092, best 2-term d1+f*d1 R2=0.805 (dominant linear damping with mild nonlinearity)",
+       "state_conditioned_response: monotonic increase in damping magnitude with state until reversal at highest state, indicating nonlinear saturation or source",
+       "summary f1: all positive, strongly skewed to low values, mean 0.158, min 0.1, max 0.7 (field clamped to positive baseline with excursions)"
+      ],
+      "would_change_if": "If I knew the spatial and temporal scales, boundary conditions, or had any additional field coupled to f1 (e.g., a velocity field or a second species), I could identify the physical quantity. A definitive clue would be if the sample_profile had succeeded or if the spatial spectrum showed a dominant mode with a specific shape (e.g., Fourier mode versus localized structure). Also, if the equations of motion include advection or diffusion (e.g., if order-2 derivatives had significant weight), that would rule out a pure relaxation ODE and point to a PDE like the heat equation or a reaction-diffusion system."
+     },
+     "quantity": "Likely a concentration or density of a tracer, species, or thermal anomaly (e.g., temperature anomaly) in a quasi-1D advection-diffusion or reaction-diffusion system, but the evidence is too generic to uniquely pin the physical meaning.",
+     "hit": false
+    },
+    {
+     "raw_response": {
+      "variable": {
+       "symbol": "f1",
+       "quantity": "negative feedback relaxation variable with nonlinear damping and a positive baseline (e.g., a concentration, magnetization, or gene expression level above a resting state)",
+       "parent_family": "first-order nonlinear ordinary differential equation / reaction-diffusion PDE (reaction term with linear damping plus weak nonlinearity)",
+       "reasoning": "The strong negative correlation (-0.788), the dominance of d1 in nested_fit (R2=0.62), and the state-conditioned responses showing increasingly negative response with state, then a sign reversal at the highest states, indicate a relaxational dynamics f_t ≈ -a f + b f^2 + ... with a sign-changing nonlinearity. The non-negative, skewed distribution with a small baseline and rare excursions matches a quantity with positive equilibrium and damping toward that equilibrium."
+      },
+      "discipline": {
+       "field": "physics",
+       "subfield": "nonlinear dynamics / pattern formation",
+       "reasoning": "The evidence of a smooth field with dominant low modes, a relaxation response, and weak nonlinearity suggests a generic order-parameter field in a dissipative system, such as a reaction-diffusion concentration, a phase field, or a magnetization field. However, the dataset is abstract and lacks spatial/temporal scales, so the naming is tentative."
+      },
+      "confidence": "medium",
+      "key_evidence": [
+       "state_conditioned_response shows response -0.664 at low state, becomes less negative, and turns positive (+0.248) at highest state, indicating a non-monotonic (nonlinear) damping.",
+       "nested_fit: [d1,f*d1] R2=0.805, while [d1] R2=0.62 and [d1,f*d1,f^2*d1] R2=0.72, showing linear damping dominates but quadratic damping improves fit.",
+       "correlate_with_target f1 order 1: -0.788, strong negative feedback on f1.",
+       "summary f1: min 0.1, mean 0.158, 0% negative, heavy concentration near minimum, indicating a positive baseline and intermittent excursions."
+      ],
+      "would_change_if": "If the measured time derivative were rescaled by a known physical unit (e.g., if f1_t had units of Kelvin/s or mol/(m^3 s)), or if the spatial coordinate were labeled (e.g., x1 in meters), that would pin down the quantity; also if higher-order nonlinear terms (f^2*d1) had dominated, it would point to a specific nonlinear oscillator or chemical kinetics."
+     },
+     "quantity": "negative feedback relaxation variable with nonlinear damping and a positive baseline (e.g., a concentration, magnetization, or gene expression level above a resting state)",
+     "hit": false
+    },
+    {
+     "raw_response": {
+      "variable": {
+       "symbol": "f1",
+       "quantity": "sea surface height anomaly (SSHA) in a reduced-gravity ocean model",
+       "parent_family": "advection-diffusion (or shallow-water)",
+       "reasoning": "The field is strictly non-negative, with a small mean and rare large excursions, consistent with a positive-definite quantity like layer thickness or SSH anomaly in a reduced-gravity model. The state-conditioned response shows a clear damping that strengthens with amplitude, and the sign reversal at the highest state (0.657 -> +0.248) is typical of nonlinear wave steepening or a relaxation that becomes unstable at extreme amplitudes, seen in internal solitary wave trains. The spectral dominance of low modes and the near-zero mean time derivative with occasional negative bursts resemble the evolution of a localized finite-amplitude disturbance relaxing toward a basic state."
+      },
+      "discipline": {
+       "field": "physical oceanography",
+       "subfield": "internal wave dynamics / nonlinear coastal oceanography",
+       "reasoning": "The evidence of a near-stationary background with rare large excursions, and the strongly negative correlation between field and its time derivative, is characteristic of a restoring force (e.g., buoyancy) acting on a displacement. The derivative rms is small relative to the field rms, and the time spectrum is dominated by low modes, typical of a slowly evolving internal wave field. The negative fraction of f1_t_true (0.349) with a near-zero mean indicates occasional downwelling (negative tendency) events, as seen in solitary wave trains propagating over a background."
+      },
+      "confidence": "medium",
+      "key_evidence": [
+       "state-conditioned response shows strongly negative response growing from -0.664 to -0.076 as state increases, then turning positive at the highest state (+0.248), indicating a relaxation process with a reversal at extreme amplitude.",
+       "nested_fit shows d1 alone explains 61.7% of f1_t_true, and [d1,f*d1] gives R2=0.805, while adding f^2*d1 or d2 only marginally improve, favouring a linear-plus-quadratic damping model.",
+       "field is strictly non-negative (min 0.1, mean 0.158, 0% negative) with median near min, indicating a positive-definite variable like layer thickness or SSH anomaly relative to a reference."
+      ],
+      "would_change_if": "If I saw a clearer two-peak spatial spectrum or evidence of phase reversal between spatial harmonics, I would switch to a different variable like a passive tracer or a vorticity field, but the sign reversal at high states argues for a nonlinear damping term such as in a relaxation model for SSH."
+     },
+     "quantity": "sea surface height anomaly (SSHA) in a reduced-gravity ocean model",
+     "hit": false
+    }
+   ],
+   "cond2_statistics_equation": [
+    {
+     "raw_response": {
+      "variable": {
+       "symbol": "f1",
+       "quantity": "population density or cell density in a spatially structured biological system",
+       "parent_family": "Advection-diffusion (with nonlinear source term; specifically a reaction-advection-diffusion model with density-dependent crowding and anticipation)",
+       "reasoning": "The field is strictly non-negative, localized near a small baseline with occasional excursions, and has a strong negative feedback between local density and its time derivative—consistent with population growth regulation. The discovered equation includes a geometry term (tanh profile) representing spatial heterogeneity in habitat capacity or channel geometry, a crowding factor that reduces speed with density, and an advection flux, all typical of ecological or cellular population models (e.g., chemotaxis, dispersal, or traffic flow). The anticipation term (relative gradient diffusion) suggests density-dependent migration toward favorable regions. The |derivative| strongly correlates negatively with f1 (order 1 correlation -0.788) and state-conditioned responses show more negative growth as density increases—classic logistic-like or Allee-effect-like regulation."
+      },
+      "discipline": {
+       "field": "Ecology or Mathematical Biology",
+       "subfield": "Spatial population dynamics / biological transport",
+       "reasoning": "The measured statistics show a non-negative, skewed field with slow baseline drift and a dominant linear decay term (R2=0.617 for d1 alone) that accelerates with density (nested fit and state-conditioned response). The discovered equation's form—advection with density-dependent speed and a diffusive 'relative gradient' (logistic diffusion)—is commonly used for population dispersal or cell motion in heterogeneous environments. The geometry bottleneck (tanh profile) represents a spatially varying carrying capacity or habitat quality."
+      },
+      "confidence": "low",
+      "key_evidence": [
+       "Strictly non-negative field with zero negative fraction and heavy concentration near a tiny baseline (min=0.1, median=0.1002, mean=0.1576) indicates a quantity that cannot be negative and is usually at a low quasi-steady state—typical of population densities.",
+       "Strong negative correlation between f1 and f1_t_true (-0.788) and state-conditioned response becoming more negative up to ~0.6, then reversing at highest state (+0.248) suggests density-dependent growth with crowding/competition and a possible high-density effect (e.g., Allee effect or limited carrying capacity).",
+       "The discovered equation combines a tanh geometry profile (spatial heterogeneity), a linear crowding factor (1-f1), advection flux, and relative-gradient diffusion—all common in ecological/population transport models."
+      ],
+      "would_change_if": "If the dataset included additional fields (e.g., velocity, temperature, pressure) or if the matched equation was derived from a known physical conservation law (e.g., Navier-Stokes, heat equation with variable conductivity), I would revise the naming accordingly. Also, the sign reversal at the highest states could change the answer if it pointed to a chemical concentration with saturation or a mechanical variable like displacement."
+     },
+     "quantity": "population density or cell density in a spatially structured biological system",
+     "hit": false
+    },
+    {
+     "raw_response": {
+      "variable": {
+       "symbol": "f1",
+       "quantity": "Vorticity (or scaled vorticity) in a 1D cross-section of a shear flow, specifically a positive anomaly relative to a background with a slow spatial narrowing (geometric bottleneck) and a self-induced reduction of transport (crowding), evolving via advection and relative gradient diffusion.",
+       "parent_family": "Nonlinear advection-diffusion (with a multiplicative geometric prefactor and nonlinear relative-gradient diffusion) - closer to a 1D reduced model of transport in a variable channel.",
+       "reasoning": "The field is non-negative, skewed, and locally concentrated; the equation is a flux divergence with a geometry-dependent multiplicative speed (1 - 0.5*tanh) and a crowding factor (1 - f1) that reduces speed as f1 grows. This is consistent with a density-like quantity in a narrowing channel: as the channel narrows, the flux accelerates (or decelerates) and the field's transport is choked when large. Relative gradient diffusion is a feature of models for density or concentration where diffusion scales with the relative gradient (e.g., in porous media or granular flow). The negative correlation and relaxation dynamics suggest a tendency for gradients to smooth outward, but the non-negativity and skewed profile indicate a positive conserved (or quasi-conserved) quantity. In 1D fluid context, this is a common reduced model for vorticity patches or passive scalar streaks in a shear layer."
+      },
+      "discipline": {
+       "field": "Fluid dynamics / Geophysics (or soft-matter physics, if the crowding factor is taken literally as a jamming effect)",
+       "subfield": "Transport in variable geometry (e.g., blood flow through stenosis, granular flow through constrictions, or plasma edge transport in a magnetic bottle).",
+       "reasoning": "The 'geometry bottleneck' with tanh profile and 'crowding' factor are typical of multi-scale models for transport in a narrowing physical passage. The field's non-negativity, concentration, and state-dependent relaxation are similar to concentration of a passive tracer or plankton in a channel, but the strong nonlinear damping and sign reversal at high states also appear in traffic flow (vehicular density) or collective motion models. However, the use of relative gradient diffusion is classic in models for phase separation (Cahn-Hilliard-like) but with a relative flux, which is more specific to crowd/cell density. Without a named discipline, the evidence from the equation (geometry, crowding, advection) most strongly points to a transport model in a varying conduit, common in chemical engineering (plug flow with reaction) or biomedical (arterial flow)."
+      },
+      "confidence": "medium",
+      "key_evidence": [
+       "The discovered equation's explicit 'geometry bottleneck' (tanh narrowing) and 'crowding' factor (1 - f1) with a flux divergence is the smoking gun that f1 is a density-like quantity transported through a variable-width structure.",
+       "The state-conditioned response shows a clear monotonic damping from small to moderate states, but a sign reversal at the highest state (0.657→+0.248), which matches a crowding effect: when the field is high, the speed (1 - f1) becomes small, potentially reversing the effective advection.",
+       "The nested_fit best model is d1 + f*d1 (R2=0.805), which is exactly the form of the advection term: divergence of f * (geometry * crowding) = -(geometry * crowding) d(f)/dx - f * d(geometry * crowding)/dx, and the leading term is -c * d1 - f * d1 type."
+      ],
+      "would_change_if": "If the sign reversal at the highest state were confirmed to be a real physical process (rather than numerical artifact), it would force a change to a model with a non-monotonic flux (e.g., a fundamental diagram for traffic flow) or a source/sink term at high density, better fitting 'crowding-induced transport reversal'."
+     },
+     "quantity": "Vorticity (or scaled vorticity) in a 1D cross-section of a shear flow, specifically a positive anomaly relative to a background with a slow spatial narrowing (geometric bottleneck) and a self-induced reduction of transport (crowding), evolving via advection and relative gradient diffusion.",
+     "hit": false
+    },
+    {
+     "raw_response": {
+      "variable": {
+       "symbol": "f1",
+       "quantity": "population density / concentration of a biological or chemical species in a spatially heterogeneous medium",
+       "parent_family": "advection-diffusion / reaction-advection-diffusion",
+       "reasoning": "The field is strictly positive, with a narrow distribution around a small baseline; the discovered equation is a conservation law: f1_t = -div(f1 * speed) + 0.05*div(grad(f1)/f1). The 'speed' term involves a geometry (tanh profile) and a linear crowding factor (1 - f1), indicating transport of a population/quantity that saturates as f1 approaches 1. The relative gradient diffusion (div(grad(f1)/f1)) is a nonlinear diffusion commonly used for density-dependent dispersal, e.g., Fokker-Planck or porous-medium type. The negative correlation f1 vs f1_t and the state-conditioned response with sign reversal at high f1 are consistent with density‑dependent advection away from sources and crowding feedback."
+      },
+      "discipline": {
+       "field": "ecology / mathematical biology / population dynamics",
+       "subfield": "spatial population dynamics with density‑dependent dispersal",
+       "reasoning": "The strictly non‑negative field with low baseline and occasional excursions, the linear negative feedback (f_t ~ -a f), the crowding factor (1 - f) in advection, and the geometry (channel narrowing) together suggest a biological population (e.g., cell density, organism density) moving along a spatial domain with a constriction. The anticipation term (relative gradient diffusion) is typical of models where organisms sense and move along density gradients (e.g., chemotaxis-like or dispersal). The state‑conditioned response shows that high density triggers positive growth or influx, which is common in population growth or aggregation."
+      },
+      "confidence": "medium",
+      "key_evidence": [
+       "field strictly non-negative and skewed: min=0.1, mean=0.158, 0% negative, quartiles at 0.1 – consistent with density/concentration",
+       "correlate_with_target f1 order 1 = -0.788 and nested_fit best model d1 + f*d1 (R2=0.805) showing linear plus density‑dependent damping",
+       "discovered equation contains advection flux f1 * (1-f) * geometry and relative gradient diffusion – occurrences of a conservation law with carrying‑capacity‑like crowding"
+      ],
+      "would_change_if": "If the data had a clearly negative fraction or a non‑conservative source term, the identification would shift toward e.g. chemical concentration with reaction; or if the state‑conditioned response reversed sign at all states, the dynamics would be more like a growth process than dispersal.",
+      "parent_family": "advection-diffusion"
+     },
+     "quantity": "population density / concentration of a biological or chemical species in a spatially heterogeneous medium",
+     "hit": false
+    }
+   ],
+   "cond3_statistics_equation_parents": [
+    {
+     "raw_response": {
+      "variable": {
+       "symbol": "f1",
+       "quantity": "traffic density (normalized occupancy) on a road with a bottleneck",
+       "parent_family": "Traffic flow model with bottleneck and anticipation (viscous traffic model)",
+       "reasoning": "The discovered equation is a nonlinear advection-diffusion equation with flux f1 * (1 - 0.5*tanh(x)) * (1 - f1) and diffusion term 0.05 * (f1_xx / f1 - (f1_x)^2 / f1^2). The geometry factor (1 - 0.5*tanh(x)) creates a spatial bottleneck, the crowding factor (1 - f1) reduces speed as density increases, and the relative-gradient diffusion (f1_x / f1)_x is the classic anticipation term in traffic flow (e.g., Aw-Rascle / Zhang / Payne models). The statistical evidence shows f1 is non-negative, has a low mean with positive skew (density-like), strongly negative correlation between f1 and f1_t (densities decrease when high), and state-conditioned response shows increasingly negative time derivatives as density rises, which corresponds to traffic jams dissipating. The space spectrum dominated by low modes and smooth spatial variation is consistent with a macroscopic traffic density field."
+      },
+      "discipline": {
+       "field": "transportation engineering / applied mathematics",
+       "subfield": "traffic flow modeling / macroscopic traffic dynamics",
+       "reasoning": "The combination of a density-like non-negative quantity that saturates (crowding factor 1-f1), a spatial bottleneck (tanh profile), and anticipation-type diffusion is the fingerprint of traffic flow models. The nonlinear speed-density relation and density-dependent diffusivity are standard in traffic flow theory. Also the negative correlation between f1 and its rate of change suggests a relaxation toward a free-flow low density, typical of traffic on a road with a bottleneck."
+      },
+      "confidence": "medium",
+      "key_evidence": [
+       "Discovered equation: flux = f1 * (1 - 0.5*tanh(x)) * (1 - f1) with relative-gradient diffusion—this is precisely a traffic flow flux with a spatially varying road capacity (bottleneck) and a density-dependent speed reduction.",
+       "State-conditioned response: as f1 increases from low to high values, the time derivative becomes more negative, consistent with high-density regions (traffic jams) moving and dissipating, with the highest states showing a sign reversal that could indicate a backward propagating wave or a bottleneck-induced queue.",
+       "f1 is strictly non-negative, has a low mean (0.158) with occasional excursions to ~0.7, and its derivative is mostly small but with negative bursts—consistent with a low-density road with occasional congestion events."
+      ],
+      "would_change_if": "If additional tests revealed that the field is a probability density in a Fokker-Planck equation, or if the spatial geometry corresponds to a real roadway with physical measurements of vehicle counts, I would increase confidence. Also, if the sign of the diffusion term were different or if a clear two-phase (free flow vs. congestion) relation emerged, it would force a re-evaluation."
+     },
+     "quantity": "traffic density (normalized occupancy) on a road with a bottleneck",
+     "hit": true
+    },
+    {
+     "raw_response": {
+      "variable": {
+       "symbol": "f1",
+       "quantity": "traffic density (dimensionless occupancy or concentration)",
+       "parent_family": "Traffic flow model with bottleneck and anticipation (nonlinear advection-diffusion with spatially varying velocity)",
+       "reasoning": "The discovered equation is structurally identical to a traffic flow model: flux = density × speed, where speed = geometry (bottleneck narrowing) × crowding (1 - density), and the diffusion term is the relative-gradient anticipation term (ρ_x/ρ)_x. This is a standard form for traffic flow with a road bottleneck and driver anticipation. The measured statistics support a non-negative, positively skewed field with a strong negative feedback (density decreases when high) and weak nonlinear effects, consistent with traffic density relaxing toward a free-flow low-density state."
+      },
+      "discipline": {
+       "field": "Transportation engineering",
+       "subfield": "traffic flow modeling",
+       "reasoning": "The equation's discovery of the classical traffic flow family is the strongest indicator: the variable is a conserved density that is advected with a speed that decreases linearly with the density itself (crowding) and with a spatial bottleneck geometry, plus an anticipation diffusion term. These are defining features of traffic flow models (e.g., Aw-Rascle, Payne-Whitham, or Lighthill-Whitham-Richards with viscous anticipation)."
+      },
+      "confidence": "high",
+      "key_evidence": [
+       "The discovered equation exactly maps to a traffic flow model with geometry = 1 - 0.5 tanh(x) (bottleneck) and crowding = 1 - f1, producing flux = f1 * speed, and the anticipation diffusion (f1_x/f1)_x.",
+       "Measured statistics show f1 is non-negative (min 0.1, mean 0.1576), strongly skewed toward low values, and has a strong negative correlation between f1 and its time derivative (-0.788), consistent with density relaxation and congestion dissipation.",
+       "The parent PDE entry for 'Traffic flow model with bottleneck and anticipation' is marked with 'fit: high' and matches the canonical form ρ_t + (ρ V(ρ, x))_x = ε (ρ_x/ρ)_x."
+      ],
+      "would_change_if": "If the spatial coordinate x1 were identified as time or if the field had a clearer chemical or biological interpretation (e.g., cell density or chemical concentration) with a different mechanism, the naming would shift to that domain; however, the combination of density-dependent velocity, bottleneck geometry, and anticipation diffusion is decisively traffic-like."
+     },
+     "quantity": "traffic density (dimensionless occupancy or concentration)",
+     "hit": true
+    },
+    {
+     "raw_response": {
+      "variable": {
+       "symbol": "f1",
+       "quantity": "traffic density (e.g., vehicles per unit length) on a road with a bottleneck",
+       "parent_family": "Traffic flow model with bottleneck and anticipation",
+       "reasoning": "The discovered equation exactly matches a traffic flow model: f1 is non-negative and bounded between 0 and 1 (as a density normalized to capacity), the geometry term (1-0.5*tanh(x)) represents a spatially narrowing road (bottleneck), the crowding factor (1-f1) is a density-dependent speed reduction, and the flux is f1 * speed. The relative-gradient diffusion term 0.05*(f1_x/f1)_x is a well-known anticipation term in traffic flow models (e.g., Aw-Rascle, Payne-Whitham). The statistics show f1 is strictly positive, highly localized near a low baseline (0.1), with occasional higher excursions (density humps), and f1_t is negative when f1 is high (congestion reduces flux and causes density decrease), consistent with traffic dynamics."
+      },
+      "discipline": {
+       "field": "Civil engineering / transportation science",
+       "subfield": "Traffic flow theory / vehicular traffic modeling",
+       "reasoning": "The presence of a spatial bottleneck, density-dependent speed (crowding), and relative-gradient diffusion (anticipation) are hallmarks of macroscopic traffic flow models. The field f1 is normalized density between 0 and 1, the measured statistics show a strongly non-negative, skewed distribution with a baseline low density and occasional high-density jams. The state-conditioned response (increasingly negative time-derivative with density) reflects congestion–dissipation dynamics. The classical parent PDE family 'Traffic flow model with bottleneck and anticipation' is supplied and has high fit."
+      },
+      "confidence": "high",
+      "key_evidence": [
+       "Discovered equation: f1_t = -d_x[ f1 * (1-0.5 tanh(x)) * (1-f1) ] + 0.05 * d_x( f1_x / f1 ) — precisely a traffic flux with spatial bottleneck and anticipation.",
+       "Statistics: f1 in [0.1, 0.7], strictly non-negative, highly skewed near low baseline, consistent with normalized vehicle density; f1_t has negative bursts and strong negative correlation with f1 (-0.788), indicating density decay in congestion."
+      ],
+      "would_change_if": "If an additional independent measured quantity or term (e.g., a non-conservative source, a different sign of the advection, or a known application context) identified the field as something else like a chemical concentration or probability density, my confidence would drop. Also, if the diffusion term had a different form (e.g., linear u_xx rather than relative gradient) or if the geometry were not monotonic, I would reconsider."
+     },
+     "quantity": "traffic density (e.g., vehicles per unit length) on a road with a bottleneck",
+     "hit": true
+    }
+   ]
+  }
+ },
+ "swift_hohenberg": {
+  "truth_role": "order parameter (pattern-forming amplitude)",
+  "truth_keywords": [
+   "order parameter",
+   "swift",
+   "pattern",
+   "amplitude",
+   "optical",
+   "laser",
+   "mode",
+   "instability"
+  ],
+  "conditions": {
+   "cond1_statistics_only": [
+    {
+     "raw_response": {
+      "variable": {
+       "symbol": "f1",
+       "quantity": "scalar concentration (e.g., temperature or tracer) undergoing diffusion with weak nonlinear source/sink",
+       "parent_family": "reaction-diffusion",
+       "reasoning": "The nested fit shows [d1,d2] R2=0.6514 while [d1] and [d1,f*d1,f^2*d1] are essentially zero, indicating the time derivative is governed by the second spatial derivative (Laplacian) and not by f1 itself. The strong negative correlation with target order 2 (-0.819) confirms a negative Laplacian (diffusion-like). The negligible improvement adding f*d1 (0.6514→0.6520) rules out advection or strong nonlinear self-interaction. The positive state-conditioned response at higher states and segmented response extremes hint at a weak nonlinear source, but it is subdominant to diffusion."
+      },
+      "discipline": {
+       "field": "Physics",
+       "subfield": "Heat and mass transfer / continuum physics",
+       "reasoning": "The evolution is dominated by a second spatial derivative, the field has no self-advection, and the time derivative is a scalar field with a strong negative Laplacian. This is the signature of a diffusion process for a conserved or non-conserved scalar, typical in heat conduction, tracer dispersion, or reaction-diffusion systems."
+      },
+      "confidence": "medium",
+      "key_evidence": [
+       "nested_fit: [d1,d2] R2=0.6514 vs [d1] R2≈0; shows second-derivative-driven dynamics",
+       "correlate_with_target order 2: -0.819; consistent with negative Laplacian",
+       "nested_fit: adding f*d1 only changes R2 by +0.0006; rules out advective term",
+       "space_spectrum: dominated by k=3 (43%); moderate-scale spatial structure"
+      ],
+      "would_change_if": "If a second variable (e.g., velocity field) were available and cross-correlation or a coupled PDE fit showed that f1 is a velocity potential (where the Laplacian appears as the divergence of a gradient), I would change to 'velocity potential'. Also, if a nonlinear term like f^2 or f*d1 improved R2 significantly, I would lean to a reaction-diffusion with stronger reaction."
+     },
+     "quantity": "scalar concentration (e.g., temperature or tracer) undergoing diffusion with weak nonlinear source/sink",
+     "hit": false
+    },
+    {
+     "raw_response": {
+      "variable": {
+       "symbol": "f1",
+       "quantity": "a scalar concentration field (e.g., temperature anomaly, tracer concentration, or species density) evolving by linear diffusion with a weak nonlinear source/sink",
+       "parent_family": "parabolic (reaction–diffusion; specifically diffusion with optional weak nonlinearity)",
+       "reasoning": "The nested_fit shows R2≈0.65 only when d2 (second spatial derivative) is included, while terms involving f1 itself (f, f², f*d1) give near-zero R2. Correlate_with_target order 2 is -0.819, consistent with a negative Laplacian (diffusion operator). The state-conditioned response and segmented response hint at weak state-dependent nonlinearity, but the R2 increase from adding f*d1 is negligible, so the dominant term is diffusion."
+      },
+      "discipline": {
+       "field": "physics / applied mathematics",
+       "subfield": "heat or mass transfer / reaction-diffusion systems",
+       "reasoning": "A scalar field evolving by its own second spatial derivative is the hallmark of linear diffusion, commonly studied in heat conduction or tracer dispersion. The weak nonlinear source is typical of reaction terms in chemical/biological transport."
+      },
+      "confidence": "medium",
+      "key_evidence": [
+       "nested_fit R2=0.6514 for [d1,d2] vs near-zero for d1-only and d1+f*d1 terms",
+       "correlate_with_target order 2 = -0.819 (negative Laplacian)",
+       "derivative_rms order 1 vs order 2 similar (0.1306 vs 0.1430) ruling out a dominant first-order advection"
+      ],
+      "would_change_if": "If cross-correlation with a second field or a PDE fit with a separate advection velocity showed that d2 arises from a coupling to another variable (e.g., a streamfunction or velocity potential), then f1 would instead be a derived quantity (e.g., a potential whose Laplacian is vorticity or divergence)."
+     },
+     "quantity": "a scalar concentration field (e.g., temperature anomaly, tracer concentration, or species density) evolving by linear diffusion with a weak nonlinear source/sink",
+     "hit": false
+    },
+    {
+     "raw_response": {
+      "variable": {
+       "symbol": "f1",
+       "quantity": "temperature",
+       "parent_family": "Diffusion (heat) equation",
+       "reasoning": "The time derivative correlates strongly negatively with the second spatial derivative (correlate_with_target order 2 = -0.819), and nested fits show that including d2 (second spatial derivative) dramatically improves R2 (from ~0 to 0.6514) while d1 and self-terms (f*d1, f^2*d1) add nothing. This is the signature of linear diffusion. The weak state-conditioned response at positive states and segmented-response coefficients of large magnitude at extremes suggest a mild nonlinearity, but the negligible R2 gain from f*d1 indicate a linear diffusion dominates. The slow domain-average drift and positive mean are consistent with a weak heat source, but the main driver is Laplacian diffusion."
+      },
+      "discipline": {
+       "field": "Physics",
+       "subfield": "Thermal/Heat transport or continuum mechanics (diffusive scalar)",
+       "reasoning": "The evidence of strong negative spatial second derivative driving time evolution, with no advective or self-coupling, is the classic signature of heat (or diffusion) in a one-dimensional domain. The field is scalar, bounded, and its time derivative mirrors the curvature of the field."
+      },
+      "confidence": "medium",
+      "key_evidence": [
+       "correlate_with_target f1 order 2: -0.819",
+       "nested_fit: [d1,d2] R2=0.6514 vs [d1] and [d1,f*d1,...] ≈ 0"
+      ],
+      "would_change_if": "A direct cross-correlation with a second field (e.g., a velocity or another scalar) or a fitted PDE with an advection term showing significant improvement would change my answer. Specifically, if a term like v*d1 (where v is a separately measured transport velocity) won strongly in the fit, the variable would be advected scalar; or if the Laplacian correlation disappeared after conditioning on another field, it would point to a different driver."
+     },
+     "quantity": "temperature",
+     "hit": false
+    }
+   ],
+   "cond2_statistics_equation": [
+    {
+     "raw_response": {
+      "variable": {
+       "symbol": "f1",
+       "quantity": "scalar field (e.g., concentration, temperature anomaly, or amplitude) evolving under a localised Gaussian gain, diffusion, fourth-order dissipation, and cubic-quintic nonlinearity",
+       "parent_family": "reaction-diffusion (Swift-Hohenberg / complex Ginzburg-Landau type) with additional nonlinearity stabilization",
+       "reasoning": "The discovered equation is a forced reaction-diffusion equation: u_t = pump(x)*u + D u_xx + H u_xxxx + nonlinear(u). The strong negative correlation with the second derivative (correlate_with_target order 2 = -0.819) supports diffusion, and the nested fit [d1,d2] R2=0.65 vs [d1] ~0 indicates that the second derivative is the dominant linear spatial operator. The Gaussian pump and cubic/quintic terms introduce a localised growth/saturation that is not captured by simple self-advection, consistent with a pattern-forming amplitude in a spatially inhomogeneous medium."
+      },
+      "discipline": {
+       "field": "nonlinear physics / pattern formation",
+       "subfield": "reaction-diffusion systems (or amplitude equations of pattern formation)",
+       "reasoning": "The equation combines a localised pump (Gaussian spatial profile), diffusion, fourth-order stabilization, and cubic-quintic saturation. This structure is typical of amplitude equations derived from instabilities in hydrodynamics, optics, or chemical systems, where a scalar field (e.g., envelope amplitude, concentration deviation) evolves under local gain and diffusion-like spreading."
+      },
+      "confidence": "medium",
+      "key_evidence": [
+       "Nested fit: [d1,d2] R2=0.6514 vs [d1] ~0, indicating that a second spatial derivative (u_xx) dominates evolution.",
+       "correlate_with_target order 2 = -0.819 (negative Laplacian signature).",
+       "Discovered equation exactly matches a Gaussian pump + u_xx + u_xxxx + u^3 + u^5 form.",
+       "segmented_response shows high positive coefficient at low states and negative at high states, hinting at nonlinear saturation."
+      ],
+      "would_change_if": "If the dataset contained a second field or cross-correlation with another variable, or if the noise level allowed distinguishing between u_xx and u_xxxx alone, I would reconsider whether f1 is a physical field (e.g., concentration) versus a velocity potential or envelope. Also, if the pump term were shown to be externally imposed rather than derived from the field, the physical interpretation might change to an active advection-diffusion system."
+     },
+     "quantity": "scalar field (e.g., concentration, temperature anomaly, or amplitude) evolving under a localised Gaussian gain, diffusion, fourth-order dissipation, and cubic-quintic nonlinearity",
+     "hit": true
+    },
+    {
+     "raw_response": {
+      "variable": {
+       "symbol": "f1",
+       "quantity": "A scalar field (possibly concentration, temperature, or population density) undergoing subcritical Ginzburg-Landau dynamics with a spatially localized pump",
+       "parent_family": "Reaction-diffusion (Swift-Hohenberg-like)",
+       "reasoning": "The discovered equation combines a localized linear growth (pump*u), negative diffusion (u_xx), fourth-order dissipation, and cubic/quintic nonlinearity. This is the canonical form for a subcritical Turing or Ginzburg-Landau amplitude equation. The evidence from statistics alone pointed to diffusion (strong negative u_xx R2=0.6514 vs negligible self-coupling) plus weak nonlinearity (segmented response nonlinear but negligible R2 gain, state-conditioned response weak). The equation now resolves the nonlinearity as a cubic with quintic saturation."
+      },
+      "discipline": {
+       "field": "Nonlinear physics / pattern formation",
+       "subfield": "Amplitude equations and localized structures (e.g., in fluid convection, nonlinear optics, or reaction-diffusion systems)",
+       "reasoning": "The localized Gaussian pump is typical for generating dissipative solitons or localized patterns. The combination of negative diffusion, fourth-order stabilization, and cubic-quintic nonlinearity is a hallmark of nonlinear amplitude equations in pattern-forming systems."
+      },
+      "confidence": "medium",
+      "key_evidence": [
+       "Nested fit: [d1,d2] R2=0.6514 versus ~0 for d1 and self-coupling terms, indicating evolution governed by a second spatial derivative (diffusion).",
+       "The discovered equation includes pump*u, u_xx, u_xxxx, u^3, u^5 - a specific pattern-forming reaction-diffusion form.",
+       "Correlate_with_target order 2: -0.819, consistent with negative Laplacian.",
+       "Segmented response: large positive and negative coefficients at extremes (nonlinearity), but fractional R2 with f*d1 negligible (not advective)."
+      ],
+      "would_change_if": "If cross-correlation with another measurable field or a domain for the pump (e.g., x location and width) were given, one could pinpoint the physical context (e.g., optical cavity, chemical reactor, or fluid layer) and increase confidence. Also if the loss floor were checked against known exact solutions of Swift-Hohenberg with pump."
+     },
+     "quantity": "A scalar field (possibly concentration, temperature, or population density) undergoing subcritical Ginzburg-Landau dynamics with a spatially localized pump",
+     "hit": false
+    },
+    {
+     "raw_response": {
+      "variable": {
+       "symbol": "f1",
+       "quantity": "a scalar field satisfying a localised-pump Swift–Hohenberg–like (or Kolmogorov–Petrovsky–Piskunov-like) reaction–diffusion equation with a cubic–quintic nonlinearity",
+       "parent_family": "reaction–diffusion (Swift–Hohenberg family, with a second-order diffusion term, fourth-order stabilisation, and a nonlinear reaction term)",
+       "reasoning": "The discovered equation is u_t = pump*u - 2 u_xx - u_xxxx - u^3 + u^5, which is the canonical (one-dimensional) form of a Swift–Hohenberg or cubic–quintic pattern-forming field. The strong negative second derivative (correlate order2 -0.819; nested fit [d1,d2] R2 0.65) and the nonlinear cubic/quintic terms (state-conditioned response and segmented response at extremes) match exactly. The localised Gaussian pump drives instability in the core region, as in pattern-forming systems."
+      },
+      "discipline": {
+       "field": "physics of pattern formation and nonlinear dynamics",
+       "subfield": "reaction–diffusion systems, Swift–Hohenberg equation, perhaps soft matter or hydrodynamics",
+       "reasoning": "The equation is a textbook Swift–Hohenberg–type model used to describe thermal convection, Raman laser patterns, and other dissipative pattern formation. The naming is pinned by the 4th-order term with negative coefficient (u_xxxx -1.0) plus the cubic/quintic saturation, which is specific to that family."
+      },
+      "confidence": "high",
+      "key_evidence": [
+       "correlate_with_target f1 order 2: -0.819 (negative Laplacian) and nested fit [d1,d2] R2 0.6514 (second derivative drives evolution) → diffusion term.",
+       "discovered equation contains exactly u_t = pump*u - 2.0 u_xx - 1.0 u_xxxx - 1.0 u^3 + 1.0 u^5, i.e., Swift–Hohenberg with cubic–quintic nonlinearity.",
+       "state-conditioned response shows nonlinear growth at positive states and weak response at negative states, consistent with u^3/u^5 saturation; segmented response has strong coefficients at extremes.",
+       "space_spectrum peaks at k=3 and time_spectrum mode 1, indicating a dominant unstable mode and slow evolution, typical of pattern-forming instabilities."
+      ],
+      "would_change_if": "If an additional cross-correlation with a second field (e.g., a velocity field) were provided, it could point to a passive scalar or a velocity potential; however, the present evidence of the discovered equation and negative Laplacian strongly indicates a Swift–Hohenberg–type nonlinear diffusion field."
+     },
+     "quantity": "a scalar field satisfying a localised-pump Swift–Hohenberg–like (or Kolmogorov–Petrovsky–Piskunov-like) reaction–diffusion equation with a cubic–quintic nonlinearity",
+     "hit": true
+    }
+   ],
+   "cond3_statistics_equation_parents": [
+    {
+     "raw_response": {
+      "variable": {
+       "symbol": "f1",
+       "quantity": "Swift-Hohenberg order parameter (pattern amplitude, e.g., convective roll amplitude or optical pattern field)",
+       "parent_family": "Swift-Hohenberg equation (SH) / real Ginzburg-Landau with spatial inhomogeneity and quartic-quintic nonlinearity",
+       "reasoning": "The measured statistics show a dominant second-order negative correlation (correlate_with_target order 2 = -0.819) and nested fit R2=0.6514 only when including d2, which is the Laplacian. But pure diffusion would not have the fourth-order spatial stabilisation that appears in the discovered equation. The discovered equation has exactly the SH structure: pump*u (spatially varying linear term) - 2 u_xx - u_xxxx + cubic-quintic nonlinearity. SH is the minimal pattern-forming PDE with a conserved (fourth-order) stabilising term balancing negative diffusion. The classical family list gave 'Swift-Hohenberg' and 'generalized Ginzburg-Landau' both high fit; the specific combination of spatial pump + fourth-order term + saturating quintic matches the SH paradigm. Also the time spectrum dominated by mode 1 and space spectrum concentrating at low k (k=2-3) is consistent with a selected pattern mode. The domain-average drift (31% of rms) reflects slow SH instability growth.",
+       "discipline": {
+        "field": "Nonlinear physics / pattern formation",
+        "subfield": "Convection or optical pattern formation, Swift-Hohenberg-type model",
+        "reasoning": "The variable is a real scalar field whose evolution is governed by a spatial fourth-order differential operator and cubic/quintic saturating nonlinearities, which is the hallmark of amplitude equations for dissipative patterns (e.g., Rayleigh-Bénard convection rolls, lasers or fluid layers). The gaussian pump suggests an inhomogeneous forcing or localized gain pattern, common in patterns in optics and convection. The absence of advective u u_x rules out Kuramoto-Sivashinsky, and the presence of -u^5 as a saturation term points to pattern selection rather than pure reaction-diffusion."
+       },
+       "confidence": "medium",
+       "key_evidence": [
+        "Nested fit shows R2 = 0.6514 only with d2 (second derivative), but the discovered equation requires also d4 and nonlinear terms; correlated with target order 2 = -0.819 is consistent with negative Laplacian but not sufficient alone.",
+        "The discovered equation coefficients: pump 1.5*exp(-0.1 x^2), -2.0 u_xx, -1.0 u_xxxx, -u^3 + u^5: this is exactly a Swift-Hohenberg with spatially varying linear growth and quintic saturation.",
+        "Time spectrum dominant at mode 1 and space spectrum at k=2-3 reflect a pattern selection with slow temporal evolution and finite wavenumber, which is SH-type."
+       ],
+       "would_change_if": "If the measured derivative correlation with order 4 was as strong as order 2, or if cross-correlation with a second field (e.g., velocity) was present, I would switch to a purely diffusion-reaction interpretation. Also, if the amplitude range were large (O(1) or above) and the direct nonlinear coefficients in the data were much larger, I might lean to a Ginzburg-Landau interpretation; but the current evidence supports SH."
+      }
+     },
+     "quantity": "Swift-Hohenberg order parameter (pattern amplitude, e.g., convective roll amplitude or optical pattern field)",
+     "hit": true
+    },
+    {
+     "raw_response": {
+      "variable": {
+       "symbol": "f1",
+       "quantity": "local amplitude/order parameter of a pattern-forming field (e.g., convection-roll amplitude) in a generalized Ginzburg-Landau or Swift-Hohenberg system",
+       "parent_family": "Generalized Ginzburg-Landau (real quintic) closest, with Swift-Hohenberg as sibling",
+       "reasoning": "The discovered equation has linear 'pump' growth term with spatial localization, second-order diffusion, fourth-order stabilisation, and cubic + quintic nonlinearity — exactly the structure of a real quintic Ginzburg-Landau equation. The strong negative u_xx and positive fourth-order term (from Evidence 2) and the measured negative second-order correlation (-0.819) rule out simple advection or reaction-diffusion. The fact that f1 itself appears as the primary variable and its evolution is governed by its own second/fourth derivatives identifies it as an order-parameter amplitude, not a velocity or concentration that would be advected."
+      },
+      "discipline": {
+       "field": "Nonlinear dynamics / pattern formation",
+       "subfield": "Amplitude equations for spatiotemporal patterns (convection, liquid crystals, optical systems)",
+       "reasoning": "The Swift-Hohenberg/Ginzburg-Landau form, the space-time spectra (dominant spatial mode k=3 and time mode 1), the localised pump, and the higher-order nonlinearity are hallmarks of pattern-forming systems. The absence of advection (order-1 correlation ≈0) further disfavors fluid dynamics or population biology, and the target being a scalar field with its own Laplacian-driven evolution is characteristic of amplitude models."
+      },
+      "confidence": "medium",
+      "key_evidence": [
+       "Discovered equation: u_t = pump*u - 2*u_xx - u_xxxx - u^3 + u^5, with all terms necessary to fit data",
+       "Measured negative correlation with second derivative (-0.819) and nested fit [d1,d2] R2=0.6514, indicating diffusion-like second-order term",
+       "State-conditioned response and segmented response show weak nonlinearity (cubic/quintic) but small R2 gain, consistent with dominant linear+diffusion+fourth-order terms",
+       "Space spectrum peaks at k=3 and time spectrum at mode 1, typical of pattern amplitude with slow drift"
+      ],
+      "would_change_if": "If cross-correlation with another field (e.g., a second variable) or a nonzero order-1 advection term were found, it would push towards a reaction-diffusion or fluid convection model rather than a pure amplitude PDE."
+     },
+     "quantity": "local amplitude/order parameter of a pattern-forming field (e.g., convection-roll amplitude) in a generalized Ginzburg-Landau or Swift-Hohenberg system",
+     "hit": true
+    },
+    {
+     "raw_response": {
+      "variable": {
+       "symbol": "f1",
+       "quantity": "order parameter (pattern amplitude) in a localised Swift-Hohenberg or generalized Ginzburg-Landau model",
+       "parent_family": "Swift-Hohenberg equation (with spatial pump and quintic nonlinearity)",
+       "reasoning": "The discovered equation contains the hallmark terms: linear growth term (spatially localized pump), second-order term (-2 u_xx), fourth-order stabilisation (-u_xxxx), and nonlinear cubic/quintic terms. This matches the canonical Swift-Hohenberg structure u_t = r u - (1 + d_xx)^2 u + nonlinearity, here with r varying in space and an added +u^5 saturation. The measured statistics also show a strong negative correlation with the second derivative (-0.819), a weak but present nonlinearity, and a dominant low-k spatial mode, consistent with a pattern-forming amplitude equation."
+      },
+      "discipline": {
+       "field": "physics",
+       "subfield": "pattern formation / nonlinear dynamics / condensed matter",
+       "reasoning": "The Swift-Hohenberg and Ginzburg-Landau equations are canonical models for pattern-forming instabilities (e.g., convection rolls, lasers, fluid convection, nonlinear optics). The localised pump and the combination of cubic and quintic nonlinearities indicate a spatially confined pattern amplitude subject to saturation."
+      },
+      "confidence": "medium",
+      "key_evidence": [
+       "The discovered equation has all the structural terms of Swift-Hohenberg: pump*u, -2 u_xx, -u_xxxx, and -u^3+u^5.",
+       "The high R2 of nested fit [d1,d2] (0.6514) and strong negative correlation with second derivative (-0.819) confirm the dominant second-order term.",
+       "The space/time spectra showing dominant mode 3 in space and mode 1 in time are typical of a pattern amplitude evolving slowly in time.",
+       "The weak nonlinear self-interaction (small R2 increase when adding f*d1 and f^2*d1) is consistent with amplitude equations where nonlinearity is polynomial in u, not advective."
+      ],
+      "would_change_if": "If a cross-correlation with another field or a two-field coupled PDE was discovered, it could change the interpretation from a single order parameter to a velocity potential or concentration field; also if the pump width were much smaller or the sign of the second-order term were positive, it might point to an anti-diffusive reaction-diffusion system rather than Swift-Hohenberg."
+     },
+     "quantity": "order parameter (pattern amplitude) in a localised Swift-Hohenberg or generalized Ginzburg-Landau model",
+     "hit": true
+    }
+   ]
+  }
+ },
+ "chemotaxis": {
+  "truth_role": "population density",
+  "truth_keywords": [
+   "population",
+   "species",
+   "biological",
+   "cell",
+   "chemotax",
+   "organism",
+   "ecolog",
+   "bacteria"
+  ],
+  "conditions": {
+   "cond1_statistics_only": [
+    {
+     "raw_response": {
+      "variable": {
+       "symbol": "f1",
+       "quantity": "normalized concentration or temperature anomaly (evolving toward a uniform high state)",
+       "parent_family": "advection-diffusion or reaction-diffusion (nonlinear source)",
+       "reasoning": "Nonnegative, bounded between 0 and 1, non-decreasing average, skewed high. Derivative nonnegative. Spatial smooth (k=1 dominant). State-conditioned response decreases at high states but has a mild bump at intermediate states and negative segment slopes after first, suggesting saturation or logistic-like growth. Nested fits fail, indicating nonlinearity not in f or derivatives. The positive mean, increasing total, and smooth field resemble a concentration or temperature under a source term that saturates."
+      },
+      "discipline": {
+       "field": "geophysics",
+       "subfield": "hydrology or contaminant transport",
+       "reasoning": "A nonnegative, growing, bounded scalar with high spatial coherence and time evolution dominated by low modes is typical of concentration (e.g., tracer, solute) or temperature in a confined domain under a distributed source. The state-conditioned response decreasing at high states indicates saturation, e.g., chemical reaction or radiative damping. The domain average increases, consistent with accumulation due to inflow or reaction."
+      },
+      "confidence": "low",
+      "key_evidence": [
+       "f1 is nonnegative and its time derivative is nonnegative with positive mean, indicating monotonic increase",
+       "state-conditioned response shows a decrease from ~0.15 at low states to ~0.12 at high states with a bump around 0.2-0.3, suggesting nonlinear saturation",
+       "space spectrum dominated by k=1 (90%) indicating smooth large-scale structure",
+       "nested fits all negative R2, ruling out linear or simple polynomial dependence"
+      ],
+      "would_change_if": "If derivative RMS orders were swapped (order2 < order1), that would indicate diffusive smoothing rather than growth. Also if spatial spectrum showed high k components, it would change to a turbulent mixing problem."
+     },
+     "quantity": "normalized concentration or temperature anomaly (evolving toward a uniform high state)",
+     "hit": false
+    },
+    {
+     "raw_response": {
+      "variable": {
+       "symbol": "f1",
+       "quantity": "temperature (or analogous diffusive scalar concentration) undergoing spatially uniform heating / source accumulation",
+       "parent_family": "diffusion-reaction (or advection-diffusion with source) with nonlinear saturation",
+       "reasoning": "f1 is nonnegative, bounded [0,1], skewed high, and globally increasing with a positive time derivative everywhere. Positive mean and negative-free derivative point to a monotonic accumulation (e.g., temperature increase). Dominant k=1 spatial mode with smooth structure suggests diffusion smoothing. State-conditioned response shows a declining growth rate at high values, hinting at a nonlinear saturation (e.g., logistic or Arrhenius-like) rather than simple linear growth."
+      },
+      "discipline": {
+       "field": "geophysics / environmental physics",
+       "subfield": "heat transport in a porous medium or sea-ice / snow thermodynamics",
+       "reasoning": "Bounded state between 0 and 1, nonnegative and monotonically increasing with spatial smoothness and a saturating (slowing) time derivative resembles temperature field in a phase-change process or a diffusive tracer in an enclosed domain. The space-spectrum peaked at k=1 and time modes decaying are typical for diffusion in a simple geometry. The non-monotonic state-conditioned response with a bump at low state suggests a temperature-dependent reaction (e.g., melting or enthalpy) rather than a pure linear transport."
+      },
+      "confidence": "medium",
+      "key_evidence": [
+       "f1 min=0 max=1, negative fraction=0, and f1_t_true min=0 (nonnegative), showing a monotonic increasing bounded quantity",
+       "state_conditioned_response: response (time derivative) decreases from ~0.155 at low state to ~0.12 at high state with a bump near 0.2-0.3, indicating nonlinear state-dependent growth/saturation",
+       "space_spectrum: 90% energy in k=1, 10% in k=2, indicating strong large-scale spatial coherence consistent with diffusion",
+       "nested_fit R2 all negative, ruling out simple linear derivative closure but allowing nonlinear reaction-diffusion"
+      ],
+      "would_change_if": "If a sample_profile or spatial snapshot had shown a sharp front or localized peak (e.g., a propagating wave), I would switch to an advection or reaction-front quantity. Also, if the time derivative had negative regions, it would rule out simple accumulation and point to oscillation."
+     },
+     "quantity": "temperature (or analogous diffusive scalar concentration) undergoing spatially uniform heating / source accumulation",
+     "hit": false
+    },
+    {
+     "raw_response": {
+      "variable": {
+       "symbol": "f1",
+       "quantity": "Ocean salinity (practical salinity anomaly) in a coastal/estuarine system during a salt intrusion event",
+       "parent_family": "Advection-diffusion (transport) with source/sink (not pure diffusion because field increases globally)",
+       "reasoning": "Nonnegative, bounded [0,1] (normalized salinity), increasing everywhere (derivative positive), smooth large-scale structure (k=1 dominant 90%), nonlinear state-dependent response (low salinity increases fastest, high salinity slower), and poor linear fits (nested R2 negative) point to nonlinear transport/accumulation rather than simple relaxation or wave. The 0→1 range and monotone increase suggest a normalized concentration/salinity."
+      },
+      "discipline": {
+       "field": "Physical oceanography / environmental fluid dynamics",
+       "subfield": "Estuarine circulation and salt transport",
+       "reasoning": "Salinity is the canonical nonnegative field in [0,1] that increases over time during salt intrusion, has smooth spatial gradient (k=1), shows advection-dominated dynamics (time spectrum multi-mode, derivative rms order2>order1), and the state-conditioned response (higher derivative at low salinity) matches mixing/entrainment where fresh water gets saltier faster than already-saline water."
+      },
+      "confidence": "medium",
+      "key_evidence": [
+       "f1 min=0 max=1, zero negative fraction, mean 0.71 – a normalized positive scalar like salinity/ concentration",
+       "f1_t_true always nonnegative with mean +0.0857 and domain average increases 108% of RMS – global monotone growth",
+       "space_spectrum k=1 (90%) – large-scale smooth structure typical of basin-scale salinity field",
+       "state_conditioned_response: response largest at low state (0.155) and decreasing to 0.120 at high state, with slight bump – nonlinear state-dependent growth rate"
+      ],
+      "would_change_if": "If the time spectrum showed a single dominant frequency (mode1 >>90%) or if balance_test showed |domain avg|/rms ~0, I would switch to a wave/oscillatory quantity (e.g., sea surface height), or if negative fraction >0 I'd consider a signed dynamic (e.g., vorticity)."
+     },
+     "quantity": "Ocean salinity (practical salinity anomaly) in a coastal/estuarine system during a salt intrusion event",
+     "hit": false
+    }
+   ],
+   "cond2_statistics_equation": [
+    {
+     "raw_response": {
+      "variable": {
+       "symbol": "f1",
+       "quantity": "population density (or biomass density) of a growing, spatially structured population, possibly a microbial colony or tumor cell density",
+       "parent_family": "reaction-diffusion with convection/transport (advection-diffusion-reaction, specifically Fisher-Kolmogorov-like with nonlinear advection)",
+       "reasoning": "f1 is nonnegative, bounded between 0 and 1 (can be normalized carrying capacity), skewed to high values, and globally increasing (derivative nonnegative, mean positive, domain average increases). The discovered equation is u_t = 0.1 u_xx - 0.5 ∇[u(1-u) cos(x)] + 1.0 u(1-u). The logistic term u(1-u) is the canonical growth term with carrying capacity. The flux term with u(1-u) is a crowding-limited or density-dependent transport (e.g., chemotaxis or volume-filling), and the positive diffusion is random dispersal. The state-conditioned response shows high growth at low density and decreasing but non-zero growth at high density, consistent with logistic growth (but modified by transport). Segmented response shows positive then negative coefficients, indicating nonlinear state-dependence. The time spectrum multi-mode and spatial spectrum large-scale reflect a growing structured pattern."
+      },
+      "discipline": {
+       "field": "Mathematical biology / ecology",
+       "subfield": "Population dynamics / spatial ecology (or cancer modeling)",
+       "reasoning": "The combination of logistic growth, density-dependent flux, and diffusion is the hallmark of biological population spread and growth. The quantity bounded between 0 and 1 with monotonic increase and logistic local term is standard for population density relative to carrying capacity. The spatial cosine modulation in the flux is indicative of an environmental or periodic heterogeneities impacting movement, common in ecology. State-conditioned responses emphasize density-dependent per capita growth, a central concept in ecology."
+      },
+      "confidence": "medium",
+      "key_evidence": [
+       "discovered equation: u_t = 0.1 u_xx - 0.5 (u(1-u) cos(x))_x + 1.0 u(1-u)",
+       "f1 nonnegative, max 1, mean 0.71, derivative nonnegative (monotonic increase)",
+       "state-conditioned response: high response at low state (~0.155 at state 0.042) decreasing to ~0.12 at high state, with bump at intermediate, indicates logistic-type growth",
+       "segmented_response: first segment +0.561, then negative, shows nonlinear state-dependent rate",
+       "balance_test: domain average increases by 108% of rms over record, consistent with net growth"
+      ],
+      "would_change_if": "If the local term were negative or if the field were not monotonic increasing, it would not be a growing population. Specifically, the coefficient of the logistic term being +1.0 is decisive; if the equation had been pure advection-diffusion without local growth, the field would be interpreted as a conserved scalar (e.g., temperature or concentration) rather than a population density."
+     },
+     "quantity": "population density (or biomass density) of a growing, spatially structured population, possibly a microbial colony or tumor cell density",
+     "hit": true
+    },
+    {
+     "raw_response": {
+      "variable": {
+       "symbol": "f1",
+       "quantity": "population density, biomass, or concentration of a growing species/quantity with logistic growth and diffusion",
+       "parent_family": "Reaction-diffusion (Fisher/KPP-type) with advective flux",
+       "reasoning": "The field is nonnegative, bounded between 0 and 1, skewed high, and monotonically increasing on average, consistent with a density/concentration that is growing and saturating. The discovered equation combines a logistic local term u(1-u), a diffusion term, and a divergence of a crowding-limited flux -0.5*u(1-u)*cos(x). The logistic term naturally produces the observed nonnegative, increasing behavior and the state-dependent response that decreases at high states. The 'balance_test' shows the domain-average increases, the time spectrum is multi-mode, and the nested fit indicates nonlinearity not captured by linear derivative terms."
+      },
+      "discipline": {
+       "field": "Population dynamics / ecology",
+       "subfield": "Spatial ecology, biological invasions, or population density with logistic growth and dispersal",
+       "reasoning": "The combination of logistic growth, diffusion, and a flux term with crowding limitation (u(1-u)) is classic for population density or biomass in ecology. The state-conditioned response decreasing at higher densities, the bounded field, and the nonnegative monotonic increase strongly indicate a growing population with carrying capacity. The spatial modulation via cos(x) suggests a periodic habitat or forcing, but the core equation is the Fisher-KPP reaction-diffusion family with an extra flux term."
+      },
+      "confidence": "medium",
+      "key_evidence": [
+       "The discovered equation includes logistic local term 1.0*u*(1-u), which explains the bounded, nonnegative, increasing field and state-dependent response decreasing at high density.",
+       "Measured statistics: f1 is between 0 and 1 with mean 0.7145, negative fraction 0 for both field and derivative, and domain-average increases by 108% of its RMS over the record, consistent with population growth toward carrying capacity."
+      ],
+      "would_change_if": "If additional evidence showed that f1 is a non-material concentration (e.g., temperature or chemical concentration) with no biological interpretation, or if the flux term were identified as a conserved advection rather than a crowding-limited migration, I would reconsider toward a transport/chemotaxis or phase-field interpretation."
+     },
+     "quantity": "population density, biomass, or concentration of a growing species/quantity with logistic growth and diffusion",
+     "hit": true
+    },
+    {
+     "raw_response": {
+      "variable": {
+       "symbol": "f1",
+       "quantity": "Biomass density (or population density) in a logistic reaction-diffusion-advection model with Allee-type crowding and spatial heterogeneity",
+       "parent_family": "Reaction-diffusion-advection (nonlinear PDE, Fisher/KPP-like with advective flux)",
+       "reasoning": "The discovered equation is u_t = 0.1*u_xx - 0.5*(u(1-u)*cos(x))_x + u(1-u). The local term u(1-u) with positive coefficient is logistic growth. The flux -0.5 u(1-u) cos(x) is a crowding-limited, spatially modulated advection. Diffusion with small coefficient is present. The data show f1 in [0,1], nonnegative, increasing on average, and state-dependent response decreasing at high u (due to 1-u factor). The logistic term pins it to population dynamics or similar growth-limited quantity."
+      },
+      "discipline": {
+       "field": "Mathematical biology / ecology",
+       "subfield": "Population dynamics / spatial ecology",
+       "reasoning": "The logistic term u(1-u) and nonnegative bounded state strongly indicate population density (e.g., organisms, biomass). The spatially periodic flux could represent environmental heterogeneity or movement toward favorable regions. The field's increasing trend and positive time derivative indicate growth."
+      },
+      "confidence": "medium",
+      "key_evidence": [
+       "Discovered equation: local term +1.0*u*(1-u) (logistic growth) and bounded f1 (min 0, max 1) with zero negative fraction",
+       "State-conditioned response: response larger at low states (~0.15) and decreases to ~0.12 at high states, consistent with growth proportional to u(1-u)"
+      ],
+      "would_change_if": "If the equation had a different local term (e.g., u*(1-u^2) or u*(1-u/K) with K differing from 1) or if the data showed a conserved quantity (no local term), I would reconsider toward a different field (e.g., concentration or temperature). Also, if the spatial modulation were not periodic but shown to be temperature-dependent, it might suggest thermal convection."
+     },
+     "quantity": "Biomass density (or population density) in a logistic reaction-diffusion-advection model with Allee-type crowding and spatial heterogeneity",
+     "hit": true
+    }
+   ],
+   "cond3_statistics_equation_parents": [
+    {
+     "raw_response": {
+      "variable": {
+       "symbol": "f1",
+       "quantity": "Normalized population density or concentration fraction (e.g., tumor cell density, species occupancy, or resource fraction) undergoing logistic growth, diffusion, and directed transport",
+       "parent_family": "Reaction-convection-diffusion (Fisher-KPP with an additional density-dependent drift)",
+       "reasoning": "The field is nonnegative, bounded between 0 and 1, skewed to high values, and globally increasing (domain-average grows by 108% of RMS), which fits a normalized density or fraction. The discovered equation is u_t = 0.1 u_xx + 1.0 u(1-u) - 0.5 ∂_x[u(1-u)cos(x)], which is exactly the Fisher-KPP reaction-diffusion equation augmented by a density-dependent, spatially periodic advection term. The logistic term u(1-u) with coefficient +1.0 and positive time derivative strongly indicate logistic growth. The flux -0.5 u(1-u)cos(x) is a crowding-limited drift, producing the observed non-monotonic state-conditioned response. State-conditioned responses are largest at low state (~0.15) and decrease at high state (~0.12), consistent with logistic saturation; the nonmonotonic bump around state 0.2–0.3 arises from the spatial cosine flux."
+      },
+      "discipline": {
+       "field": "Mathematical biology / Ecology",
+       "subfield": "Population dynamics / Invasion biology",
+       "reasoning": "The equation is Fisher-KPP with logistic growth and density-dependent advection, a classic model for population spread, invasion, or tumor growth. The field is bounded in [0,1] (normalized carrying capacity), has a smooth large-scale spatial structure (k=1 dominant), grows over time, and shows state-dependent growth that saturates at high densities. No chemistry or physics-specific conserved quantities suggest otherwise. The derivative_rms and kinetic terms align with reaction-diffusion-advection models used in biology."
+      },
+      "confidence": "high",
+      "key_evidence": [
+       "Discovered equation: u_t = 0.1 u_xx + 1.0 u(1-u) - 0.5 ∂_x[u(1-u)cos(x)] with high fit to classical Fisher-KPP parent.",
+       "State-conditioned response: grows fastest at low states (~0.155 at f≈0.04) and decays to ~0.12 at high states (f≈0.98), consistent with logistic saturation and not with linear growth.",
+       "Field is nonnegative, min 0, max 1, negative fraction 0, mean 0.71, skewed high; time derivative nonnegative and domain average increases by 108% of RMS — a growing normalized population/concentration.",
+       "Time spectrum multi-mode with dominant mode 1 but significant higher modes, and spatial spectrum dominated by k=1 (smooth large-scale) with k=2 presence, matching a reaction-diffusion-advection pattern."
+      ],
+      "would_change_if": "If the measured field were not monotonically increasing (e.g., time derivative had large negative fractions or non-monotonic domain averages) it would contradict the logistic growth term. Also, if the second derivative coefficient were negative or the transport sign reversed massively, the parent family would shift toward pure advection-diffusion without growth, lowering confidence."
+     },
+     "quantity": "Normalized population density or concentration fraction (e.g., tumor cell density, species occupancy, or resource fraction) undergoing logistic growth, diffusion, and directed transport",
+     "hit": true
+    },
+    {
+     "raw_response": {
+      "variable": {
+       "symbol": "f1",
+       "quantity": "population density or concentration (e.g., bacterial population fraction, resource concentration, or phase fraction) constrained to [0,1]",
+       "parent_family": "Fisher-KPP equation (with diffusion and logistic growth) plus a density-dependent, space-periodic advection (reaction-convection-diffusion with logistic growth)",
+       "reasoning": "The measured statistics show f1 is nonnegative, bounded [0,1], skewed high, and its time derivative is nonnegative (globally increasing). The state-conditioned response and segmented_response show strong density dependence: growth is high at low density, then declines, with a non-monotonic bump near 0.2–0.3, typical of logistic growth u(1-u) modulated by transport. The discovered equation exactly contains the Fisher-KPP terms: 0.1 u_xx + 1.0 u(1-u), plus an added flux term -0.5 ∂_x[u(1-u) cos(x)]. The positive autocorrelation with its own derivative (+0.365) and the negative second-order correlation (+0.08) are consistent with a nonlinear logistic-like rate. The negative nested fits rule out linear dynamics. Thus the quantity is most likely a density/concentration field obeying Fisher-KPP with an added advective/crowding flux."
+      },
+      "discipline": {
+       "field": "Mathematical biology / ecology / population dynamics",
+       "subfield": "Reaction-diffusion-advection systems, spatial ecology, or biological invasion",
+       "reasoning": "The canonical Fisher-KPP equation (u_t = D u_xx + r u(1-u)) is a classic model for population spread, where u is a fraction of carrying capacity or a species density. The discovered equation adds a density-dependent flux -0.5 u(1-u) cos(x) that can represent directed movement, e.g., advection by an environmental gradient or crowding-limited dispersal. The bounded [0,1] field and logistic growth with a carrying capacity strongly point to a population fraction."
+      },
+      "confidence": "high",
+      "key_evidence": [
+       "Nonnegative, bounded [0,1] field with positive time derivative (global increase) and monotonic mean increase: indicates a growing density/concentration.",
+       "State-conditioned response shows response decreases with state, non-monotonic bump near 0.2–0.3: indicates logistic-type saturation u(1-u).",
+       "Discovered equation includes 0.1 u_xx + 1.0 u(1-u) exactly (Fisher-KPP), with an added u(1-u) cos(x) flux."
+      ],
+      "would_change_if": "If the state-conditioned response were instead linear in u (e.g., response proportional to u) or if the discovered equation lacked the logistic term and instead had a pure algebraic growth, I would switch to a different quantity such as temperature or a non-reactive tracer. Also if the field were allowed to exceed 1 or go negative, the interpretation as population density would weaken."
+     },
+     "quantity": "population density or concentration (e.g., bacterial population fraction, resource concentration, or phase fraction) constrained to [0,1]",
+     "hit": true
+    },
+    {
+     "raw_response": {
+      "variable": {
+       "symbol": "f1",
+       "quantity": "population density or concentration normalized to carrying capacity (u ∈ [0,1])",
+       "parent_family": "Reaction-convection-diffusion equation (with density-dependent advection and logistic growth), or Fisher-KPP with extra transport",
+       "reasoning": "The discovered equation is u_t = 0.1 u_xx + 1.0 u(1-u) - 0.5 ∂_x[u(1-u)cos(x)]. The logistic term u(1-u) with positive coefficient drives growth toward 1. The diffusion term is linear. The transport term is a non-Fickian flux that depends on density and space. This matches reaction-convection-diffusion (or Fisher-KPP with advection). The statistics show f1 is nonnegative, bounded between 0 and 1, with positive time derivatives (growth), positive correlation with derivative, and state-conditioned response that is positive but decreases at high density — consistent with logistic growth (growth is high when u is low, but there is a nonmonotonic bump likely due to the transport). The field is a fraction/density that evolves towards 1."
+      },
+      "discipline": {
+       "field": "Mathematical biology / population dynamics",
+       "subfield": "Spatially explicit population dynamics",
+       "reasoning": "The logistic growth term u(1-u) and reaction-convection-diffusion structure are classic in biology/ecology. The state-conditioned response shows growth (positive derivative) with saturation as u→1, typical of logistic population growth. The transport term with density dependence resembles directed movement or advection due to crowding or spatial heterogeneity. The positive field and the 'growth' behavior point to population density or biomass fraction."
+      },
+      "confidence": "medium",
+      "key_evidence": [
+       "The fitted equation includes logistic term 1.0*u*(1-u) with positive growth coefficient, directly indicating a population or concentration with carrying capacity 1.",
+       "The field f1 is nonnegative and bounded between 0 and 1, with a nonnegative time derivative (mean +0.0857, min 0) — it grows over time, consistent with a growing population or accumulating species.",
+       "State-conditioned response shows positive but decreasing growth as density increases (from +0.155 at low state to +0.120 at high state), matching logistic saturation."
+      ],
+      "would_change_if": "If the transport term were absent or insignificant, the equation would be exactly Fisher-KPP and the confidence would be higher. If the field were known to be a temperature or concentration without biological growth interpretation, the logistic term would need reinterpretation (e.g., as a saturation or reaction term)."
+     },
+     "quantity": "population density or concentration normalized to carrying capacity (u ∈ [0,1])",
+     "hit": true
+    }
+   ]
+  }
+ }
+}

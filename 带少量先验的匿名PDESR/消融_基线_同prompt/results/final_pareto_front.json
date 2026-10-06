@@ -1,0 +1,301 @@
+[
+    {
+        "rank": 1,
+        "mse": 0.00031583077903788034,
+        "complexity": 25,
+        "params": [
+            4.143791,
+            0.058687,
+            20.255154,
+            13.147447,
+            -3.370792
+        ],
+        "equation": "# Transport term: reduced by channel narrowing and crowding\n    channel_profile = np.tanh(x[:, 0:1])  # increases with x, narrowing channel\n    transport = -params[0] * (1 - params[1] * channel_profile) * d_axis(f1, 0, 1) / (1 + params[2] * f1)\n\n    # Relative gradient diffusion (anticipation-driven)\n    relative_gradient = d_axis(f1, 0, 1) / (f1 + params[3])\n    diffusion = -params[4] * d_axis(relative_gradient, 0, 1)\n\n    f1_t_pred = transport + diffusion\n    return f1_t_pred"
+    },
+    {
+        "rank": 2,
+        "mse": 0.0003163474126697705,
+        "complexity": 23,
+        "params": [
+            3.860158,
+            0.057299,
+            18.541763,
+            -1.537401,
+            5.798449
+        ],
+        "equation": "f1_t_pred = -params[0] * (1 - params[1] * np.tanh(x[:, 0:1])) * d_axis(f1, 0, 1) / (1 + params[2] * np.abs(f1)) - params[3] * d_axis(d_axis(f1, 0, 1) / (f1 + params[4]), 0, 1)\n\n    return f1_t_pred"
+    },
+    {
+        "rank": 3,
+        "mse": 0.0003163474126697705,
+        "complexity": 23,
+        "params": [
+            3.860158,
+            0.057299,
+            18.541763,
+            -1.537401,
+            5.798449
+        ],
+        "equation": "f1_t_pred = -params[0] * (1 - params[1] * np.tanh(x[:, 0:1])) * d_axis(f1, 0, 1) / (1 + params[2] * np.abs(f1)) - params[3] * d_axis(d_axis(f1, 0, 1) / (f1 + params[4]), 0, 1)\n\n    return f1_t_pred"
+    },
+    {
+        "rank": 4,
+        "mse": 0.0003163474126697705,
+        "complexity": 23,
+        "params": [
+            3.860158,
+            0.057299,
+            18.541763,
+            -1.537401,
+            5.798449
+        ],
+        "equation": "f1_t_pred = -params[0] * (1 - params[1] * np.tanh(x[:, 0:1])) * d_axis(f1, 0, 1) / (1 + params[2] * f1) - params[3] * d_axis(d_axis(f1, 0, 1) / (f1 + params[4]), 0, 1)\n\n    return f1_t_pred"
+    },
+    {
+        "rank": 5,
+        "mse": 0.0003163474126697705,
+        "complexity": 23,
+        "params": [
+            3.860158,
+            0.057299,
+            18.541763,
+            -1.537401,
+            5.798449
+        ],
+        "equation": "f1_t_pred = -params[0] * (1 - params[1] * np.tanh(x[:, 0:1])) * d_axis(f1, 0, 1) / (1 + params[2] * np.abs(f1)) - params[3] * d_axis(d_axis(f1, 0, 1) / (f1 + params[4]), 0, 1)\n\n    return f1_t_pred"
+    },
+    {
+        "rank": 6,
+        "mse": 0.0003163474126697705,
+        "complexity": 23,
+        "params": [
+            3.860158,
+            0.057299,
+            18.541763,
+            -1.537401,
+            5.798449
+        ],
+        "equation": "f1_t_pred = -params[0] * (1 - params[1] * np.tanh(x[:, 0:1])) * d_axis(f1, 0, 1) / (1 + params[2] * f1) - params[3] * d_axis(d_axis(f1, 0, 1) / (f1 + params[4]), 0, 1)\n\n    return f1_t_pred"
+    },
+    {
+        "rank": 7,
+        "mse": 0.0003163474126697705,
+        "complexity": 23,
+        "params": [
+            3.860158,
+            0.057299,
+            18.541763,
+            -1.537401,
+            5.798449
+        ],
+        "equation": "f1_t_pred = -params[0] * (1 - params[1] * np.tanh(x[:, 0:1])) * d_axis(f1, 0, 1) / (1 + params[2] * f1) - params[3] * d_axis(d_axis(f1, 0, 1) / (f1 + params[4]), 0, 1)\n\n    return f1_t_pred"
+    },
+    {
+        "rank": 8,
+        "mse": 0.0003163474126697705,
+        "complexity": 23,
+        "params": [
+            3.860158,
+            0.057299,
+            18.541763,
+            -1.537401,
+            5.798449
+        ],
+        "equation": "f1_t_pred = -params[0] * (1 - params[1] * np.tanh(x[:, 0:1])) * d_axis(f1, 0, 1) / (1 + params[2] * f1) - params[3] * d_axis(d_axis(f1, 0, 1) / (f1 + params[4]), 0, 1)\n\n    return f1_t_pred"
+    },
+    {
+        "rank": 9,
+        "mse": 0.0003163474126697705,
+        "complexity": 23,
+        "params": [
+            3.860158,
+            0.057299,
+            18.541763,
+            -1.537401,
+            5.798449
+        ],
+        "equation": "f1_t_pred = -params[0] * (1 - params[1] * np.tanh(x[:, 0:1])) * d_axis(f1, 0, 1) / (1 + params[2] * np.abs(f1)) - params[3] * d_axis(d_axis(f1, 0, 1) / (f1 + params[4]), 0, 1)\n\n    return f1_t_pred"
+    },
+    {
+        "rank": 10,
+        "mse": 0.0003163474126697705,
+        "complexity": 23,
+        "params": [
+            3.860158,
+            0.057299,
+            18.541763,
+            -1.537401,
+            5.798449
+        ],
+        "equation": "f1_t_pred = -params[0] * (1 - params[1] * np.tanh(x[:, 0:1])) * d_axis(f1, 0, 1) / (1 + params[2] * f1) - params[3] * d_axis(d_axis(f1, 0, 1) / (f1 + params[4]), 0, 1)\n\n    return f1_t_pred"
+    },
+    {
+        "rank": 11,
+        "mse": 0.0003163474126697705,
+        "complexity": 23,
+        "params": [
+            3.860158,
+            0.057299,
+            18.541763,
+            -1.537401,
+            5.798449
+        ],
+        "equation": "f1_t_pred = -params[0] * (1 - params[1] * np.tanh(x[:, 0:1])) * d_axis(f1, 0, 1) / (1 + params[2] * f1) - params[3] * d_axis(d_axis(f1, 0, 1) / (f1 + params[4]), 0, 1)\n\n    return f1_t_pred"
+    },
+    {
+        "rank": 12,
+        "mse": 0.0003163474126697705,
+        "complexity": 23,
+        "params": [
+            3.860158,
+            0.057299,
+            18.541763,
+            -1.537401,
+            5.798449
+        ],
+        "equation": "f1_t_pred = -params[0] * (1 - params[1] * np.tanh(x[:, 0:1])) * d_axis(f1, 0, 1) / (1 + params[2] * f1) - params[3] * d_axis(d_axis(f1, 0, 1) / (f1 + params[4]), 0, 1)\n\n    return f1_t_pred"
+    },
+    {
+        "rank": 13,
+        "mse": 0.0003163474126697705,
+        "complexity": 23,
+        "params": [
+            3.860158,
+            0.057299,
+            18.541763,
+            -1.537401,
+            5.798449
+        ],
+        "equation": "f1_t_pred = -params[0] * (1 - params[1] * np.tanh(x[:, 0:1])) * d_axis(f1, 0, 1) / (1 + params[2] * f1) - params[3] * d_axis(d_axis(f1, 0, 1) / (f1 + params[4]), 0, 1)\n\n    return f1_t_pred"
+    },
+    {
+        "rank": 14,
+        "mse": 0.0003163474126697705,
+        "complexity": 23,
+        "params": [
+            3.860158,
+            0.057299,
+            18.541763,
+            -1.537401,
+            5.798449
+        ],
+        "equation": "f1_t_pred = -params[0] * (1 - params[1] * np.tanh(x[:, 0:1])) * d_axis(f1, 0, 1) / (1 + params[2] * f1) - params[3] * d_axis(d_axis(f1, 0, 1) / (f1 + params[4]), 0, 1)\n\n    return f1_t_pred"
+    },
+    {
+        "rank": 15,
+        "mse": 0.0003163474126697705,
+        "complexity": 23,
+        "params": [
+            3.860158,
+            0.057299,
+            18.541763,
+            -1.537401,
+            5.798449
+        ],
+        "equation": "f1_t_pred = -params[0] * (1 - params[1] * np.tanh(x[:, 0:1])) * d_axis(f1, 0, 1) / (1 + params[2] * f1) - params[3] * d_axis(d_axis(f1, 0, 1) / (f1 + params[4]), 0, 1)\n\n    return f1_t_pred"
+    },
+    {
+        "rank": 16,
+        "mse": 0.0003163474126697705,
+        "complexity": 23,
+        "params": [
+            3.860158,
+            0.057299,
+            18.541763,
+            -1.537401,
+            5.798449
+        ],
+        "equation": "f1_t_pred = -params[0] * (1 - params[1] * np.tanh(x[:, 0:1])) * d_axis(f1, 0, 1) / (1 + params[2] * np.abs(f1)) - params[3] * d_axis(d_axis(f1, 0, 1) / (f1 + params[4]), 0, 1)\n\n    return f1_t_pred"
+    },
+    {
+        "rank": 17,
+        "mse": 0.0003163474126697705,
+        "complexity": 23,
+        "params": [
+            3.860158,
+            0.057299,
+            18.541763,
+            -1.537401,
+            5.798449
+        ],
+        "equation": "f1_t_pred = -params[0] * (1 - params[1] * np.tanh(x[:, 0:1])) * d_axis(f1, 0, 1) / (1 + params[2] * f1) - params[3] * d_axis(d_axis(f1, 0, 1) / (f1 + params[4]), 0, 1)\n\n    return f1_t_pred"
+    },
+    {
+        "rank": 18,
+        "mse": 0.0003163474126697705,
+        "complexity": 23,
+        "params": [
+            3.860158,
+            0.057299,
+            18.541763,
+            -1.537401,
+            5.798449
+        ],
+        "equation": "f1_t_pred = -params[0] * (1 - params[1] * np.tanh(x[:, 0:1])) * d_axis(f1, 0, 1) / (1 + params[2] * f1) - params[3] * d_axis(d_axis(f1, 0, 1) / (f1 + params[4]), 0, 1)\n\n    return f1_t_pred"
+    },
+    {
+        "rank": 19,
+        "mse": 0.0003163474126697705,
+        "complexity": 23,
+        "params": [
+            3.860158,
+            0.057299,
+            18.541763,
+            -1.537401,
+            5.798449
+        ],
+        "equation": "f1_t_pred = -params[0] * (1 - params[1] * np.tanh(x[:, 0:1])) * d_axis(f1, 0, 1) / (1 + params[2] * f1) - params[3] * d_axis(d_axis(f1, 0, 1) / (f1 + params[4]), 0, 1)\n\n    return f1_t_pred"
+    },
+    {
+        "rank": 20,
+        "mse": 0.0003163474126697705,
+        "complexity": 23,
+        "params": [
+            3.860158,
+            0.057299,
+            18.541763,
+            -1.537401,
+            5.798449
+        ],
+        "equation": "f1_t_pred = -params[0] * (1 - params[1] * np.tanh(x[:, 0:1])) * d_axis(f1, 0, 1) / (1 + params[2] * f1) - params[3] * d_axis(d_axis(f1, 0, 1) / (f1 + params[4]), 0, 1)\n\n    return f1_t_pred"
+    },
+    {
+        "rank": 21,
+        "mse": 0.0003163474126697705,
+        "complexity": 23,
+        "params": [
+            3.860158,
+            0.057299,
+            18.541763,
+            -1.537401,
+            5.798449
+        ],
+        "equation": "f1_t_pred = -params[0] * (1 - params[1] * np.tanh(x[:, 0:1])) * d_axis(f1, 0, 1) / (1 + params[2] * f1) - params[3] * d_axis(d_axis(f1, 0, 1) / (f1 + params[4]), 0, 1)\n\n    return f1_t_pred"
+    },
+    {
+        "rank": 22,
+        "mse": 0.00038231317478354523,
+        "complexity": 22,
+        "params": [
+            0.013227,
+            23.229253,
+            4.707436,
+            -0.074717,
+            1.0
+        ],
+        "equation": "# Transport: speed reduced by channel narrowing and crowding\n    channel_narrowing = 1 - params[0] * np.tanh(x[:, 0:1])\n    crowding = 1 + params[1] * f1\n    transport = -params[2] * channel_narrowing * d_axis(f1, 0, 1) / crowding\n\n    # Relative gradient diffusion (anticipation)\n    relative_gradient = d_axis(f1, 0, 1) / f1\n    diffusion = -params[3] * d_axis(relative_gradient, 0, 1)\n\n    f1_t_pred = transport + diffusion\n    return f1_t_pred"
+    },
+    {
+        "rank": 23,
+        "mse": 0.004386581394582774,
+        "complexity": 4,
+        "params": [
+            0.265073,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+        ],
+        "equation": "f1_t_pred = params[0] * d_axis(f1, 0, 2)\n\n    return f1_t_pred"
+    }
+]

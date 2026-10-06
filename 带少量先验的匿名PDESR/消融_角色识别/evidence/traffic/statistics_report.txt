@@ -1,0 +1,12 @@
+summary f1: min +0.1000 max +0.6995 mean +0.1576 std 0.1162 rms 0.1958 negative fraction 0.000 quartiles +0.1000/+0.1002/+0.1386
+summary f1_t_true: min -0.3638 max +0.1932 mean +0.0030 std 0.0463 rms 0.0464 negative fraction 0.349 quartiles -0.0000/+0.0000/+0.0059
+space_spectrum f1 at_time=mid: k=1 (45%), k=2 (25%), k=3 (10%), k=4 (5%)
+time_spectrum f1 at_x=mid: mode 1 (64%), mode 2 (14%), mode 3 (6%), mode 4 (3%)
+derivative_rms f1: order 1: rms 0.0868, order 2: rms 0.2254
+correlate_with_target f1 order 1: -0.788
+balance_test f1: domain average of f1_t_true is +0.003000 (std 0.000000), |domain average| / rms(target) = 0.06472; the domain average of f1 changes by +7.66% of its rms over the record
+nested_fit f1: [d1] R2 0.6166, [d1,f*d1] R2 0.7092, [d1,f*d1,f^2*d1] R2 0.7187, [d1,d2] R2 0.6209, [d1,f*d1,d2] R2 0.8052
+state_conditioned_response f1: state +0.106 (n=81093) -> response -0.664, state +0.210 (n=5056) -> response -0.597, state +0.288 (n=4152) -> response -0.538, state +0.363 (n=4967) -> response -0.473, state +0.434 (n=3763) -> response -0.396, state +0.508 (n=1692) -> response -0.279, state +0.584 (n=1008) -> response -0.076, state +0.657 (n=669) -> response +0.248
+segmented_response f1: segment 1 coefficient -0.386, segment 2 coefficient -0.468, segment 3 coefficient -0.797
+correlate_with_target f1 order 2: +0.066
+sample_profile: failed (TypeError)

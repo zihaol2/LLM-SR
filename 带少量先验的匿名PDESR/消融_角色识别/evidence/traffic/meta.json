@@ -1,0 +1,11 @@
+{
+ "truth_role": "vehicle density on a road with a bottleneck",
+ "truth_keywords": [
+  "traffic",
+  "vehicle",
+  "road",
+  "car",
+  "congestion"
+ ],
+ "source": "results_main (the 100-sample run)"
+}

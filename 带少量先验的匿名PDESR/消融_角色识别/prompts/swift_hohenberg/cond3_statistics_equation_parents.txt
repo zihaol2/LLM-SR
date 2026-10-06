@@ -1,0 +1,118 @@
+You are a physicist doing inverse identification on ONE anonymous 1D dataset.
+The dataset holds a single field, f1, sampled on one spatial axis x1, together with
+its measured time derivative. Nothing here names the dataset: whatever naming comes
+out has to be forced by the evidence below.
+
+### EVIDENCE 1 -- MEASURED STATISTICS
+These statistics were computed on the data itself. They describe the field f1,
+its measured time derivative, and how the two relate. Nothing about the subject
+matter was given to whoever asked for them.
+
+  summary f1: min -0.3625 max +0.8716 mean +0.0170 std 0.1375 rms 0.1386 negative fraction 0.515 quartiles -0.0200/-0.0001/+0.0230
+  summary f1_t_true: min -0.6279 max +1.5598 mean +0.0356 std 0.2523 rms 0.2548 negative fraction 0.503 quartiles -0.0383/-0.0002/+0.0639
+  space_spectrum f1 at_time=mid: k=3 (43%), k=4 (25%), k=2 (22%), k=1 (7%)
+  time_spectrum f1 at_x=mid: mode 1 (59%), mode 2 (16%), mode 3 (7%), mode 4 (4%)
+  derivative_rms f1: order 1: rms 0.1306, order 2: rms 0.1430
+  correlate_with_target f1 order 1: +0.008
+  balance_test f1: domain average of f1_t_true is +0.035614 (std 0.021425), |domain average| / rms(target) = 0.13979; the domain average of f1 changes by +30.82% of its rms over the record
+  nested_fit f1: [d1] R2 -0.0199, [d1,f*d1] R2 -0.0197, [d1,f*d1,f^2*d1] R2 -0.0197, [d1,d2] R2 0.6514, [d1,f*d1,d2] R2 0.6520
+  state_conditioned_response f1: state -0.262 (n=3784) -> response -0.012, state -0.109 (n=18081) -> response -0.020, state +0.006 (n=90586) -> response -0.009, state +0.163 (n=8247) -> response +0.055, state +0.324 (n=3574) -> response +0.036, state +0.479 (n=2027) -> response +0.028, state +0.632 (n=1180) -> response +0.036, state +0.777 (n=521) -> response -0.004
+  segmented_response f1: segment 1 coefficient +1.145, segment 2 coefficient +0.059, segment 3 coefficient -1.294
+  correlate_with_target f1 order 2: -0.819
+  sample_profile: failed (TypeError)
+
+Read off those measurements alone, before any equation existed:
+a time derivative of a scalar field, with a strong negative spatial second derivative (diffusion-like) and a weak nonlinear self-interaction, but no direct time-derivative self-coupling (not advective (order?))
+
+The measurements that reading was based on:
+The nested fit shows [d1,d2] R2=0.6514 while [d1] and [d1,f*d1,...] are ~0, indicating f1's evolution is governed by a second spatial derivative (diffusion) rather than by f1 itself (no self-advection). Correlate_with_target order 2 is -0.819, consistent with a negative Laplacian. State-conditioned response shows a slight positive response for higher positive states, and segmented response has large positive and negative coefficients at extremes (suggestive of nonlinearity), but R2 increase from 0.6514 to 0.6520 with f*d1 is negligible. Correlate_with_target order 1 is ~0, ruling out a simple linear source. Space spectrum peaks at k=3 and time spectrum at mode 1 indicate dominant spatial mode and slow temporal trend, but derivative_rms order 1 vs 2 (0.1306 vs 0.1430) suggests a mix of scales. Domain average changes by ~31% of rms, so a slow drift exists. The positive domain average and slight imbalance suggests weak mean growth. The two possible readings are: (A) f1 is a diffusing scalar with weak nonlinear source; (B) f1 is a velocity potential whose Laplacian is the physical field. The numbers favour (A) because the target is f1 itself and it evolves by its own second derivative, not that another variable drives it. To separate, one would need cross-correlation with another variable or a PDE fit with a second field.
+
+### EVIDENCE 2 -- THE DISCOVERED EQUATION
+An automated search found the equation below for the measured time derivative.
+It reproduces the data down to the loss floor, so this is the equation the data
+supports. The coefficients the search fitted are written in place.
+
+# Gaussian pump, localised along x1
+pump = 1.5 * np.exp(-0.1 * x[:, 0:1] ** 2)
+
+# Second-order term
+second = -2.0 * d_axis(u, 0, 2)
+
+# Fourth-order stabilisation
+fourth = -1.0 * d_axis(u, 0, 4)
+
+# Cubic term with a quintic saturation
+nonlinear = -1.0 * u ** 3 + 1.0 * u ** 5
+
+u_t_pred = pump * u + second + fourth + nonlinear
+
+### FITTED COEFFICIENTS
+pump 1.5, pump width 0.1, u_xx -2.0, u_xxxx -1.0, u^3 -1.0, u^5 +1.0
+
+### EVIDENCE 3 -- CLASSICAL PARENT PDES
+The same equation, matched against the classical PDE families it could be a
+modification of. Each entry gives the family, its canonical form, how the
+discovered terms map onto it, and the standard physical role of its symbols.
+
+[
+ {
+  "name": "Swift-Hohenberg equation",
+  "canonical_form": "u_t = r u - (u_xx + 1)^2 u?  Actually canonical is: u_t = r u - (1 + \\partial_x^2)^2 u + N(u)",
+  "term_mapping": "Parent has linear term r u, fourth-order term -u_xxxx, second-order term -2 u_xx, and a nonlinear term N(u). The discovered equation: pump*u (with pump = 1.5*exp(-0.1*x^2)) replaces constant r u; -2.0*u_xx matches the second-order cross term; -1.0*u_xxxx matches fourth-order; u^3 - u^5 is a modified nonlinearity (cubic + quintic). All terms present, but the linear coefficient is spatially varying (gaussian) and nonlinearity is saturating.",
+  "symbol_roles": "u is a scalar field (e.g. convection rolls amplitude), x is lateral coordinate, t is time, r is linear growth/decay rate, coefficients control pattern selection and saturation.",
+  "fit": "high"
+ },
+ {
+  "name": "Kolmogorov-Petrovskii-Piskunov (Fisher) / reaction-diffusion equation",
+  "canonical_form": "u_t = D u_xx + f(u)",
+  "term_mapping": "Parent has diffusion D u_xx and reaction f(u). Discovered has -2.0*u_xx (diffusion, negative, so anti-diffusion), -1.0*u_xxxx (added stabilising fourth-order term), pump*u (added space-dependent linear source), -u^3+u^5 (nonlinear reaction with cubic and quintic terms). So relative to Fisher: same u_t and u_xx, but reaction term is modified with spatial pumping and higher-order nonlinear terms; fourth-order term added.",
+  "symbol_roles": "u is concentration or population density, x space, t time, D diffusion coefficient, f(u) reaction rate (growth/decay).",
+  "fit": "medium"
+ },
+ {
+  "name": "Nonlinear Schrödinger (NLS) equation (real form / pattern forming)",
+  "canonical_form": "i u_t = u_xx + |u|^2 u (or with constants) ; but real counterpart: u_t = -u_xx - u^3",
+  "term_mapping": "Parent real NLS has u_t = -u_xx - u^3 (with sign choices). Discovered has -2*u_xx instead of -1* u_xx (amplitude modified), added -u_xxxx (dispersion/regularisation), added pump*u (space-dependent potential), added +u^5 (quintic saturation). So u_xx and u^3 are present but coefficients modified; additional terms are pump, u^5, and u_xxxx.",
+  "symbol_roles": "u is complex wavefunction amplitude (here real), x is spatial coordinate, t is time, u_xx is kinetic/dispersive term, cubic term is Kerr nonlinearity, quintic term is higher-order nonlinearity.",
+  "fit": "medium"
+ },
+ {
+  "name": "Kuramoto-Sivashinsky equation (generalised)",
+  "canonical_form": "u_t = -u_xx - u_xxxx + u u_x + ... (classic: u_t = -u_xx - u_xxxx + u u_x)",
+  "term_mapping": "Classic KS has second-order (negative diffusion) and fourth-order (dissipation) terms. Discovered has -2.0*u_xx and -1.0*u_xxxx (same structure but no advective nonlinearity u u_x), instead added pump*u (space-dependent linear term) and polynomial nonlinearity -u^3+u^5. So second and fourth order terms match, but advection term dropped, linear term modified, nonlinearity replaced.",
+  "symbol_roles": "u is a field (e.g. flame front height, phase turbulence), x space, t time, u_xx drives instability, u_xxxx stabilises, u u_x is nonlinear convection.",
+  "fit": "medium"
+ },
+ {
+  "name": "Cahn-Hilliard (or Swift-Hohenberg-like) equation with external forcing",
+  "canonical_form": "u_t = -\\partial_x^2 (u - u^3 + u_xx) + ... (actually: u_t = \\partial_x^2( -u + u^3 - u_xx ) )",
+  "term_mapping": "Parent Cahn-Hilliard has u_t = -u_xxxx + u_xx + ...? Actually classic: u_t = \\partial_x^2( -u + u^3 - u_xx ) = -u_xxxx + u_xx + \\partial_x^2(u^3). Discovered has -u_xxxx and -2u_xx (signs opposite to CH for u_xx) and -u^3+u^5 (not inside x-derivative), plus pump*u. So the fourth-order term matches (with opposite sign for u_xx) but nonlinearity is local not conservative; pumped term is external field.",
+  "symbol_roles": "u is order parameter (e.g. concentration), x is spatial coordinate, t is time, u_xxxx is interfacial energy, u_xx is capillarity, u^3 is double-well potential nonlinearity, u^5 is higher-order saturation.",
+  "fit": "low"
+ },
+ {
+  "name": "Generalised Ginzburg-Landau amplitude equation",
+  "canonical_form": "u_t = a u + b u_xx + c |u|^2 u + d |u|^4 u + ... (complex or real)",
+  "term_mapping": "Canonical real GL has linear term a u, diffusion b u_xx, cubic term c u^3, quintic term d u^5. Discovered has pump*u (a is space-dependent), -2.0*u_xx, -1.0*u_xxxx added (extra stabilisation), -u^3+u^5. So cubic and quintic terms present, linear term modified to gaussian pump, diffusion present, fourth-order added.",
+  "symbol_roles": "u is slowly varying amplitude of a pattern, x is spatial coordinate, t is time, a is linear growth/damping, b diffusion/dispersion, c cubic nonlinearity coefficient, d quintic saturation coefficient.",
+  "fit": "high"
+ }
+]
+
+### YOUR TASK
+1. NAME IT. State the concrete physical quantity f1 most likely represents, and the
+   discipline and sub-field it belongs to. Point to the specific piece of evidence
+   that pins the naming down.
+2. PARENT FAMILY. If classical PDE families were supplied above, say which one the
+   evidence points to and why. If none were supplied, leave "parent_family" empty.
+3. CONFIDENCE. Give high | medium | low, and the single measurement or term that
+   would most change your answer.
+
+Answer with ONE JSON object, nothing else:
+{
+  "variable": {"symbol": "f1", "quantity": "...", "parent_family": "...", "reasoning": "..."},
+  "discipline": {"field": "...", "subfield": "...", "reasoning": "..."},
+  "confidence": "high|medium|low",
+  "key_evidence": ["...", "..."],
+  "would_change_if": "..."
+}

@@ -1,0 +1,145 @@
+"""
+Find the mathematical function skeleton that represents the time derivative of the
+field variable (f1_t), given data on the spatial coordinate (x1) and the field
+variable (f1) in a one-dimensional transport system with a spatial bottleneck and
+anticipation-driven relative gradient diffusion.
+
+Only the subject-area nouns are withheld. The structural prior is kept: f1 is the
+transported field; the domain narrows along x1 (a spatial bottleneck); and the response
+includes anticipation driven by the field's RELATIVE gradient -- how steep it is
+compared with how much of it is there -- not by its absolute slope.
+
+Transport is self-limiting: unobstructed, the field is carried at full speed, and each
+of two effects -- the channel narrowing along x1, and the field's own build-up -- can
+only cut that speed down, never negative and never reversed. The channel is widest at
+one end of x1 and tightens towards the other, so its reduction is a smooth, positive,
+one-sided function of x1: a baseline value reduced by a profile, not the profile alone.
+Crowding acts through a positive factor of f1 alone. The two reductions do not limit
+each other -- each cuts the speed by the same fraction whatever the other is -- so the
+field is carried at one speed both apply to together. The data is noise free.
+"""
+import numpy as np
+from scipy.interpolate import make_interp_spline
+from scipy.optimize import minimize
+import grammar as G
+
+MAX_NPARAMS = 5
+
+# ======================================================================
+# SEARCH GRAMMAR (module `grammar`, imported above as G)
+#
+# A candidate must be assembled from the constructors below, called as G.<name>(...).
+# Each mechanism is ONE fixed differential operator; its differential order is part of
+# the operator and is not an argument.
+#
+#   primitives
+#     D(f, axis, order)          derivative of order `order` along an axis
+#     S(f, func)                 func in {'id', 'sin', 'cos', 'exp', 'tanh'}
+#     MUL(a, b)                  pointwise product
+#     DIV(a, b)                  pointwise ratio
+#     T(f)                       pointwise tanh of one field
+#     coord(func, k1, k2, k3)    func(k1*x1 + k2*x2 + k3*x3), func as above
+#
+#   mechanisms
+#     prs(phi, axis)             first-order derivative of one field
+#     dif(phi)                   second-order isotropic operator
+#     disp(phi, axis)            third-order derivative
+#     hdif(phi, axis)            fourth-order derivative
+#     rxn(phi, func)             scalar function of one field
+#     frc(phi)                   the field itself
+#     cpl(a, b)                  pointwise product of two fields
+#     wave(k1, k2, func, k3)     coordinate function of a linear combination
+#     coord_sin(k1, k2, k3) / coord_cos(k1, k2, k3)   aliases
+#
+# This is a SCALAR problem: no vector field is declared, so `adv` is unavailable and
+# `dif` is the second derivative along the single axis x1.
+# ======================================================================
+
+
+def _bump_matrix(coord: np.ndarray, n_windows: int) -> np.ndarray:
+    """Overlapping sin^4 test functions used for the weak (integral) form."""
+    n = len(coord)
+    width = 2.0 * (coord[-1] - coord[0]) / n_windows
+    phi = np.zeros((n, n_windows))
+    for i in range(n_windows):
+        center = coord[0] + (i + 0.5) * (coord[-1] - coord[0]) / n_windows
+        mask = np.abs(coord - center) < (width / 2.0)
+        phi[mask, i] = np.sin(np.pi * (coord[mask] - (center - width / 2.0)) / width) ** 4
+    return phi
+
+
+@evaluate.run
+def evaluate(data: dict) -> float:
+    x_1d = np.asarray(data['x1'], dtype=float)
+    f1 = np.asarray(data['f1'], dtype=float)
+    f1_t_true = np.asarray(data['f1_t_true'], dtype=float)
+    h1 = float(data['h1'])
+
+    x_b = x_1d.reshape(-1, 1)
+
+    def d_axis(array: np.ndarray, axis: int, order: int) -> np.ndarray:
+        if order == 0:
+            return array
+        if axis != 0:
+            raise ValueError("unknown axis")
+        if order > 4:
+            raise ValueError("Quintic spline allowed up to 4th order only.")
+        return make_interp_spline(x_1d, array, k=5, axis=0)(x_1d, nu=order)
+
+    G.bind((0,), d_axis, coords=(x_b, np.zeros_like(x_b)))
+
+    K = 10
+    Phi = _bump_matrix(x_1d, K)
+    target = np.stack([np.trapz(f1_t_true * Phi[:, [i]], dx=h1, axis=0)
+                       for i in range(K)], axis=0)
+
+    def loss(params):
+        f1_t_pred = equation(x_b, f1, params, d_axis)
+        pred = np.stack([np.trapz(f1_t_pred * Phi[:, [i]], dx=h1, axis=0)
+                         for i in range(K)], axis=0)
+        return np.mean((pred - target) ** 2)
+
+    # Relaxed BFGS: tighter than the library default (which stalls around 1e-9 when a
+    # model is written with more free coefficients than it needs) but far cheaper than
+    # the 1e-14/5000 setting that timed out a third of the candidates.
+    result = minimize(loss, [1.0] * MAX_NPARAMS, method='BFGS',
+                      options={'gtol': 1e-10, 'maxiter': 800, 'eps': 1e-12})
+    base_mse = float(result.fun)
+    if np.isnan(base_mse) or np.isinf(base_mse):
+        return float('inf')
+    print(f"✅ [EVALUATED] MSE: {base_mse:.2e} | Params: {np.round(result.x, 6)}")
+    return base_mse
+
+
+@equation.evolve
+def equation(x: np.ndarray, f1: np.ndarray, params: np.ndarray,
+             d_axis: callable) -> np.ndarray:
+    """ Mathematical function for the RHS of an unknown 1D PDE.
+
+    Args:
+        x: spatial coordinate grid, shape (Nx, 1).
+        f1: the measured field, shape (Nx, Nt).
+        params: a fixed-length array of exactly 5 entries. Use only indices 0..4.
+        d_axis: spatial derivative. Call d_axis(field, axis, order); axis=0 is x1.
+
+    Return:
+        `f1_t_pred`, a numpy array with the grid shape.
+
+    STRICT CONSTRAINT:
+        1. SPATIAL DERIVATIVES & MATH: you are a physicist discovering a PDE. Use ONLY
+           the provided d_axis(field, axis, order) for derivatives (max order 4), with
+           axis=0 for the single spatial coordinate x1. For mathematical functions you
+           are STRICTLY LIMITED to np.sin, np.cos, np.tanh and np.exp. Do not call any
+           other np.* routine, do not import anything, and do not write numerical
+           algorithms. Ordinary arithmetic (+ - * / **) and params[0..4] are free.
+        2. OUTPUT FORMAT: write the complete formula, assign it to f1_t_pred, and
+           strictly end with return f1_t_pred. No placeholders.
+        3. PARETO EVOLUTION: the frontier trades MSE against complexity. Complexity
+           counts the derivative calls, the arithmetic operations and every params
+           you use, so the same term written more compactly is preferred.
+        4. OPTIMIZATION STRATEGY:{PARETO_FRONTIER_PLACEHOLDER}
+    """
+    # Version 0 (Baseline): second-order operator on the target field.
+    f1_t_pred = params[0] * d_axis(f1, 0, 2)
+
+    return f1_t_pred

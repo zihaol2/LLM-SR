@@ -1,0 +1,66 @@
+You are a physicist doing inverse identification on ONE anonymous 1D dataset.
+The dataset holds a single field, f1, sampled on one spatial axis x1, together with
+its measured time derivative. Nothing here names the dataset: whatever naming comes
+out has to be forced by the evidence below.
+
+### EVIDENCE 1 -- MEASURED STATISTICS
+These statistics were computed on the data itself. They describe the field f1,
+its measured time derivative, and how the two relate. Nothing about the subject
+matter was given to whoever asked for them.
+
+  summary f1: min +0.0000 max +1.0000 mean +0.7145 std 0.3440 rms 0.7930 negative fraction 0.000 quartiles +0.4629/+0.9076/+0.9935
+  summary f1_t_true: min -0.0000 max +0.3833 mean +0.0857 std 0.0924 rms 0.1260 negative fraction 0.000 quartiles +0.0060/+0.0513/+0.1489
+  space_spectrum f1 at_time=mid: k=1 (90%), k=2 (10%), k=4 (0%), k=5 (0%)
+  time_spectrum f1 at_x=mid: mode 1 (52%), mode 2 (20%), mode 3 (8%), mode 4 (4%)
+  derivative_rms f1: order 1: rms 0.2133, order 2: rms 0.3366
+  correlate_with_target f1 order 1: +0.365
+  balance_test f1: domain average of f1_t_true is +0.085666 (std 0.058127), |domain average| / rms(target) = 0.68003; the domain average of f1 changes by +108.07% of its rms over the record
+  nested_fit f1: [d1] R2 -0.7270, [d1,f*d1] R2 -0.7233, [d1,f*d1,f^2*d1] R2 -0.7232, [d1,d2] R2 -0.7206, [d1,f*d1,d2] R2 -0.7180
+  state_conditioned_response f1: state +0.042 (n=11431) -> response +0.155, state +0.185 (n=5415) -> response +0.204, state +0.312 (n=4770) -> response +0.196, state +0.439 (n=4929) -> response +0.171, state +0.563 (n=5599) -> response +0.148, state +0.689 (n=6147) -> response +0.131, state +0.818 (n=8442) -> response +0.121, state +0.977 (n=53267) -> response +0.120
+  segmented_response f1: segment 1 coefficient +0.561, segment 2 coefficient -0.119, segment 3 coefficient -0.300
+  correlate_with_target f1 order 2: +0.080
+  sample_profile: failed (TypeError)
+
+Read off those measurements alone, before any equation existed:
+positive field (probably magnitude, density, or concentration)
+
+The measurements that reading was based on:
+f1 is nonnegative (min 0, max 1, zero negative fraction), skewed to high values (mean 0.71, quartiles [0.46, 0.91, 0.99]). Its time derivative is nonnegative, meaning it is non-decreasing globally (average +0.0857, min ~0, no negative). The field's domain-average increases by 108% of its RMS over the record, consistent with a growing (e.g., accumulation) quantity. Spatial spectrum shows dominant large-scale k=1 (90%), with a small k=2 component, indicating a smooth large-scale structure. Time spectrum is multi-mode with first harmonic dominant (52%). Derivative RMS shows order 2 is larger than order 1 (0.3366 vs 0.2133), suggesting curvature. Correlation with its own derivative is positive (0.365) but second-order correlation is near zero (0.08), suggesting the rate is not simply proportional to field strength. State-conditioned response shows that the response (time derivative) is largest at low states (0.155 at state ~0.04) and decreases monotonically to ~0.12 at high states, with a non-monotonic bump around 0.2–0.3. This non-monotonicity is also present in segmented_response: first segment positive slope (+0.56), then negative (−0.12, −0.30). The nested fits are all poor (R2 negative), suggesting the dynamics is not linear in f or its derivatives. The field is most likely a conserved or transported quantity (e.g., temperature, salinity, concentration) that is increasing, with smooth spatial distribution and a nonlinear, state-dependent growth rate.
+
+### EVIDENCE 2 -- THE DISCOVERED EQUATION
+An automated search found the equation below for the measured time derivative.
+It reproduces the data down to the loss floor, so this is the equation the data
+supports. The coefficients the search fitted are written in place.
+
+# Second derivative
+diffusion = 0.1 * d_axis(u, 0, 2)
+
+# Divergence of a crowding-limited flux along a periodic spatial modulation
+flux = -0.5 * (u * (1.0 - u) * np.cos(x[:, 0:1]))
+transport = d_axis(flux, 0, 1)
+
+# Logistic local term
+local = 1.0 * u * (1.0 - u)
+
+u_t_pred = diffusion + transport + local
+
+### FITTED COEFFICIENTS
+u_xx +0.1, flux -0.5, logistic +1.0
+
+### YOUR TASK
+1. NAME IT. State the concrete physical quantity f1 most likely represents, and the
+   discipline and sub-field it belongs to. Point to the specific piece of evidence
+   that pins the naming down.
+2. PARENT FAMILY. If classical PDE families were supplied above, say which one the
+   evidence points to and why. If none were supplied, leave "parent_family" empty.
+3. CONFIDENCE. Give high | medium | low, and the single measurement or term that
+   would most change your answer.
+
+Answer with ONE JSON object, nothing else:
+{
+  "variable": {"symbol": "f1", "quantity": "...", "parent_family": "...", "reasoning": "..."},
+  "discipline": {"field": "...", "subfield": "...", "reasoning": "..."},
+  "confidence": "high|medium|low",
+  "key_evidence": ["...", "..."],
+  "would_change_if": "..."
+}

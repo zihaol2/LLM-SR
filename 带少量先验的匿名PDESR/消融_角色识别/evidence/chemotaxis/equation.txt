@@ -1,0 +1,14 @@
+# Second derivative
+diffusion = 0.1 * d_axis(u, 0, 2)
+
+# Divergence of a crowding-limited flux along a periodic spatial modulation
+flux = -0.5 * (u * (1.0 - u) * np.cos(x[:, 0:1]))
+transport = d_axis(flux, 0, 1)
+
+# Logistic local term
+local = 1.0 * u * (1.0 - u)
+
+u_t_pred = diffusion + transport + local
+
+### FITTED COEFFICIENTS
+u_xx +0.1, flux -0.5, logistic +1.0
