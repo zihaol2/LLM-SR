@@ -1,0 +1,3940 @@
+configuration B: the spec prior is global (1112 chars) -> plan + library design + search
+✅ [EVALUATED] MSE: 3.40e-02 | Params: [-1.703591  1.        1.        1.        1.        1.      ]
+Execution Error: name 'f1_t_pred' is not defined
+✅ [EVALUATED] MSE: 3.02e-05 | Params: [ 0.175545  0.916293  1.650694  0.856847 -0.655383  1.      ]
+================= Evaluated Function =================
+def equation(x: np.ndarray, f1: np.ndarray, params: np.ndarray, d_axis: callable) -> np.ndarray:
+    """ Mathematical function for the RHS of an unknown 1D PDE.
+
+    Args:
+        x: spatial coordinate grid, shape (Nx, 1).
+        f1: the measured field, shape (Nx, Nt).
+        params: a fixed-length array of exactly 5 entries. Use only indices 0..4.
+        d_axis: spatial derivative. Call d_axis(field, axis, order); axis=0 is x1.
+
+    Return:
+        `f1_t_pred`, a numpy array with the grid shape.
+
+    STRICT CONSTRAINT:
+        1. SPATIAL DERIVATIVES & MATH: you are a physicist discovering a PDE. Use ONLY
+           the provided d_axis(field, axis, order) for derivatives (max order 4), with
+           axis=0 for the single spatial coordinate x1. For mathematical functions you
+           are STRICTLY LIMITED to np.sin, np.cos, np.tanh and np.exp. Do not call any
+           other np.* routine, do not import anything, and do not write numerical
+           algorithms. Ordinary arithmetic (+ - * / **) and params[0..4] are free.
+        2. OUTPUT FORMAT: write the complete formula, assign it to f1_t_pred, and
+           strictly end with return f1_t_pred. No placeholders. Mind the shapes: x is
+           (Nx, 1) and f1 is (Nx, Nt), so a coordinate factor must broadcast against
+           f1 -- write x or x[:, 0:1], never x[:, 0].
+        3. PARETO EVOLUTION: the frontier trades MSE against complexity. Complexity
+           counts the derivative calls, the arithmetic operations and every params
+           you use, so the same term written more compactly is preferred.
+        4. OPTIMIZATION STRATEGY:{PARETO_FRONTIER_PLACEHOLDER}
+    """
+    f1_t_pred = params[0] * d_axis(f1, 0, 2)
+
+    return f1_t_pred
+------------------------------------------------------
+MSE          : 3.40e-02
+Complexity   : 4
+Sample time  : None
+Evaluate time: 2.8505067825317383
+Sample orders: None
+======================================================
+
+
+⏱️  [NO SCORE] the sandbox returned nothing for this draw (timeout 60s, or a runtime error); it gets no MSE and no frontier slot
+================= Evaluated Function =================
+def equation(x: np.ndarray, f1: np.ndarray, params: np.ndarray, d_axis: callable) -> np.ndarray:
+    """ Mathematical function for the RHS of an unknown 1D PDE.
+
+    Args:
+        x: spatial coordinate grid, shape (Nx, 1).
+        f1: the measured field, shape (Nx, Nt).
+        params: a fixed-length array of exactly 5 entries. Use only indices 0..4.
+        d_axis: spatial derivative. Call d_axis(field, axis, order); axis=0 is x1.
+
+    Return:
+        `f1_t_pred`, a numpy array with the grid shape.
+
+    STRICT CONSTRAINT:
+        1. SPATIAL DERIVATIVES & MATH: you are a physicist discovering a PDE. Use ONLY
+           the provided d_axis(field, axis, order) for derivatives (max order 4), with
+           axis=0 for the single spatial coordinate x1. For mathematical functions you
+           are STRICTLY LIMITED to np.sin, np.cos, np.tanh and np.exp. Do not call any
+           other np.* routine, do not import anything, and do not write numerical
+           algorithms. Ordinary arithmetic (+ - * / **) and params[0..4] are free.
+        2. OUTPUT FORMAT: write the complete formula, assign it to f1_t_pred, and
+           strictly end with return f1_t_pred. No placeholders. Mind the shapes: x is
+           (Nx, 1) and f1 is (Nx, Nt), so a coordinate factor must broadcast against
+           f1 -- write x or x[:, 0:1], never x[:, 0].
+        3. PARETO EVOLUTION: the frontier trades MSE against complexity. Complexity
+           counts the derivative calls, the arithmetic operations and every params
+           you use, so the same term written more compactly is preferred.
+        4. OPTIMIZATION STRATEGY:{PARETO_FRONTIER_PLACEHOLDER}
+    """
+    return f1_t_pred
+------------------------------------------------------
+MSE          : N/A
+Complexity   : N/A
+Sample time  : 3.1023420691490173
+Evaluate time: 2.8420145511627197
+Sample orders: 1
+======================================================
+
+
+================= Evaluated Function =================
+def equation(x: np.ndarray, f1: np.ndarray, params: np.ndarray, d_axis: callable) -> np.ndarray:
+    """ Mathematical function for the RHS of an unknown 1D PDE.
+
+    Args:
+        x: spatial coordinate grid, shape (Nx, 1).
+        f1: the measured field, shape (Nx, Nt).
+        params: a fixed-length array of exactly 5 entries. Use only indices 0..4.
+        d_axis: spatial derivative. Call d_axis(field, axis, order); axis=0 is x1.
+
+    Return:
+        `f1_t_pred`, a numpy array with the grid shape.
+
+    STRICT CONSTRAINT:
+        1. SPATIAL DERIVATIVES & MATH: you are a physicist discovering a PDE. Use ONLY
+           the provided d_axis(field, axis, order) for derivatives (max order 4), with
+           axis=0 for the single spatial coordinate x1. For mathematical functions you
+           are STRICTLY LIMITED to np.sin, np.cos, np.tanh and np.exp. Do not call any
+           other np.* routine, do not import anything, and do not write numerical
+           algorithms. Ordinary arithmetic (+ - * / **) and params[0..4] are free.
+        2. OUTPUT FORMAT: write the complete formula, assign it to f1_t_pred, and
+           strictly end with return f1_t_pred. No placeholders. Mind the shapes: x is
+           (Nx, 1) and f1 is (Nx, Nt), so a coordinate factor must broadcast against
+           f1 -- write x or x[:, 0:1], never x[:, 0].
+        3. PARETO EVOLUTION: the frontier trades MSE against complexity. Complexity
+           counts the derivative calls, the arithmetic operations and every params
+           you use, so the same term written more compactly is preferred.
+        4. OPTIMIZATION STRATEGY:{PARETO_FRONTIER_PLACEHOLDER}
+    """
+    # Envelope function peaking at x=0 with gaussian shape
+    envelope = np.exp(-params[0] * x[:, 0:1]**2)
+
+    # Local gain: envelope * field (positive coefficient)
+    gain = params[1] * envelope * f1
+
+    # Anti-diffusion (second order, negative sign to standard diffusion)
+    # Standard diffusion would be +D*d²f/dx², so anti-diffusion is -D*d²f/dx²
+    # But the description says "opposite sign to ordinary smoothing"
+    # Ordinary smoothing (diffusion) is d²f/dx², so this is -d²f/dx²
+    anti_diffusion = -params[2] * d_axis(f1, 0, 2)
+
+    # Fourth-order damping
+    fourth_order = -params[3] * d_axis(f1, 0, 4)
+
+    # Nonlinear response: cubic-like potential well
+    # Pulls small departures back (linear negative)
+    # Turns around past threshold (quadratic positive)
+    # Caps large amplitudes (cubic negative)
+    nonlinear = -params[4] * f1 + params[4] * f1**3 - params[4] * f1**5
+
+    f1_t_pred = gain + anti_diffusion + fourth_order + nonlinear
+
+    return f1_t_pred
+------------------------------------------------------
+MSE          : 3.02e-05
+Complexity   : 49
+Sample time  : 3.1023420691490173
+Evaluate time: 17.216596603393555
+Sample orders: 2
+======================================================
+
+
+🚫 [UNPARSABLE] the reply carried no executable body; draw dropped
+✅ [EVALUATED] MSE: 2.13e-04 | Params: [ 1.789858  2.665246 -1.241125  0.350534  0.079719  1.      ]
+✅ [EVALUATED] MSE: 1.94e-05 | Params: [ 0.14687   1.038527  1.732192 -0.890045 -0.502329  1.      ]
+✅ [EVALUATED] MSE: 3.02e-05 | Params: [ 0.175545  0.916293  1.650694  0.856847 -0.655383  1.      ]
+✅ [EVALUATED] MSE: 4.09e-05 | Params: [ 1.084444 -1.648363  0.846501 -0.84235   1.        1.      ]
+================= Evaluated Function =================
+def equation(x: np.ndarray, f1: np.ndarray, params: np.ndarray, d_axis: callable) -> np.ndarray:
+    """ Mathematical function for the RHS of an unknown 1D PDE.
+
+    Args:
+        x: spatial coordinate grid, shape (Nx, 1).
+        f1: the measured field, shape (Nx, Nt).
+        params: a fixed-length array of exactly 5 entries. Use only indices 0..4.
+        d_axis: spatial derivative. Call d_axis(field, axis, order); axis=0 is x1.
+
+    Return:
+        `f1_t_pred`, a numpy array with the grid shape.
+
+    STRICT CONSTRAINT:
+        1. SPATIAL DERIVATIVES & MATH: you are a physicist discovering a PDE. Use ONLY
+           the provided d_axis(field, axis, order) for derivatives (max order 4), with
+           axis=0 for the single spatial coordinate x1. For mathematical functions you
+           are STRICTLY LIMITED to np.sin, np.cos, np.tanh and np.exp. Do not call any
+           other np.* routine, do not import anything, and do not write numerical
+           algorithms. Ordinary arithmetic (+ - * / **) and params[0..4] are free.
+        2. OUTPUT FORMAT: write the complete formula, assign it to f1_t_pred, and
+           strictly end with return f1_t_pred. No placeholders. Mind the shapes: x is
+           (Nx, 1) and f1 is (Nx, Nt), so a coordinate factor must broadcast against
+           f1 -- write x or x[:, 0:1], never x[:, 0].
+        3. PARETO EVOLUTION: the frontier trades MSE against complexity. Complexity
+           counts the derivative calls, the arithmetic operations and every params
+           you use, so the same term written more compactly is preferred.
+        4. OPTIMIZATION STRATEGY:{PARETO_FRONTIER_PLACEHOLDER}
+    """
+    # Envelope function peaked at x1=0, falling to nothing
+    envelope = np.exp(-x[:, 0:1]**2)
+
+    # Gain term: envelope * f1 (local amplification)
+    gain_term = params[0] * envelope * f1
+
+    # Second-order anti-diffusion: -d²f/dx² (opposite sign to smoothing)
+    anti_diffusion = params[1] * d_axis(f1, 0, 2)
+
+    # Fourth-order damping: +d⁴f/dx⁴ (keeps short scales damped)
+    fourth_order = params[2] * d_axis(f1, 0, 4)
+
+    # Nonlinear cubic: pulls small values to zero, with threshold behavior
+    nonlinear_cubic = params[3] * f1**3
+
+    # Higher-order cap: quintic term to cap runaway
+    nonlinear_quintic = params[4] * f1**5
+
+    f1_t_pred = gain_term - anti_diffusion + fourth_order - nonlinear_cubic + nonlinear_quintic
+
+    return f1_t_pred
+------------------------------------------------------
+MSE          : 2.13e-04
+Complexity   : 36
+Sample time  : 3.1023420691490173
+Evaluate time: 16.974738359451294
+Sample orders: 4
+======================================================
+
+
+================= Evaluated Function =================
+def equation(x: np.ndarray, f1: np.ndarray, params: np.ndarray, d_axis: callable) -> np.ndarray:
+    """ Mathematical function for the RHS of an unknown 1D PDE.
+
+    Args:
+        x: spatial coordinate grid, shape (Nx, 1).
+        f1: the measured field, shape (Nx, Nt).
+        params: a fixed-length array of exactly 5 entries. Use only indices 0..4.
+        d_axis: spatial derivative. Call d_axis(field, axis, order); axis=0 is x1.
+
+    Return:
+        `f1_t_pred`, a numpy array with the grid shape.
+
+    STRICT CONSTRAINT:
+        1. SPATIAL DERIVATIVES & MATH: you are a physicist discovering a PDE. Use ONLY
+           the provided d_axis(field, axis, order) for derivatives (max order 4), with
+           axis=0 for the single spatial coordinate x1. For mathematical functions you
+           are STRICTLY LIMITED to np.sin, np.cos, np.tanh and np.exp. Do not call any
+           other np.* routine, do not import anything, and do not write numerical
+           algorithms. Ordinary arithmetic (+ - * / **) and params[0..4] are free.
+        2. OUTPUT FORMAT: write the complete formula, assign it to f1_t_pred, and
+           strictly end with return f1_t_pred. No placeholders. Mind the shapes: x is
+           (Nx, 1) and f1 is (Nx, Nt), so a coordinate factor must broadcast against
+           f1 -- write x or x[:, 0:1], never x[:, 0].
+        3. PARETO EVOLUTION: the frontier trades MSE against complexity. Complexity
+           counts the derivative calls, the arithmetic operations and every params
+           you use, so the same term written more compactly is preferred.
+        4. OPTIMIZATION STRATEGY:{PARETO_FRONTIER_PLACEHOLDER}
+    """
+    # Gaussian envelope peaked at x1=0
+    envelope = np.exp(-params[0] * x[:, 0:1]**2)
+
+    # Local gain: envelope * field
+    gain = params[1] * envelope * f1
+
+    # Anti-diffusion (second order, negative coefficient)
+    anti_diffusion = -params[2] * d_axis(f1, 0, 2)
+
+    # Fourth-order damping (positive coefficient for stability)
+    fourth_order = params[3] * d_axis(f1, 0, 4)
+
+    # Nonlinear response: cubic returns small values to zero, quintic caps growth
+    # Using tanh-like saturation through polynomial terms
+    nonlinear = -params[4] * (f1 - f1**3 + 0.5*f1**5)
+
+    f1_t_pred = gain + anti_diffusion + fourth_order + nonlinear
+
+    return f1_t_pred
+------------------------------------------------------
+MSE          : 1.94e-05
+Complexity   : 36
+Sample time  : 4.050681173801422
+Evaluate time: 23.808024644851685
+Sample orders: 5
+======================================================
+
+
+================= Evaluated Function =================
+def equation(x: np.ndarray, f1: np.ndarray, params: np.ndarray, d_axis: callable) -> np.ndarray:
+    """ Mathematical function for the RHS of an unknown 1D PDE.
+
+    Args:
+        x: spatial coordinate grid, shape (Nx, 1).
+        f1: the measured field, shape (Nx, Nt).
+        params: a fixed-length array of exactly 5 entries. Use only indices 0..4.
+        d_axis: spatial derivative. Call d_axis(field, axis, order); axis=0 is x1.
+
+    Return:
+        `f1_t_pred`, a numpy array with the grid shape.
+
+    STRICT CONSTRAINT:
+        1. SPATIAL DERIVATIVES & MATH: you are a physicist discovering a PDE. Use ONLY
+           the provided d_axis(field, axis, order) for derivatives (max order 4), with
+           axis=0 for the single spatial coordinate x1. For mathematical functions you
+           are STRICTLY LIMITED to np.sin, np.cos, np.tanh and np.exp. Do not call any
+           other np.* routine, do not import anything, and do not write numerical
+           algorithms. Ordinary arithmetic (+ - * / **) and params[0..4] are free.
+        2. OUTPUT FORMAT: write the complete formula, assign it to f1_t_pred, and
+           strictly end with return f1_t_pred. No placeholders. Mind the shapes: x is
+           (Nx, 1) and f1 is (Nx, Nt), so a coordinate factor must broadcast against
+           f1 -- write x or x[:, 0:1], never x[:, 0].
+        3. PARETO EVOLUTION: the frontier trades MSE against complexity. Complexity
+           counts the derivative calls, the arithmetic operations and every params
+           you use, so the same term written more compactly is preferred.
+        4. OPTIMIZATION STRATEGY:{PARETO_FRONTIER_PLACEHOLDER}
+    """
+    # Gaussian envelope peaked at x=0
+    envelope = np.exp(-params[0] * x[:, 0:1]**2)
+
+    # Local gain via envelope * field
+    gain = params[1] * envelope * f1
+
+    # Anti-diffusion (negative second order)
+    anti_diffusion = -params[2] * d_axis(f1, 0, 2)
+
+    # Fourth-order damping
+    fourth_order = -params[3] * d_axis(f1, 0, 4)
+
+    # Nonlinear response: pulls small to zero, turns past threshold, caps amplitude
+    # Linear negative, cubic positive, quintic negative
+    nonlinear = -params[4] * f1 + params[4] * f1**3 - params[4] * f1**5
+
+    f1_t_pred = gain + anti_diffusion + fourth_order + nonlinear
+
+    return f1_t_pred
+------------------------------------------------------
+MSE          : 3.02e-05
+Complexity   : 38
+Sample time  : 4.050681173801422
+Evaluate time: 16.979060649871826
+Sample orders: 6
+======================================================
+
+
+================= Evaluated Function =================
+def equation(x: np.ndarray, f1: np.ndarray, params: np.ndarray, d_axis: callable) -> np.ndarray:
+    """ Mathematical function for the RHS of an unknown 1D PDE.
+
+    Args:
+        x: spatial coordinate grid, shape (Nx, 1).
+        f1: the measured field, shape (Nx, Nt).
+        params: a fixed-length array of exactly 5 entries. Use only indices 0..4.
+        d_axis: spatial derivative. Call d_axis(field, axis, order); axis=0 is x1.
+
+    Return:
+        `f1_t_pred`, a numpy array with the grid shape.
+
+    STRICT CONSTRAINT:
+        1. SPATIAL DERIVATIVES & MATH: you are a physicist discovering a PDE. Use ONLY
+           the provided d_axis(field, axis, order) for derivatives (max order 4), with
+           axis=0 for the single spatial coordinate x1. For mathematical functions you
+           are STRICTLY LIMITED to np.sin, np.cos, np.tanh and np.exp. Do not call any
+           other np.* routine, do not import anything, and do not write numerical
+           algorithms. Ordinary arithmetic (+ - * / **) and params[0..4] are free.
+        2. OUTPUT FORMAT: write the complete formula, assign it to f1_t_pred, and
+           strictly end with return f1_t_pred. No placeholders. Mind the shapes: x is
+           (Nx, 1) and f1 is (Nx, Nt), so a coordinate factor must broadcast against
+           f1 -- write x or x[:, 0:1], never x[:, 0].
+        3. PARETO EVOLUTION: the frontier trades MSE against complexity. Complexity
+           counts the derivative calls, the arithmetic operations and every params
+           you use, so the same term written more compactly is preferred.
+        4. OPTIMIZATION STRATEGY:{PARETO_FRONTIER_PLACEHOLDER}
+    """
+    # Envelope peaked at x=0
+    envelope = np.exp(-x[:, 0:1]**2)
+
+    # Local gain: envelope * field
+    gain = params[0] * envelope * f1
+
+    # Anti-diffusion (second-order, opposite sign)
+    anti_diffusion = params[1] * d_axis(f1, 0, 2)
+
+    # Fourth-order damping
+    fourth_order = -params[2] * d_axis(f1, 0, 4)
+
+    # Nonlinear response: -f + f³ - f⁵ (pull back, threshold, cap)
+    nonlinear = -params[3] * f1 + params[3] * f1**3 - params[3] * f1**5
+
+    f1_t_pred = gain + anti_diffusion + fourth_order + nonlinear
+
+    return f1_t_pred✅ [EVALUATED] MSE: 4.09e-05 | Params: [ 1.084444  1.648354  0.846496 -0.842353  1.        1.      ]
+
+------------------------------------------------------
+MSE          : 4.09e-05
+Complexity   : 39
+Sample time  : 4.050681173801422
+Evaluate time: 9.63935899734497
+Sample orders: 7
+======================================================
+
+
+================= Evaluated Function =================
+def equation(x: np.ndarray, f1: np.ndarray, params: np.ndarray, d_axis: callable) -> np.ndarray:
+    """ Mathematical function for the RHS of an unknown 1D PDE.
+
+    Args:
+        x: spatial coordinate grid, shape (Nx, 1).
+        f1: the measured field, shape (Nx, Nt).
+        params: a fixed-length array of exactly 5 entries. Use only indices 0..4.
+        d_axis: spatial derivative. Call d_axis(field, axis, order); axis=0 is x1.
+
+    Return:
+        `f1_t_pred`, a numpy array with the grid shape.
+
+    STRICT CONSTRAINT:
+        1. SPATIAL DERIVATIVES & MATH: you are a physicist discovering a PDE. Use ONLY
+           the provided d_axis(field, axis, order) for derivatives (max order 4), with
+           axis=0 for the single spatial coordinate x1. For mathematical functions you
+           are STRICTLY LIMITED to np.sin, np.cos, np.tanh and np.exp. Do not call any
+           other np.* routine, do not import anything, and do not write numerical
+           algorithms. Ordinary arithmetic (+ - * / **) and params[0..4] are free.
+        2. OUTPUT FORMAT: write the complete formula, assign it to f1_t_pred, and
+           strictly end with return f1_t_pred. No placeholders. Mind the shapes: x is
+           (Nx, 1) and f1 is (Nx, Nt), so a coordinate factor must broadcast against
+           f1 -- write x or x[:, 0:1], never x[:, 0].
+        3. PARETO EVOLUTION: the frontier trades MSE against complexity. Complexity
+           counts the derivative calls, the arithmetic operations and every params
+           you use, so the same term written more compactly is preferred.
+        4. OPTIMIZATION STRATEGY:{PARETO_FRONTIER_PLACEHOLDER}
+    """
+    # Gaussian envelope peaked at x=0
+    envelope = np.exp(-x[:, 0:1]**2)
+
+    # Local gain modulated by envelope
+    gain = params[0] * envelope * f1
+
+    # Anti-diffusion (opposite sign to ordinary smoothing)
+    anti_diff = -params[1] * d_axis(f1, 0, 2)
+
+    # Fourth-order damping (stabilizes short scales)
+    damp4 = -params[2] * d_axis(f1, 0, 4)
+
+    # Nonlinear response: linear restoring, cubic threshold, quintic cap
+    nonlinear = -params[3] * f1 + params[3] * f1**3 - params[3] * f1**5
+
+    f1_t_pred = gain + anti_diff + damp4 + nonlinear
+
+    return f1_t_pred
+------------------------------------------------------
+MSE          : 4.09e-05
+Complexity   : 35
+Sample time  : 4.050681173801422
+Evaluate time: 11.19188404083252
+Sample orders: 8
+======================================================
+
+
+🚫 [UNPARSABLE] the reply carried no executable body; draw dropped
+Execution Error: name 'f1_t_pred' is not defined
+✅ [EVALUATED] MSE: 4.07e-05 | Params: [ 1.210902  1.278293  1.657693 -0.849087 -0.833555  0.959492]
+✅ [EVALUATED] MSE: 1.94e-05 | Params: [ 0.146869  1.038523  1.732181 -0.890042 -0.502339  1.      ]
+✅ [EVALUATED] MSE: 1.94e-05 | Params: [ 1.038509  0.146867  1.732145 -0.890027 -0.502366  1.      ]
+⏱️  [NO SCORE] the sandbox returned nothing for this draw (timeout 60s, or a runtime error); it gets no MSE and no frontier slot
+================= Evaluated Function =================
+def equation(x: np.ndarray, f1: np.ndarray, params: np.ndarray, d_axis: callable) -> np.ndarray:
+    """ Mathematical function for the RHS of an unknown 1D PDE.
+
+    Args:
+        x: spatial coordinate grid, shape (Nx, 1).
+        f1: the measured field, shape (Nx, Nt).
+        params: a fixed-length array of exactly 5 entries. Use only indices 0..4.
+        d_axis: spatial derivative. Call d_axis(field, axis, order); axis=0 is x1.
+
+    Return:
+        `f1_t_pred`, a numpy array with the grid shape.
+
+    STRICT CONSTRAINT:
+        1. SPATIAL DERIVATIVES & MATH: you are a physicist discovering a PDE. Use ONLY
+           the provided d_axis(field, axis, order) for derivatives (max order 4), with
+           axis=0 for the single spatial coordinate x1. For mathematical functions you
+           are STRICTLY LIMITED to np.sin, np.cos, np.tanh and np.exp. Do not call any
+           other np.* routine, do not import anything, and do not write numerical
+           algorithms. Ordinary arithmetic (+ - * / **) and params[0..4] are free.
+        2. OUTPUT FORMAT: write the complete formula, assign it to f1_t_pred, and
+           strictly end with return f1_t_pred. No placeholders. Mind the shapes: x is
+           (Nx, 1) and f1 is (Nx, Nt), so a coordinate factor must broadcast against
+           f1 -- write x or x[:, 0:1], never x[:, 0].
+        3. PARETO EVOLUTION: the frontier trades MSE against complexity. Complexity
+           counts the derivative calls, the arithmetic operations and every params
+           you use, so the same term written more compactly is preferred.
+        4. OPTIMIZATION STRATEGY:{PARETO_FRONTIER_PLACEHOLDER}
+    """
+    return f1_t_pred
+------------------------------------------------------
+MSE          : N/A
+Complexity   : N/A
+Sample time  : 1.4896342754364014
+Evaluate time: 2.770780324935913
+Sample orders: 10
+======================================================
+
+
+================= Evaluated Function =================
+def equation(x: np.ndarray, f1: np.ndarray, params: np.ndarray, d_axis: callable) -> np.ndarray:
+    """ Mathematical function for the RHS of an unknown 1D PDE.
+
+    Args:
+        x: spatial coordinate grid, shape (Nx, 1).
+        f1: the measured field, shape (Nx, Nt).
+        params: a fixed-length array of exactly 5 entries. Use only indices 0..4.
+        d_axis: spatial derivative. Call d_axis(field, axis, order); axis=0 is x1.
+
+    Return:
+        `f1_t_pred`, a numpy array with the grid shape.
+
+    STRICT CONSTRAINT:
+        1. SPATIAL DERIVATIVES & MATH: you are a physicist discovering a PDE. Use ONLY
+           the provided d_axis(field, axis, order) for derivatives (max order 4), with
+           axis=0 for the single spatial coordinate x1. For mathematical functions you
+           are STRICTLY LIMITED to np.sin, np.cos, np.tanh and np.exp. Do not call any
+           other np.* routine, do not import anything, and do not write numerical
+           algorithms. Ordinary arithmetic (+ - * / **) and params[0..4] are free.
+        2. OUTPUT FORMAT: write the complete formula, assign it to f1_t_pred, and
+           strictly end with return f1_t_pred. No placeholders. Mind the shapes: x is
+           (Nx, 1) and f1 is (Nx, Nt), so a coordinate factor must broadcast against
+           f1 -- write x or x[:, 0:1], never x[:, 0].
+        3. PARETO EVOLUTION: the frontier trades MSE against complexity. Complexity
+           counts the derivative calls, the arithmetic operations and every params
+           you use, so the same term written more compactly is preferred.
+        4. OPTIMIZATION STRATEGY:{PARETO_FRONTIER_PLACEHOLDER}
+    """
+    f1_t_pred = params[0] * np.exp(-params[1] * x[:, 0:1]**2) * f1 - params[2] * d_axis(f1, 0, 2) + params[3] * d_axis(f1, 0, 4) - params[4] * (f1 - f1**3 + params[5] * f1**5)
+
+    return f1_t_pred
+------------------------------------------------------
+MSE          : 4.07e-05
+Complexity   : 30
+Sample time  : 1.4896342754364014
+Evaluate time: 9.329789638519287
+Sample orders: 11
+======================================================
+
+
+================= Evaluated Function =================
+def equation(x: np.ndarray, f1: np.ndarray, params: np.ndarray, d_axis: callable) -> np.ndarray:
+    """ Mathematical function for the RHS of an unknown 1D PDE.
+
+    Args:
+        x: spatial coordinate grid, shape (Nx, 1).
+        f1: the measured field, shape (Nx, Nt).
+        params: a fixed-length array of exactly 5 entries. Use only indices 0..4.
+        d_axis: spatial derivative. Call d_axis(field, axis, order); axis=0 is x1.
+
+    Return:
+        `f1_t_pred`, a numpy array with the grid shape.
+
+    STRICT CONSTRAINT:
+        1. SPATIAL DERIVATIVES & MATH: you are a physicist discovering a PDE. Use ONLY
+           the provided d_axis(field, axis, order) for derivatives (max order 4), with
+           axis=0 for the single spatial coordinate x1. For mathematical functions you
+           are STRICTLY LIMITED to np.sin, np.cos, np.tanh and np.exp. Do not call any
+           other np.* routine, do not import anything, and do not write numerical
+           algorithms. Ordinary arithmetic (+ - * / **) and params[0..4] are free.
+        2. OUTPUT FORMAT: write the complete formula, assign it to f1_t_pred, and
+           strictly end with return f1_t_pred. No placeholders. Mind the shapes: x is
+           (Nx, 1) and f1 is (Nx, Nt), so a coordinate factor must broadcast against
+           f1 -- write x or x[:, 0:1], never x[:, 0].
+        3. PARETO EVOLUTION: the frontier trades MSE against complexity. Complexity
+           counts the derivative calls, the arithmetic operations and every params
+           you use, so the same term written more compactly is preferred.
+        4. OPTIMIZATION STRATEGY:{PARETO_FRONTIER_PLACEHOLDER}
+    """
+    # Envelope peaked at x1=0, falls off as Gaussian
+    envelope = np.exp(-params[0] * x[:, 0:1]**2)
+
+    # Local gain: envelope * field (nothing gained where field absent or far from envelope)
+    gain = params[1] * envelope * f1
+
+    # Anti-diffusion (second-order, opposite sign to smoothing - selects preferred length scale)
+    anti_diffusion = -params[2] * d_axis(f1, 0, 2)
+
+    # Fourth-order damping (keeps shortest scales damped)
+    fourth_order = params[3] * d_axis(f1, 0, 4)
+
+    # Nonlinear response: cubic-quintic polynomial
+    # -f: pulls small departures back to zero
+    # +f^3: turns around past threshold
+    # -0.5*f^5: caps how far field can run
+    nonlinear = -params[4] * f1 + params[4] * f1**3 - 0.5 * params[4] * f1**5
+
+    f1_t_pred = gain + anti_diffusion + fourth_order + nonlinear
+
+    return f1_t_pred
+------------------------------------------------------
+MSE          : 1.94e-05
+Complexity   : 45
+Sample time  : 1.4896342754364014
+Evaluate time: 16.269078731536865
+Sample orders: 12
+======================================================
+
+
+================= Evaluated Function =================
+def equation(x: np.ndarray, f1: np.ndarray, params: np.ndarray, d_axis: callable) -> np.ndarray:
+    """ Mathematical function for the RHS of an unknown 1D PDE.
+
+    Args:
+        x: spatial coordinate grid, shape (Nx, 1).
+        f1: the measured field, shape (Nx, Nt).
+        params: a fixed-length array of exactly 5 entries. Use only indices 0..4.
+        d_axis: spatial derivative. Call d_axis(field, axis, order); axis=0 is x1.
+
+    Return:
+        `f1_t_pred`, a numpy array with the grid shape.
+
+    STRICT CONSTRAINT:
+        1. SPATIAL DERIVATIVES & MATH: you are a physicist discovering a PDE. Use ONLY
+           the provided d_axis(field, axis, order) for derivatives (max order 4), with
+           axis=0 for the single spatial coordinate x1. For mathematical functions you
+           are STRICTLY LIMITED to np.sin, np.cos, np.tanh and np.exp. Do not call any
+           other np.* routine, do not import anything, and do not write numerical
+           algorithms. Ordinary arithmetic (+ - * / **) and params[0..4] are free.
+        2. OUTPUT FORMAT: write the complete formula, assign it to f1_t_pred, and
+           strictly end with return f1_t_pred. No placeholders. Mind the shapes: x is
+           (Nx, 1) and f1 is (Nx, Nt), so a coordinate factor must broadcast against
+           f1 -- write x or x[:, 0:1], never x[:, 0].
+        3. PARETO EVOLUTION: the frontier trades MSE against complexity. Complexity
+           counts the derivative calls, the arithmetic operations and every params
+           you use, so the same term written more compactly is preferred.
+        4. OPTIMIZATION STRATEGY:{PARETO_FRONTIER_PLACEHOLDER}
+    """
+    f1_t_pred = params[0] * np.exp(-params[1] * x[:, 0:1]**2) * f1 - params[2] * d_axis(f1, 0, 2) + params[3] * d_axis(f1, 0, 4) - params[4] * (f1 - f1**3 + 0.5 * f1**5)
+
+    return f1_t_pred✅ [EVALUATED] MSE: 4.09e-05 | Params: [ 1.366041  1.232713 -1.645196 -0.844049 -0.843696  1.      ]
+✅ [EVALUATED] MSE: 3.52e-05 | Params: [65.591988  9.617556  1.592039 -0.818088 -0.878056  1.      ]
+
+------------------------------------------------------
+MSE          : 1.94e-05
+Complexity   : 29
+Sample time  : 1.823401391506195
+Evaluate time: 13.886196851730347
+Sample orders: 13
+======================================================
+
+
+================= Evaluated Function =================
+def equation(x: np.ndarray, f1: np.ndarray, params: np.ndarray, d_axis: callable) -> np.ndarray:
+    """ Mathematical function for the RHS of an unknown 1D PDE.
+
+    Args:
+        x: spatial coordinate grid, shape (Nx, 1).
+        f1: the measured field, shape (Nx, Nt).
+        params: a fixed-length array of exactly 5 entries. Use only indices 0..4.
+        d_axis: spatial derivative. Call d_axis(field, axis, order); axis=0 is x1.
+
+    Return:
+        `f1_t_pred`, a numpy array with the grid shape.
+
+    STRICT CONSTRAINT:
+        1. SPATIAL DERIVATIVES & MATH: you are a physicist discovering a PDE. Use ONLY
+           the provided d_axis(field, axis, order) for derivatives (max order 4), with
+           axis=0 for the single spatial coordinate x1. For mathematical functions you
+           are STRICTLY LIMITED to np.sin, np.cos, np.tanh and np.exp. Do not call any
+           other np.* routine, do not import anything, and do not write numerical
+           algorithms. Ordinary arithmetic (+ - * / **) and params[0..4] are free.
+        2. OUTPUT FORMAT: write the complete formula, assign it to f1_t_pred, and
+           strictly end with return f1_t_pred. No placeholders. Mind the shapes: x is
+           (Nx, 1) and f1 is (Nx, Nt), so a coordinate factor must broadcast against
+           f1 -- write x or x[:, 0:1], never x[:, 0].
+        3. PARETO EVOLUTION: the frontier trades MSE against complexity. Complexity
+           counts the derivative calls, the arithmetic operations and every params
+           you use, so the same term written more compactly is preferred.
+        4. OPTIMIZATION STRATEGY:{PARETO_FRONTIER_PLACEHOLDER}
+    """
+    # Local gain: Gaussian envelope peaked at x1=0
+    envelope = np.exp(-params[0] * x[:, 0:1]**2)
+    gain = params[1] * envelope * f1
+
+    # Anti-diffusion: second-order term with opposite sign to smoothing
+    anti_diffusion = params[2] * d_axis(f1, 0, 2)
+
+    # Fourth-order damping
+    fourth_order = params[3] * d_axis(f1, 0, 4)
+
+    # Nonlinear response: cubic-quintic polynomial
+    # -f: pulls small departures back to zero
+    # +f^3: turns around past threshold  
+    # -f^5: caps how far field can run
+    nonlinear = -params[4] * f1 + params[4] * f1**3 - params[4] * f1**5
+
+    # Combine all terms
+    f1_t_pred = gain + anti_diffusion + fourth_order + nonlinear
+
+    return f1_t_pred
+------------------------------------------------------
+MSE          : 4.09e-05
+Complexity   : 40
+Sample time  : 1.823401391506195
+Evaluate time: 10.59212613105774
+Sample orders: 14
+======================================================
+
+
+================= Evaluated Function =================
+def equation(x: np.ndarray, f1: np.ndarray, params: np.ndarray, d_axis: callable) -> np.ndarray:
+    """ Mathematical function for the RHS of an unknown 1D PDE.
+
+    Args:
+        x: spatial coordinate grid, shape (Nx, 1).
+        f1: the measured field, shape (Nx, Nt).
+        params: a fixed-length array of exactly 5 entries. Use only indices 0..4.
+        d_axis: spatial derivative. Call d_axis(field, axis, order); axis=0 is x1.
+
+    Return:
+        `f1_t_pred`, a numpy array with the grid shape.
+
+    STRICT CONSTRAINT:
+        1. SPATIAL DERIVATIVES & MATH: you are a physicist discovering a PDE. Use ONLY
+           the provided d_axis(field, axis, order) for derivatives (max order 4), with
+           axis=0 for the single spatial coordinate x1. For mathematical functions you
+           are STRICTLY LIMITED to np.sin, np.cos, np.tanh and np.exp. Do not call any
+           other np.* routine, do not import anything, and do not write numerical
+           algorithms. Ordinary arithmetic (+ - * / **) and params[0..4] are free.
+        2. OUTPUT FORMAT: write the complete formula, assign it to f1_t_pred, and
+           strictly end with return f1_t_pred. No placeholders. Mind the shapes: x is
+           (Nx, 1) and f1 is (Nx, Nt), so a coordinate factor must broadcast against
+           f1 -- write x or x[:, 0:1], never x[:, 0].
+        3. PARETO EVOLUTION: the frontier trades MSE against complexity. Complexity
+           counts the derivative calls, the arithmetic operations and every params
+           you use, so the same term written more compactly is preferred.
+        4. OPTIMIZATION STRATEGY:{PARETO_FRONTIER_PLACEHOLDER}
+    """
+    # Gaussian envelope peaked at x1=0
+    envelope = np.exp(-params[0] * x[:, 0:1]**2)
+
+    # Local gain: envelope * field
+    gain = params[1] * envelope * f1
+
+    # Anti-diffusion (second-order, negative sign)
+    anti_diffusion = -params[2] * d_axis(f1, 0, 2)
+
+    # Fourth-order damping
+    fourth_order = params[3] * d_axis(f1, 0, 4)
+
+    # Nonlinear response: cubic-quintic polynomial
+    # -f: pulls small departures back to zero
+    # +f^3: turns around past threshold  
+    # -f^5: caps how far field can run
+    nonlinear = -params[4] * f1 + params[4] * f1**3 - params[4] * f1**5
+
+    f1_t_pred = gain + anti_diffusion + fourth_order + nonlinear
+
+    return f1_t_pred
+------------------------------------------------------
+MSE          : 3.52e-05
+Complexity   : 42
+Sample time  : 1.823401391506195
+Evaluate time: 24.49789047241211
+Sample orders: 15
+======================================================
+
+
+🚫 [UNPARSABLE] the reply carried no executable body; draw dropped
+✅ [EVALUATED] MSE: 3.52e-05 | Params: [65.591988  9.617556  1.592039 -0.818088 -0.878056  1.      ]
+✅ [EVALUATED] MSE: 1.94e-05 | Params: [ 1.038509  0.146867  1.732145 -0.890027 -0.502366  1.      ]
+================= Evaluated Function =================
+def equation(x: np.ndarray, f1: np.ndarray, params: np.ndarray, d_axis: callable) -> np.ndarray:
+    """ Mathematical function for the RHS of an unknown 1D PDE.
+
+    Args:
+        x: spatial coordinate grid, shape (Nx, 1).
+        f1: the measured field, shape (Nx, Nt).
+        params: a fixed-length array of exactly 5 entries. Use only indices 0..4.
+        d_axis: spatial derivative. Call d_axis(field, axis, order); axis=0 is x1.
+
+    Return:
+        `f1_t_pred`, a numpy array with the grid shape.
+
+    STRICT CONSTRAINT:
+        1. SPATIAL DERIVATIVES & MATH: you are a physicist discovering a PDE. Use ONLY
+           the provided d_axis(field, axis, order) for derivatives (max order 4), with
+           axis=0 for the single spatial coordinate x1. For mathematical functions you
+           are STRICTLY LIMITED to np.sin, np.cos, np.tanh and np.exp. Do not call any
+           other np.* routine, do not import anything, and do not write numerical
+           algorithms. Ordinary arithmetic (+ - * / **) and params[0..4] are free.
+        2. OUTPUT FORMAT: write the complete formula, assign it to f1_t_pred, and
+           strictly end with return f1_t_pred. No placeholders. Mind the shapes: x is
+           (Nx, 1) and f1 is (Nx, Nt), so a coordinate factor must broadcast against
+           f1 -- write x or x[:, 0:1], never x[:, 0].
+        3. PARETO EVOLUTION: the frontier trades MSE against complexity. Complexity
+           counts the derivative calls, the arithmetic operations and every params
+           you use, so the same term written more compactly is preferred.
+        4. OPTIMIZATION STRATEGY:{PARETO_FRONTIER_PLACEHOLDER}
+    """
+    # Envelope peaked at x1=0, falls off as Gaussian
+    envelope = np.exp(-params[0] * x[:, 0:1]**2)
+
+    # Local gain: envelope * field (nothing gained where field absent or far from envelope)
+    gain = params[1] * envelope * f1
+
+    # Anti-diffusion (second-order, opposite sign to smoothing - selects preferred length scale)
+    anti_diffusion = -params[2] * d_axis(f1, 0, 2)
+
+    # Fourth-order damping (keeps shortest scales damped)
+    fourth_order = params[3] * d_axis(f1, 0, 4)
+
+    # Nonlinear response: cubic-quintic polynomial
+    # -f: pulls small departures back to zero
+    # +f^3: turns around past threshold
+    # -f^5: caps how far field can run
+    nonlinear = -params[4] * f1 + params[4] * f1**3 - params[4] * f1**5
+
+    f1_t_pred = gain + anti_diffusion + fourth_order + nonlinear
+
+    return f1_t_pred
+------------------------------------------------------
+MSE          : 3.52e-05
+Complexity   : 43
+Sample time  : 1.6818380951881409
+Evaluate time: 24.770731687545776
+Sample orders: 17
+======================================================
+
+
+================= Evaluated Function =================
+def equation(x: np.ndarray, f1: np.ndarray, params: np.ndarray, d_axis: callable) -> np.ndarray:
+    """ Mathematical function for the RHS of an unknown 1D PDE.
+
+    Args:
+        x: spatial coordinate grid, shape (Nx, 1).
+        f1: the measured field, shape (Nx, Nt).
+        params: a fixed-length array of exactly 5 entries. Use only indices 0..4.
+        d_axis: spatial derivative. Call d_axis(field, axis, order); axis=0 is x1.
+
+    Return:
+        `f1_t_pred`, a numpy array with the grid shape.
+
+    STRICT CONSTRAINT:
+        1. SPATIAL DERIVATIVES & MATH: you are a physicist discovering a PDE. Use ONLY
+           the provided d_axis(field, axis, order) for derivatives (max order 4), with
+           axis=0 for the single spatial coordinate x1. For mathematical functions you
+           are STRICTLY LIMITED to np.sin, np.cos, np.tanh and np.exp. Do not call any
+           other np.* routine, do not import anything, and do not write numerical
+           algorithms. Ordinary arithmetic (+ - * / **) and params[0..4] are free.
+        2. OUTPUT FORMAT: write the complete formula, assign it to f1_t_pred, and
+           strictly end with return f1_t_pred. No placeholders. Mind the shapes: x is
+           (Nx, 1) and f1 is (Nx, Nt), so a coordinate factor must broadcast against
+           f1 -- write x or x[:, 0:1], never x[:, 0].
+        3. PARETO EVOLUTION: the frontier trades MSE against complexity. Complexity
+           counts the derivative calls, the arithmetic operations and every params
+           you use, so the same term written more compactly is preferred.
+        4. OPTIMIZATION STRATEGY:{PARETO_FRONTIER_PLACEHOLDER}
+    """
+    f1_t_pred = params[0] * np.exp(-params[1] * x[:, 0:1]**2) * f1 - params[2] * d_axis(f1, 0, 2) + params[3] * d_axis(f1, 0, 4) - params[4] * (f1 - f1**3 + 0.5 * f1**5)
+
+    return f1_t_pred
+------------------------------------------------------
+MSE          : 1.94e-05
+Complexity   : 29
+Sample time  : 1.6818380951881409
+Evaluate time: 13.98559308052063
+Sample orders: 18
+======================================================
+
+
+🚫 [UNPARSABLE] the reply carried no executable body; draw dropped
+✅ [EVALUATED] MSE: 1.94e-05 | Params: [ 1.038509  0.146867  1.732145 -0.890027 -0.502366  1.      ]
+✅ [EVALUATED] MSE: 1.94e-05 | Params: [ 1.038509  0.146867  1.732145 -0.890027 -0.502366  1.      ]
+✅ [EVALUATED] MSE: 1.94e-05 | Params: [ 1.038518  0.146876  1.732203 -0.89005  -0.502338  1.      ]
+✅ [EVALUATED] MSE: 1.94e-05 | Params: [ 1.038509  0.146867  1.732145 -0.890027 -0.502366  1.      ]
+================= Evaluated Function =================
+def equation(x: np.ndarray, f1: np.ndarray, params: np.ndarray, d_axis: callable) -> np.ndarray:
+    """ Mathematical function for the RHS of an unknown 1D PDE.
+
+    Args:
+        x: spatial coordinate grid, shape (Nx, 1).
+        f1: the measured field, shape (Nx, Nt).
+        params: a fixed-length array of exactly 5 entries. Use only indices 0..4.
+        d_axis: spatial derivative. Call d_axis(field, axis, order); axis=0 is x1.
+
+    Return:
+        `f1_t_pred`, a numpy array with the grid shape.
+
+    STRICT CONSTRAINT:
+        1. SPATIAL DERIVATIVES & MATH: you are a physicist discovering a PDE. Use ONLY
+           the provided d_axis(field, axis, order) for derivatives (max order 4), with
+           axis=0 for the single spatial coordinate x1. For mathematical functions you
+           are STRICTLY LIMITED to np.sin, np.cos, np.tanh and np.exp. Do not call any
+           other np.* routine, do not import anything, and do not write numerical
+           algorithms. Ordinary arithmetic (+ - * / **) and params[0..4] are free.
+        2. OUTPUT FORMAT: write the complete formula, assign it to f1_t_pred, and
+           strictly end with return f1_t_pred. No placeholders. Mind the shapes: x is
+           (Nx, 1) and f1 is (Nx, Nt), so a coordinate factor must broadcast against
+           f1 -- write x or x[:, 0:1], never x[:, 0].
+        3. PARETO EVOLUTION: the frontier trades MSE against complexity. Complexity
+           counts the derivative calls, the arithmetic operations and every params
+           you use, so the same term written more compactly is preferred.
+        4. OPTIMIZATION STRATEGY:{PARETO_FRONTIER_PLACEHOLDER}
+    """
+    # Local gain from bell-shaped envelope peaked at x1=0
+    envelope_gain = params[0] * np.exp(-params[1] * x[:, 0:1]**2) * f1
+
+    # Anti-diffusion (second-order, opposite sign to smoothing)
+    anti_diffusion = -params[2] * d_axis(f1, 0, 2)
+
+    # Fourth-order damping for shortest scales
+    fourth_order = params[3] * d_axis(f1, 0, 4)
+
+    # Nonlinear cubic-quintic response
+    nonlinear = -params[4] * (f1 - f1**3 + 0.5 * f1**5)
+
+    f1_t_pred = envelope_gain + anti_diffusion + fourth_order + nonlinear
+
+    return f1_t_pred
+------------------------------------------------------
+MSE          : 1.94e-05
+Complexity   : 36
+Sample time  : 1.6818380951881409
+Evaluate time: 13.988016366958618
+Sample orders: 20
+======================================================
+
+
+================= Evaluated Function =================
+def equation(x: np.ndarray, f1: np.ndarray, params: np.ndarray, d_axis: callable) -> np.ndarray:
+    """ Mathematical function for the RHS of an unknown 1D PDE.
+
+    Args:
+        x: spatial coordinate grid, shape (Nx, 1).
+        f1: the measured field, shape (Nx, Nt).
+        params: a fixed-length array of exactly 5 entries. Use only indices 0..4.
+        d_axis: spatial derivative. Call d_axis(field, axis, order); axis=0 is x1.
+
+    Return:
+        `f1_t_pred`, a numpy array with the grid shape.
+
+    STRICT CONSTRAINT:
+        1. SPATIAL DERIVATIVES & MATH: you are a physicist discovering a PDE. Use ONLY
+           the provided d_axis(field, axis, order) for derivatives (max order 4), with
+           axis=0 for the single spatial coordinate x1. For mathematical functions you
+           are STRICTLY LIMITED to np.sin, np.cos, np.tanh and np.exp. Do not call any
+           other np.* routine, do not import anything, and do not write numerical
+           algorithms. Ordinary arithmetic (+ - * / **) and params[0..4] are free.
+        2. OUTPUT FORMAT: write the complete formula, assign it to f1_t_pred, and
+           strictly end with return f1_t_pred. No placeholders. Mind the shapes: x is
+           (Nx, 1) and f1 is (Nx, Nt), so a coordinate factor must broadcast against
+           f1 -- write x or x[:, 0:1], never x[:, 0].
+        3. PARETO EVOLUTION: the frontier trades MSE against complexity. Complexity
+           counts the derivative calls, the arithmetic operations and every params
+           you use, so the same term written more compactly is preferred.
+        4. OPTIMIZATION STRATEGY:{PARETO_FRONTIER_PLACEHOLDER}
+    """
+    # Gaussian envelope
+    envelope = np.exp(-params[1] * x[:, 0:1]**2)
+
+    # Local gain term
+    gain = params[0] * envelope * f1
+
+    # Anti-diffusion (selects preferred length scale)
+    anti_diffusion = -params[2] * d_axis(f1, 0, 2)
+
+    # Fourth-order damping
+    fourth_order = params[3] * d_axis(f1, 0, 4)
+
+    # Nonlinear response: f(1 - f² + (1/2)f⁴)
+    nonlinear = -params[4] * (f1 - f1**3 + 0.5 * f1**5)
+
+    f1_t_pred = gain + anti_diffusion + fourth_order + nonlinear
+
+    return f1_t_pred
+------------------------------------------------------
+MSE          : 1.94e-05
+Complexity   : 36
+Sample time  : 2.198861837387085
+Evaluate time: 13.90047001838684
+Sample orders: 21
+======================================================
+
+
+================= Evaluated Function =================
+def equation(x: np.ndarray, f1: np.ndarray, params: np.ndarray, d_axis: callable) -> np.ndarray:
+    """ Mathematical function for the RHS of an unknown 1D PDE.
+
+    Args:
+        x: spatial coordinate grid, shape (Nx, 1).
+        f1: the measured field, shape (Nx, Nt).
+        params: a fixed-length array of exactly 5 entries. Use only indices 0..4.
+        d_axis: spatial derivative. Call d_axis(field, axis, order); axis=0 is x1.
+
+    Return:
+        `f1_t_pred`, a numpy array with the grid shape.
+
+    STRICT CONSTRAINT:
+        1. SPATIAL DERIVATIVES & MATH: you are a physicist discovering a PDE. Use ONLY
+           the provided d_axis(field, axis, order) for derivatives (max order 4), with
+           axis=0 for the single spatial coordinate x1. For mathematical functions you
+           are STRICTLY LIMITED to np.sin, np.cos, np.tanh and np.exp. Do not call any
+           other np.* routine, do not import anything, and do not write numerical
+           algorithms. Ordinary arithmetic (+ - * / **) and params[0..4] are free.
+        2. OUTPUT FORMAT: write the complete formula, assign it to f1_t_pred, and
+           strictly end with return f1_t_pred. No placeholders. Mind the shapes: x is
+           (Nx, 1) and f1 is (Nx, Nt), so a coordinate factor must broadcast against
+           f1 -- write x or x[:, 0:1], never x[:, 0].
+        3. PARETO EVOLUTION: the frontier trades MSE against complexity. Complexity
+           counts the derivative calls, the arithmetic operations and every params
+           you use, so the same term written more compactly is preferred.
+        4. OPTIMIZATION STRATEGY:{PARETO_FRONTIER_PLACEHOLDER}
+    """
+    # Local gain with Gaussian envelope peaked at x1=0
+    gain = params[0] * np.exp(-params[1] * x[:, 0:1]**2) * f1
+
+    # Anti-diffusion (second-order, opposite sign) + fourth-order damping
+    spatial = -params[2] * d_axis(f1, 0, 2) + params[3] * d_axis(f1, 0, 4)
+
+    # Nonlinear response: cubic-quintic polynomial
+    # -f + f^3 - 0.5*f^5 pulls back, turns around, and caps
+    nonlinear = -params[4] * (f1 - f1**3 + 0.5 * f1**5)
+
+    f1_t_pred = gain + spatial + nonlinear
+    return f1_t_pred
+------------------------------------------------------
+MSE          : 1.94e-05
+Complexity   : 40
+Sample time  : 2.198861837387085
+Evaluate time: 13.016303777694702
+Sample orders: 22
+======================================================
+
+
+================= Evaluated Function =================
+def equation(x: np.ndarray, f1: np.ndarray, params: np.ndarray, d_axis: callable) -> np.ndarray:
+    """ Mathematical function for the RHS of an unknown 1D PDE.
+
+    Args:
+        x: spatial coordinate grid, shape (Nx, 1).
+        f1: the measured field, shape (Nx, Nt).
+        params: a fixed-length array of exactly 5 entries. Use only indices 0..4.
+        d_axis: spatial derivative. Call d_axis(field, axis, order); axis=0 is x1.
+
+    Return:
+        `f1_t_pred`, a numpy array with the grid shape.
+
+    STRICT CONSTRAINT:
+        1. SPATIAL DERIVATIVES & MATH: you are a physicist discovering a PDE. Use ONLY
+           the provided d_axis(field, axis, order) for derivatives (max order 4), with
+           axis=0 for the single spatial coordinate x1. For mathematical functions you
+           are STRICTLY LIMITED to np.sin, np.cos, np.tanh and np.exp. Do not call any
+           other np.* routine, do not import anything, and do not write numerical
+           algorithms. Ordinary arithmetic (+ - * / **) and params[0..4] are free.
+        2. OUTPUT FORMAT: write the complete formula, assign it to f1_t_pred, and
+           strictly end with return f1_t_pred. No placeholders. Mind the shapes: x is
+           (Nx, 1) and f1 is (Nx, Nt), so a coordinate factor must broadcast against
+           f1 -- write x or x[:, 0:1], never x[:, 0].
+        3. PARETO EVOLUTION: the frontier trades MSE against complexity. Complexity
+           counts the derivative calls, the arithmetic operations and every params
+           you use, so the same term written more compactly is preferred.
+        4. OPTIMIZATION STRATEGY:{PARETO_FRONTIER_PLACEHOLDER}
+    """
+    f1_t_pred = params[0] * np.exp(-params[1] * x[:, 0:1]**2) * f1 - params[2] * d_axis(f1, 0, 2) + params[3] * d_axis(f1, 0, 4) - params[4] * (f1 - f1**3 + 0.5 * f1**5)
+
+    return f1_t_predExecution Error: name 'f1_t_pred' is not defined
+✅ [EVALUATED] MSE: 1.94e-05 | Params: [ 0.146869  1.038523  1.732181 -0.890042 -0.502339  1.      ]
+✅ [EVALUATED] MSE: 3.63e-05 | Params: [51.924965  8.328762 -1.584686  0.815699 -0.873102 -0.614454]
+✅ [EVALUATED] MSE: 1.94e-05 | Params: [ 1.038518  0.146876  1.732203 -0.89005  -0.502338  1.      ]
+
+------------------------------------------------------
+MSE          : 1.94e-05
+Complexity   : 29
+Sample time  : 2.198861837387085
+Evaluate time: 13.51283311843872
+Sample orders: 23
+======================================================
+
+
+⏱️  [NO SCORE] the sandbox returned nothing for this draw (timeout 60s, or a runtime error); it gets no MSE and no frontier slot
+================= Evaluated Function =================
+def equation(x: np.ndarray, f1: np.ndarray, params: np.ndarray, d_axis: callable) -> np.ndarray:
+    """ Mathematical function for the RHS of an unknown 1D PDE.
+
+    Args:
+        x: spatial coordinate grid, shape (Nx, 1).
+        f1: the measured field, shape (Nx, Nt).
+        params: a fixed-length array of exactly 5 entries. Use only indices 0..4.
+        d_axis: spatial derivative. Call d_axis(field, axis, order); axis=0 is x1.
+
+    Return:
+        `f1_t_pred`, a numpy array with the grid shape.
+
+    STRICT CONSTRAINT:
+        1. SPATIAL DERIVATIVES & MATH: you are a physicist discovering a PDE. Use ONLY
+           the provided d_axis(field, axis, order) for derivatives (max order 4), with
+           axis=0 for the single spatial coordinate x1. For mathematical functions you
+           are STRICTLY LIMITED to np.sin, np.cos, np.tanh and np.exp. Do not call any
+           other np.* routine, do not import anything, and do not write numerical
+           algorithms. Ordinary arithmetic (+ - * / **) and params[0..4] are free.
+        2. OUTPUT FORMAT: write the complete formula, assign it to f1_t_pred, and
+           strictly end with return f1_t_pred. No placeholders. Mind the shapes: x is
+           (Nx, 1) and f1 is (Nx, Nt), so a coordinate factor must broadcast against
+           f1 -- write x or x[:, 0:1], never x[:, 0].
+        3. PARETO EVOLUTION: the frontier trades MSE against complexity. Complexity
+           counts the derivative calls, the arithmetic operations and every params
+           you use, so the same term written more compactly is preferred.
+        4. OPTIMIZATION STRATEGY:{PARETO_FRONTIER_PLACEHOLDER}
+    """
+    return f1_t_pred
+------------------------------------------------------
+MSE          : N/A
+Complexity   : N/A
+Sample time  : 2.198861837387085
+Evaluate time: 2.5057592391967773
+Sample orders: 24
+======================================================
+
+
+================= Evaluated Function =================
+def equation(x: np.ndarray, f1: np.ndarray, params: np.ndarray, d_axis: callable) -> np.ndarray:
+    """ Mathematical function for the RHS of an unknown 1D PDE.
+
+    Args:
+        x: spatial coordinate grid, shape (Nx, 1).
+        f1: the measured field, shape (Nx, Nt).
+        params: a fixed-length array of exactly 5 entries. Use only indices 0..4.
+        d_axis: spatial derivative. Call d_axis(field, axis, order); axis=0 is x1.
+
+    Return:
+        `f1_t_pred`, a numpy array with the grid shape.
+
+    STRICT CONSTRAINT:
+        1. SPATIAL DERIVATIVES & MATH: you are a physicist discovering a PDE. Use ONLY
+           the provided d_axis(field, axis, order) for derivatives (max order 4), with
+           axis=0 for the single spatial coordinate x1. For mathematical functions you
+           are STRICTLY LIMITED to np.sin, np.cos, np.tanh and np.exp. Do not call any
+           other np.* routine, do not import anything, and do not write numerical
+           algorithms. Ordinary arithmetic (+ - * / **) and params[0..4] are free.
+        2. OUTPUT FORMAT: write the complete formula, assign it to f1_t_pred, and
+           strictly end with return f1_t_pred. No placeholders. Mind the shapes: x is
+           (Nx, 1) and f1 is (Nx, Nt), so a coordinate factor must broadcast against
+           f1 -- write x or x[:, 0:1], never x[:, 0].
+        3. PARETO EVOLUTION: the frontier trades MSE against complexity. Complexity
+           counts the derivative calls, the arithmetic operations and every params
+           you use, so the same term written more compactly is preferred.
+        4. OPTIMIZATION STRATEGY:{PARETO_FRONTIER_PLACEHOLDER}
+    """
+    # Gaussian envelope peaked at x1=0
+    envelope = np.exp(-params[0] * x[:, 0:1]**2)
+
+    # Local gain: envelope * field (grows where field present and envelope large)
+    gain = params[1] * envelope * f1
+
+    # Anti-diffusion (second-order with opposite sign)
+    anti_diffusion = -params[2] * d_axis(f1, 0, 2)
+
+    # Fourth-order damping
+    fourth_order = params[3] * d_axis(f1, 0, 4)
+
+    # Nonlinear cubic-quintic polynomial
+    # -f: pulls small values back to zero
+    # +f^3: turns around past threshold  
+    # -f^5: caps growth
+    nonlinear = -params[4] * f1 + params[4] * f1**3 - 0.5 * params[4] * f1**5
+
+    f1_t_pred = gain + anti_diffusion + fourth_order + nonlinear
+
+    return f1_t_pred
+------------------------------------------------------
+MSE          : 1.94e-05
+Complexity   : 43
+Sample time  : 6.378587007522583
+Evaluate time: 16.738978624343872
+Sample orders: 25
+======================================================
+
+
+================= Evaluated Function =================
+def equation(x: np.ndarray, f1: np.ndarray, params: np.ndarray, d_axis: callable) -> np.ndarray:
+    """ Mathematical function for the RHS of an unknown 1D PDE.
+
+    Args:
+        x: spatial coordinate grid, shape (Nx, 1).
+        f1: the measured field, shape (Nx, Nt).
+        params: a fixed-length array of exactly 5 entries. Use only indices 0..4.
+        d_axis: spatial derivative. Call d_axis(field, axis, order); axis=0 is x1.
+
+    Return:
+        `f1_t_pred`, a numpy array with the grid shape.
+
+    STRICT CONSTRAINT:
+        1. SPATIAL DERIVATIVES & MATH: you are a physicist discovering a PDE. Use ONLY
+           the provided d_axis(field, axis, order) for derivatives (max order 4), with
+           axis=0 for the single spatial coordinate x1. For mathematical functions you
+           are STRICTLY LIMITED to np.sin, np.cos, np.tanh and np.exp. Do not call any
+           other np.* routine, do not import anything, and do not write numerical
+           algorithms. Ordinary arithmetic (+ - * / **) and params[0..4] are free.
+        2. OUTPUT FORMAT: write the complete formula, assign it to f1_t_pred, and
+           strictly end with return f1_t_pred. No placeholders. Mind the shapes: x is
+           (Nx, 1) and f1 is (Nx, Nt), so a coordinate factor must broadcast against
+           f1 -- write x or x[:, 0:1], never x[:, 0].
+        3. PARETO EVOLUTION: the frontier trades MSE against complexity. Complexity
+           counts the derivative calls, the arithmetic operations and every params
+           you use, so the same term written more compactly is preferred.
+        4. OPTIMIZATION STRATEGY:{PARETO_FRONTIER_PLACEHOLDER}
+    """
+    # Gaussian envelope peaked at x1=0 with sharper falloff
+    envelope = np.exp(-params[0] * x[:, 0:1]**2)
+
+    # Local gain modulated by envelope
+    gain = params[1] * envelope * f1
+
+    # Anti-diffusion: negative second derivative (opposite of normal smoothing)
+    anti_diffusion = params[2] * d_axis(f1, 0, 2)
+
+    # Fourth-order damping to stabilize small scales
+    fourth_order = -params[3] * d_axis(f1, 0, 4)
+
+    # Polynomial nonlinearity with independent coefficients
+    # Linear term: pulls small departures back to zero
+    # Cubic term: turns around past threshold
+    # Quintic term: caps how far field can run
+    nonlinear = -params[4] * f1 + params[5] * f1**3 - 0.5 * params[4] * f1**5
+
+    f1_t_pred = gain + anti_diffusion + fourth_order + nonlinear
+
+    return f1_t_pred
+------------------------------------------------------
+MSE          : 3.63e-05
+Complexity   : 37
+Sample time  : 6.378587007522583
+Evaluate time: 22.570128917694092
+Sample orders: 26
+======================================================
+
+
+================= Evaluated Function =================
+def equation(x: np.ndarray, f1: np.ndarray, params: np.ndarray, d_axis: callable) -> np.ndarray:
+    """ Mathematical function for the RHS of an unknown 1D PDE.
+
+    Args:
+        x: spatial coordinate grid, shape (Nx, 1).
+        f1: the measured field, shape (Nx, Nt).
+        params: a fixed-length array of exactly 5 entries. Use only indices 0..4.
+        d_axis: spatial derivative. Call d_axis(field, axis, order); axis=0 is x1.
+
+    Return:
+        `f1_t_pred`, a numpy array with the grid shape.
+
+    STRICT CONSTRAINT:
+        1. SPATIAL DERIVATIVES & MATH: you are a physicist discovering a PDE. Use ONLY
+           the provided d_axis(field, axis, order) for derivatives (max order 4), with
+           axis=0 for the single spatial coordinate x1. For mathematical functions you
+           are STRICTLY LIMITED to np.sin, np.cos, np.tanh and np.exp. Do not call any
+           other np.* routine, do not import anything, and do not write numerical
+           algorithms. Ordinary arithmetic (+ - * / **) and params[0..4] are free.
+        2. OUTPUT FORMAT: write the complete formula, assign it to f1_t_pred, and
+           strictly end with return f1_t_pred. No placeholders. Mind the shapes: x is
+           (Nx, 1) and f1 is (Nx, Nt), so a coordinate factor must broadcast against
+           f1 -- write x or x[:, 0:1], never x[:, 0].
+        3. PARETO EVOLUTION: the frontier trades MSE against complexity. Complexity
+           counts the derivative calls, the arithmetic operations and every params
+           you use, so the same term written more compactly is preferred.
+        4. OPTIMIZATION STRATEGY:{PARETO_FRONTIER_PLACEHOLDER}
+    """
+    # Local gain: Gaussian envelope peaked at x1=0
+    envelope_term = params[0] * np.exp(-params[1] * x[:, 0:1]**2) * f1
+
+    # Anti-diffusion (selects preferred length scale) + fourth-order damping
+    spatial_terms = -params[2] * d_axis(f1, 0, 2) + params[3] * d_axis(f1, 0, 4)
+
+    # Nonlinear response: cubic-quintic polynomial pulling back to zero
+    nonlinear_term = -params[4] * (f1 - f1**3 + 0.5 * f1**5)
+
+    f1_t_pred = envelope_term + spatial_terms + nonlinear_term
+
+    return f1_t_pred✅ [EVALUATED] MSE: 1.94e-05 | Params: [ 0.14687   1.038527  1.732192 -0.890045 -0.502329  1.      ]
+
+------------------------------------------------------
+MSE          : 1.94e-05
+Complexity   : 35
+Sample time  : 6.378587007522583
+Evaluate time: 12.824150323867798
+Sample orders: 27
+======================================================
+
+
+================= Evaluated Function =================
+def equation(x: np.ndarray, f1: np.ndarray, params: np.ndarray, d_axis: callable) -> np.ndarray:
+    """ Mathematical function for the RHS of an unknown 1D PDE.
+
+    Args:
+        x: spatial coordinate grid, shape (Nx, 1).
+        f1: the measured field, shape (Nx, Nt).
+        params: a fixed-length array of exactly 5 entries. Use only indices 0..4.
+        d_axis: spatial derivative. Call d_axis(field, axis, order); axis=0 is x1.
+
+    Return:
+        `f1_t_pred`, a numpy array with the grid shape.
+
+    STRICT CONSTRAINT:
+        1. SPATIAL DERIVATIVES & MATH: you are a physicist discovering a PDE. Use ONLY
+           the provided d_axis(field, axis, order) for derivatives (max order 4), with
+           axis=0 for the single spatial coordinate x1. For mathematical functions you
+           are STRICTLY LIMITED to np.sin, np.cos, np.tanh and np.exp. Do not call any
+           other np.* routine, do not import anything, and do not write numerical
+           algorithms. Ordinary arithmetic (+ - * / **) and params[0..4] are free.
+        2. OUTPUT FORMAT: write the complete formula, assign it to f1_t_pred, and
+           strictly end with return f1_t_pred. No placeholders. Mind the shapes: x is
+           (Nx, 1) and f1 is (Nx, Nt), so a coordinate factor must broadcast against
+           f1 -- write x or x[:, 0:1], never x[:, 0].
+        3. PARETO EVOLUTION: the frontier trades MSE against complexity. Complexity
+           counts the derivative calls, the arithmetic operations and every params
+           you use, so the same term written more compactly is preferred.
+        4. OPTIMIZATION STRATEGY:{PARETO_FRONTIER_PLACEHOLDER}
+    """
+    # Gaussian envelope peaked at x1=0
+    envelope = np.exp(-params[0] * x[:, 0:1]**2)
+
+    # Local gain: envelope * field
+    gain = params[1] * envelope * f1
+
+    # Anti-diffusion (second-order, opposite sign to smoothing)
+    anti_diffusion = -params[2] * d_axis(f1, 0, 2)
+
+    # Fourth-order damping (keeps shortest scales damped)
+    fourth_order = params[3] * d_axis(f1, 0, 4)
+
+    # Nonlinear response: cubic-quintic polynomial
+    # -f: pulls small departures back to zero
+    # +f^3: turns around past threshold
+    # -0.5*f^5: caps how far field can run
+    nonlinear = -params[4] * (f1 - f1**3 + 0.5 * f1**5)
+
+    f1_t_pred = gain + anti_diffusion + fourth_order + nonlinear
+
+    return f1_t_pred
+------------------------------------------------------
+MSE          : 1.94e-05
+Complexity   : 40
+Sample time  : 6.378587007522583
+Evaluate time: 24.904117107391357
+Sample orders: 28
+======================================================
+
+
+🚫 [UNPARSABLE] the reply carried no executable body; draw dropped
+✅ [EVALUATED] MSE: 1.94e-05 | Params: [ 1.038516  0.146867  1.732152 -0.890028 -0.502357  1.      ]
+✅ [EVALUATED] MSE: 1.94e-05 | Params: [ 0.146867  1.038529  1.732185 -0.890041 -0.502326  1.      ]
+✅ [EVALUATED] MSE: 1.94e-05 | Params: [ 0.146869  1.038523  1.732181 -0.890042 -0.502339  1.      ]
+Execution Error: unexpected indent (<string>, line 141)
+================= Evaluated Function =================
+def equation(x: np.ndarray, f1: np.ndarray, params: np.ndarray, d_axis: callable) -> np.ndarray:
+    """ Mathematical function for the RHS of an unknown 1D PDE.
+
+    Args:
+        x: spatial coordinate grid, shape (Nx, 1).
+        f1: the measured field, shape (Nx, Nt).
+        params: a fixed-length array of exactly 5 entries. Use only indices 0..4.
+        d_axis: spatial derivative. Call d_axis(field, axis, order); axis=0 is x1.
+
+    Return:
+        `f1_t_pred`, a numpy array with the grid shape.
+
+    STRICT CONSTRAINT:
+        1. SPATIAL DERIVATIVES & MATH: you are a physicist discovering a PDE. Use ONLY
+           the provided d_axis(field, axis, order) for derivatives (max order 4), with
+           axis=0 for the single spatial coordinate x1. For mathematical functions you
+           are STRICTLY LIMITED to np.sin, np.cos, np.tanh and np.exp. Do not call any
+           other np.* routine, do not import anything, and do not write numerical
+           algorithms. Ordinary arithmetic (+ - * / **) and params[0..4] are free.
+        2. OUTPUT FORMAT: write the complete formula, assign it to f1_t_pred, and
+           strictly end with return f1_t_pred. No placeholders. Mind the shapes: x is
+           (Nx, 1) and f1 is (Nx, Nt), so a coordinate factor must broadcast against
+           f1 -- write x or x[:, 0:1], never x[:, 0].
+        3. PARETO EVOLUTION: the frontier trades MSE against complexity. Complexity
+           counts the derivative calls, the arithmetic operations and every params
+           you use, so the same term written more compactly is preferred.
+        4. OPTIMIZATION STRATEGY:{PARETO_FRONTIER_PLACEHOLDER}
+    """
+    f1_t_pred = params[0] * np.exp(-params[1] * x[:, 0:1]**2) * f1 - params[2] * d_axis(f1, 0, 2) + params[3] * d_axis(f1, 0, 4) - params[4] * f1 * (1 - f1**2 + 0.5 * f1**4)
+
+    return f1_t_pred
+------------------------------------------------------
+MSE          : 1.94e-05
+Complexity   : 30
+Sample time  : 1.4011295437812805
+Evaluate time: 10.02740740776062
+Sample orders: 30
+======================================================
+
+
+================= Evaluated Function =================
+def equation(x: np.ndarray, f1: np.ndarray, params: np.ndarray, d_axis: callable) -> np.ndarray:
+    """ Mathematical function for the RHS of an unknown 1D PDE.
+
+    Args:
+        x: spatial coordinate grid, shape (Nx, 1).
+        f1: the measured field, shape (Nx, Nt).
+        params: a fixed-length array of exactly 5 entries. Use only indices 0..4.
+        d_axis: spatial derivative. Call d_axis(field, axis, order); axis=0 is x1.
+
+    Return:
+        `f1_t_pred`, a numpy array with the grid shape.
+
+    STRICT CONSTRAINT:
+        1. SPATIAL DERIVATIVES & MATH: you are a physicist discovering a PDE. Use ONLY
+           the provided d_axis(field, axis, order) for derivatives (max order 4), with
+           axis=0 for the single spatial coordinate x1. For mathematical functions you
+           are STRICTLY LIMITED to np.sin, np.cos, np.tanh and np.exp. Do not call any
+           other np.* routine, do not import anything, and do not write numerical
+           algorithms. Ordinary arithmetic (+ - * / **) and params[0..4] are free.
+        2. OUTPUT FORMAT: write the complete formula, assign it to f1_t_pred, and
+           strictly end with return f1_t_pred. No placeholders. Mind the shapes: x is
+           (Nx, 1) and f1 is (Nx, Nt), so a coordinate factor must broadcast against
+           f1 -- write x or x[:, 0:1], never x[:, 0].
+        3. PARETO EVOLUTION: the frontier trades MSE against complexity. Complexity
+           counts the derivative calls, the arithmetic operations and every params
+           you use, so the same term written more compactly is preferred.
+        4. OPTIMIZATION STRATEGY:{PARETO_FRONTIER_PLACEHOLDER}
+    """
+    # Local gain from Gaussian envelope: envelope * f
+    envelope = np.exp(-params[0] * x[:, 0:1]**2)
+
+    # Anti-diffusion (negative second-order) and fourth-order damping
+    # Nonlinear term: -f + f^3 - f^5 (with coefficients from params)
+
+    f1_t_pred = params[1] * envelope * f1 - params[2] * d_axis(f1, 0, 2) + params[3] * d_axis(f1, 0, 4) - params[4] * f1 + params[4] * f1**3 - 0.5 * params[4] * f1**5
+
+    return f1_t_pred
+------------------------------------------------------
+MSE          : 1.94e-05
+Complexity   : 41
+Sample time  : 1.4011295437812805
+Evaluate time: 14.124484777450562
+Sample orders: 31
+======================================================
+
+
+================= Evaluated Function =================
+def equation(x: np.ndarray, f1: np.ndarray, params: np.ndarray, d_axis: callable) -> np.ndarray:
+    """ Mathematical function for the RHS of an unknown 1D PDE.
+
+    Args:
+        x: spatial coordinate grid, shape (Nx, 1).
+        f1: the measured field, shape (Nx, Nt).
+        params: a fixed-length array of exactly 5 entries. Use only indices 0..4.
+        d_axis: spatial derivative. Call d_axis(field, axis, order); axis=0 is x1.
+
+    Return:
+        `f1_t_pred`, a numpy array with the grid shape.
+
+    STRICT CONSTRAINT:
+        1. SPATIAL DERIVATIVES & MATH: you are a physicist discovering a PDE. Use ONLY
+           the provided d_axis(field, axis, order) for derivatives (max order 4), with
+           axis=0 for the single spatial coordinate x1. For mathematical functions you
+           are STRICTLY LIMITED to np.sin, np.cos, np.tanh and np.exp. Do not call any
+           other np.* routine, do not import anything, and do not write numerical
+           algorithms. Ordinary arithmetic (+ - * / **) and params[0..4] are free.
+        2. OUTPUT FORMAT: write the complete formula, assign it to f1_t_pred, and
+           strictly end with return f1_t_pred. No placeholders. Mind the shapes: x is
+           (Nx, 1) and f1 is (Nx, Nt), so a coordinate factor must broadcast against
+           f1 -- write x or x[:, 0:1], never x[:, 0].
+        3. PARETO EVOLUTION: the frontier trades MSE against complexity. Complexity
+           counts the derivative calls, the arithmetic operations and every params
+           you use, so the same term written more compactly is preferred.
+        4. OPTIMIZATION STRATEGY:{PARETO_FRONTIER_PLACEHOLDER}
+    """
+    # Gaussian envelope peaked at x1=0
+    envelope = np.exp(-params[0] * x[:, 0:1]**2)
+
+    # Local gain: envelope * field
+    gain = params[1] * envelope * f1
+
+    # Anti-diffusion (second-order with opposite sign to smoothing)
+    anti_diffusion = -params[2] * d_axis(f1, 0, 2)
+
+    # Fourth-order damping
+    fourth_order = params[3] * d_axis(f1, 0, 4)
+
+    # Nonlinear cubic-quintic: -f + f³ - f⁵
+    nonlinear = -params[4] * f1 + params[4] * f1**3 - 0.5 * params[4] * f1**5
+
+    f1_t_pred = gain + anti_diffusion + fourth_order + nonlinear
+
+    return f1_t_pred
+------------------------------------------------------
+MSE          : 1.94e-05
+Complexity   : 43
+Sample time  : 1.4011295437812805
+Evaluate time: 17.806275129318237
+Sample orders: 32
+======================================================
+
+
+⏱️  [NO SCORE] the sandbox returned nothing for this draw (timeout 60s, or a runtime error); it gets no MSE and no frontier slot
+================= Evaluated Function =================
+def equation(x: np.ndarray, f1: np.ndarray, params: np.ndarray, d_axis: callable) -> np.ndarray:
+    """ Mathematical function for the RHS of an unknown 1D PDE.
+
+    Args:
+        x: spatial coordinate grid, shape (Nx, 1).
+        f1: the measured field, shape (Nx, Nt).
+        params: a fixed-length array of exactly 5 entries. Use only indices 0..4.
+        d_axis: spatial derivative. Call d_axis(field, axis, order); axis=0 is x1.
+
+    Return:
+        `f1_t_pred`, a numpy array with the grid shape.
+
+    STRICT CONSTRAINT:
+        1. SPATIAL DERIVATIVES & MATH: you are a physicist discovering a PDE. Use ONLY
+           the provided d_axis(field, axis, order) for derivatives (max order 4), with
+           axis=0 for the single spatial coordinate x1. For mathematical functions you
+           are STRICTLY LIMITED to np.sin, np.cos, np.tanh and np.exp. Do not call any
+           other np.* routine, do not import anything, and do not write numerical
+           algorithms. Ordinary arithmetic (+ - * / **) and params[0..4] are free.
+        2. OUTPUT FORMAT: write the complete formula, assign it to f1_t_pred, and
+           strictly end with return f1_t_pred. No placeholders. Mind the shapes: x is
+           (Nx, 1) and f1 is (Nx, Nt), so a coordinate factor must broadcast against
+           f1 -- write x or x[:, 0:1], never x[:, 0].
+        3. PARETO EVOLUTION: the frontier trades MSE against complexity. Complexity
+           counts the derivative calls, the arithmetic operations and every params
+           you use, so the same term written more compactly is preferred.
+        4. OPTIMIZATION STRATEGY:{PARETO_FRONTIER_PLACEHOLDER}
+    """
+    # Gaussian envelope peaked at x1=0
+        envelope = np.exp(-params[0] * x[:, 0:1]**2)
+
+        # Local gain: envelope * field (grows where field present and envelope large)
+        gain = params[1] * envelope * f1
+
+        # Anti-diffusion (second-order with opposite sign)
+        anti_diffusion = -params[2] * d_axis(f1, 0, 2)
+
+        # Fourth-order damping
+        fourth_order = params[3] * d_axis(f1, 0, 4)
+
+        # Nonlinear cubic-quintic polynomial
+        # -f: pulls small values back to zero
+        # +f^3: turns around past threshold  
+        # -f^5: caps growth
+        nonlinear = -params[4] * f1 + params[4] * f1**3 - 0.5 * params[4] * f1**5
+
+        f1_t_pred = gain + anti_diffusion + fourth_order + nonlinear
+
+        return f1_t_pred✅ [EVALUATED] MSE: 1.94e-05 | Params: [ 0.146869  1.038523  1.732181 -0.890042 -0.502339  1.      ]
+✅ [EVALUATED] MSE: 1.94e-05 | Params: [ 0.146869  1.038523  1.732181 -0.890042 -0.502339  1.      ]
+Execution Error: name 'f1_t_pred' is not defined
+✅ [EVALUATED] MSE: 1.94e-05 | Params: [ 0.146869  1.038523  1.732181 -0.890042 -0.502339  1.      ]
+
+------------------------------------------------------
+MSE          : N/A
+Complexity   : N/A
+Sample time  : 2.7426085472106934
+Evaluate time: 2.865947723388672
+Sample orders: 33
+======================================================
+
+
+================= Evaluated Function =================
+def equation(x: np.ndarray, f1: np.ndarray, params: np.ndarray, d_axis: callable) -> np.ndarray:
+    """ Mathematical function for the RHS of an unknown 1D PDE.
+
+    Args:
+        x: spatial coordinate grid, shape (Nx, 1).
+        f1: the measured field, shape (Nx, Nt).
+        params: a fixed-length array of exactly 5 entries. Use only indices 0..4.
+        d_axis: spatial derivative. Call d_axis(field, axis, order); axis=0 is x1.
+
+    Return:
+        `f1_t_pred`, a numpy array with the grid shape.
+
+    STRICT CONSTRAINT:
+        1. SPATIAL DERIVATIVES & MATH: you are a physicist discovering a PDE. Use ONLY
+           the provided d_axis(field, axis, order) for derivatives (max order 4), with
+           axis=0 for the single spatial coordinate x1. For mathematical functions you
+           are STRICTLY LIMITED to np.sin, np.cos, np.tanh and np.exp. Do not call any
+           other np.* routine, do not import anything, and do not write numerical
+           algorithms. Ordinary arithmetic (+ - * / **) and params[0..4] are free.
+        2. OUTPUT FORMAT: write the complete formula, assign it to f1_t_pred, and
+           strictly end with return f1_t_pred. No placeholders. Mind the shapes: x is
+           (Nx, 1) and f1 is (Nx, Nt), so a coordinate factor must broadcast against
+           f1 -- write x or x[:, 0:1], never x[:, 0].
+        3. PARETO EVOLUTION: the frontier trades MSE against complexity. Complexity
+           counts the derivative calls, the arithmetic operations and every params
+           you use, so the same term written more compactly is preferred.
+        4. OPTIMIZATION STRATEGY:{PARETO_FRONTIER_PLACEHOLDER}
+    """
+    # Gaussian envelope peaked at x1=0 for local gain
+    envelope = np.exp(-params[0] * x[:, 0:1]**2)
+
+    # Local gain: envelope drives growth where field is present
+    gain = params[1] * envelope * f1
+
+    # Anti-diffusion: negative second-order term selects length scale
+    anti_diffusion = -params[2] * d_axis(f1, 0, 2)
+
+    # Fourth-order damping: keeps shortest scales damped
+    fourth_order = params[3] * d_axis(f1, 0, 4)
+
+    # Nonlinear response: cubic-quintic polynomial
+    # -f pulls back to zero, +f^3 turns around, -f^5 caps
+    nonlinear = -params[4] * f1 + params[4] * f1**3 - 0.5 * params[4] * f1**5
+
+    f1_t_pred = gain + anti_diffusion + fourth_order + nonlinear
+
+    return f1_t_pred
+------------------------------------------------------
+MSE          : 1.94e-05
+Complexity   : 42
+Sample time  : 2.7426085472106934
+Evaluate time: 16.79739999771118
+Sample orders: 34
+======================================================
+
+
+================= Evaluated Function =================
+def equation(x: np.ndarray, f1: np.ndarray, params: np.ndarray, d_axis: callable) -> np.ndarray:
+    """ Mathematical function for the RHS of an unknown 1D PDE.
+
+    Args:
+        x: spatial coordinate grid, shape (Nx, 1).
+        f1: the measured field, shape (Nx, Nt).
+        params: a fixed-length array of exactly 5 entries. Use only indices 0..4.
+        d_axis: spatial derivative. Call d_axis(field, axis, order); axis=0 is x1.
+
+    Return:
+        `f1_t_pred`, a numpy array with the grid shape.
+
+    STRICT CONSTRAINT:
+        1. SPATIAL DERIVATIVES & MATH: you are a physicist discovering a PDE. Use ONLY
+           the provided d_axis(field, axis, order) for derivatives (max order 4), with
+           axis=0 for the single spatial coordinate x1. For mathematical functions you
+           are STRICTLY LIMITED to np.sin, np.cos, np.tanh and np.exp. Do not call any
+           other np.* routine, do not import anything, and do not write numerical
+           algorithms. Ordinary arithmetic (+ - * / **) and params[0..4] are free.
+        2. OUTPUT FORMAT: write the complete formula, assign it to f1_t_pred, and
+           strictly end with return f1_t_pred. No placeholders. Mind the shapes: x is
+           (Nx, 1) and f1 is (Nx, Nt), so a coordinate factor must broadcast against
+           f1 -- write x or x[:, 0:1], never x[:, 0].
+        3. PARETO EVOLUTION: the frontier trades MSE against complexity. Complexity
+           counts the derivative calls, the arithmetic operations and every params
+           you use, so the same term written more compactly is preferred.
+        4. OPTIMIZATION STRATEGY:{PARETO_FRONTIER_PLACEHOLDER}
+    """
+    # Terms:
+    # 1. Gaussian envelope * field (local gain)
+    envelope = np.exp(-params[0] * x[:, 0:1]**2)
+    gain = params[1] * envelope * f1
+
+    # 2. Anti-diffusion (opposite sign to normal smoothing, selects length scale)
+    anti_diffusion = -params[2] * d_axis(f1, 0, 2)
+
+    # 3. Fourth-order damping (keeps shortest scales damped)
+    fourth_order = params[3] * d_axis(f1, 0, 4)
+
+    # 4. Nonlinear polynomial: -f + f^3 - 0.5*f^5 (pull to zero, turn around, cap)
+    nonlinear = -params[4] * f1 + params[4] * f1**3 - 0.5 * params[4] * f1**5
+
+    f1_t_pred = gain + anti_diffusion + fourth_order + nonlinear
+
+    return f1_t_pred
+------------------------------------------------------
+MSE          : 1.94e-05
+Complexity   : 42
+Sample time  : 2.7426085472106934
+Evaluate time: 16.20926260948181
+Sample orders: 35
+======================================================
+
+
+⏱️  [NO SCORE] the sandbox returned nothing for this draw (timeout 60s, or a runtime error); it gets no MSE and no frontier slot
+================= Evaluated Function =================
+def equation(x: np.ndarray, f1: np.ndarray, params: np.ndarray, d_axis: callable) -> np.ndarray:
+    """ Mathematical function for the RHS of an unknown 1D PDE.
+
+    Args:
+        x: spatial coordinate grid, shape (Nx, 1).
+        f1: the measured field, shape (Nx, Nt).
+        params: a fixed-length array of exactly 5 entries. Use only indices 0..4.
+        d_axis: spatial derivative. Call d_axis(field, axis, order); axis=0 is x1.
+
+    Return:
+        `f1_t_pred`, a numpy array with the grid shape.
+
+    STRICT CONSTRAINT:
+        1. SPATIAL DERIVATIVES & MATH: you are a physicist discovering a PDE. Use ONLY
+           the provided d_axis(field, axis, order) for derivatives (max order 4), with
+           axis=0 for the single spatial coordinate x1. For mathematical functions you
+           are STRICTLY LIMITED to np.sin, np.cos, np.tanh and np.exp. Do not call any
+           other np.* routine, do not import anything, and do not write numerical
+           algorithms. Ordinary arithmetic (+ - * / **) and params[0..4] are free.
+        2. OUTPUT FORMAT: write the complete formula, assign it to f1_t_pred, and
+           strictly end with return f1_t_pred. No placeholders. Mind the shapes: x is
+           (Nx, 1) and f1 is (Nx, Nt), so a coordinate factor must broadcast against
+           f1 -- write x or x[:, 0:1], never x[:, 0].
+        3. PARETO EVOLUTION: the frontier trades MSE against complexity. Complexity
+           counts the derivative calls, the arithmetic operations and every params
+           you use, so the same term written more compactly is preferred.
+        4. OPTIMIZATION STRATEGY:{PARETO_FRONTIER_PLACEHOLDER}
+    """
+    return f1_t_pred
+------------------------------------------------------
+MSE          : N/A
+Complexity   : N/A
+Sample time  : 2.7426085472106934
+Evaluate time: 2.677830696105957
+Sample orders: 36
+======================================================
+
+
+================= Evaluated Function =================
+def equation(x: np.ndarray, f1: np.ndarray, params: np.ndarray, d_axis: callable) -> np.ndarray:
+    """ Mathematical function for the RHS of an unknown 1D PDE.
+
+    Args:
+        x: spatial coordinate grid, shape (Nx, 1).
+        f1: the measured field, shape (Nx, Nt).
+        params: a fixed-length array of exactly 5 entries. Use only indices 0..4.
+        d_axis: spatial derivative. Call d_axis(field, axis, order); axis=0 is x1.
+
+    Return:
+        `f1_t_pred`, a numpy array with the grid shape.
+
+    STRICT CONSTRAINT:
+        1. SPATIAL DERIVATIVES & MATH: you are a physicist discovering a PDE. Use ONLY
+           the provided d_axis(field, axis, order) for derivatives (max order 4), with
+           axis=0 for the single spatial coordinate x1. For mathematical functions you
+           are STRICTLY LIMITED to np.sin, np.cos, np.tanh and np.exp. Do not call any
+           other np.* routine, do not import anything, and do not write numerical
+           algorithms. Ordinary arithmetic (+ - * / **) and params[0..4] are free.
+        2. OUTPUT FORMAT: write the complete formula, assign it to f1_t_pred, and
+           strictly end with return f1_t_pred. No placeholders. Mind the shapes: x is
+           (Nx, 1) and f1 is (Nx, Nt), so a coordinate factor must broadcast against
+           f1 -- write x or x[:, 0:1], never x[:, 0].
+        3. PARETO EVOLUTION: the frontier trades MSE against complexity. Complexity
+           counts the derivative calls, the arithmetic operations and every params
+           you use, so the same term written more compactly is preferred.
+        4. OPTIMIZATION STRATEGY:{PARETO_FRONTIER_PLACEHOLDER}
+    """
+    # Gaussian envelope peaked at x1=0 for local gain
+    envelope = np.exp(-params[0] * x[:, 0:1]**2)
+
+    # Local gain: envelope drives growth where field is present
+    gain = params[1] * envelope * f1
+
+    # Anti-diffusion: negative second-order term (selects length scale)
+    anti_diffusion = -params[2] * d_axis(f1, 0, 2)
+
+    # Fourth-order damping: keeps shortest scales damped
+    fourth_order = params[3] * d_axis(f1, 0, 4)
+
+    # Nonlinear response: cubic-quintic polynomial
+    # -f pulls back to zero, +f^3 turns around, -f^5 caps
+    nonlinear = -params[4] * f1 + params[4] * f1**3 - 0.5 * params[4] * f1**5
+
+    f1_t_pred = gain + anti_diffusion + fourth_order + nonlinear
+
+    return f1_t_pred✅ [EVALUATED] MSE: 1.94e-05 | Params: [ 0.146869  1.038523  1.732181 -0.890042 -0.502339  1.      ]
+Execution Error: name 'f1_t_pred' is not defined
+✅ [EVALUATED] MSE: 1.94e-05 | Params: [ 0.146869  1.038523  1.732181 -0.890042 -0.502339  1.      ]
+✅ [EVALUATED] MSE: 1.94e-05 | Params: [ 0.146869  1.038523  1.732181 -0.890042 -0.502339  1.      ]
+
+------------------------------------------------------
+MSE          : 1.94e-05
+Complexity   : 42
+Sample time  : 1.561069369316101
+Evaluate time: 17.070809841156006
+Sample orders: 37
+======================================================
+
+
+================= Evaluated Function =================
+def equation(x: np.ndarray, f1: np.ndarray, params: np.ndarray, d_axis: callable) -> np.ndarray:
+    """ Mathematical function for the RHS of an unknown 1D PDE.
+
+    Args:
+        x: spatial coordinate grid, shape (Nx, 1).
+        f1: the measured field, shape (Nx, Nt).
+        params: a fixed-length array of exactly 5 entries. Use only indices 0..4.
+        d_axis: spatial derivative. Call d_axis(field, axis, order); axis=0 is x1.
+
+    Return:
+        `f1_t_pred`, a numpy array with the grid shape.
+
+    STRICT CONSTRAINT:
+        1. SPATIAL DERIVATIVES & MATH: you are a physicist discovering a PDE. Use ONLY
+           the provided d_axis(field, axis, order) for derivatives (max order 4), with
+           axis=0 for the single spatial coordinate x1. For mathematical functions you
+           are STRICTLY LIMITED to np.sin, np.cos, np.tanh and np.exp. Do not call any
+           other np.* routine, do not import anything, and do not write numerical
+           algorithms. Ordinary arithmetic (+ - * / **) and params[0..4] are free.
+        2. OUTPUT FORMAT: write the complete formula, assign it to f1_t_pred, and
+           strictly end with return f1_t_pred. No placeholders. Mind the shapes: x is
+           (Nx, 1) and f1 is (Nx, Nt), so a coordinate factor must broadcast against
+           f1 -- write x or x[:, 0:1], never x[:, 0].
+        3. PARETO EVOLUTION: the frontier trades MSE against complexity. Complexity
+           counts the derivative calls, the arithmetic operations and every params
+           you use, so the same term written more compactly is preferred.
+        4. OPTIMIZATION STRATEGY:{PARETO_FRONTIER_PLACEHOLDER}
+    """
+    # Gaussian envelope peaked at x1=0 for local gain
+    envelope = np.exp(-params[0] * x[:, 0:1]**2)
+
+    # Local gain: envelope drives growth where field is present
+    gain = params[1] * envelope * f1
+
+    # Anti-diffusion: negative second-order term selects length scale
+    anti_diffusion = -params[2] * d_axis(f1, 0, 2)
+
+    # Fourth-order damping: keeps shortest scales damped
+    fourth_order = params[3] * d_axis(f1, 0, 4)
+
+    # Nonlinear response: cubic-quintic polynomial
+    # -f pulls back to zero, +f^3 turns around, -f^5 caps
+    nonlinear = -params[4] * f1 + params[4] * f1**3 - 0.5 * params[4] * f1**5
+
+    f1_t_pred = gain + anti_diffusion + fourth_order + nonlinear
+
+    return f1_t_pred
+------------------------------------------------------
+MSE          : 1.94e-05
+Complexity   : 42
+Sample time  : 1.561069369316101
+Evaluate time: 16.68832778930664
+Sample orders: 38
+======================================================
+
+
+⏱️  [NO SCORE] the sandbox returned nothing for this draw (timeout 60s, or a runtime error); it gets no MSE and no frontier slot
+================= Evaluated Function =================
+def equation(x: np.ndarray, f1: np.ndarray, params: np.ndarray, d_axis: callable) -> np.ndarray:
+    """ Mathematical function for the RHS of an unknown 1D PDE.
+
+    Args:
+        x: spatial coordinate grid, shape (Nx, 1).
+        f1: the measured field, shape (Nx, Nt).
+        params: a fixed-length array of exactly 5 entries. Use only indices 0..4.
+        d_axis: spatial derivative. Call d_axis(field, axis, order); axis=0 is x1.
+
+    Return:
+        `f1_t_pred`, a numpy array with the grid shape.
+
+    STRICT CONSTRAINT:
+        1. SPATIAL DERIVATIVES & MATH: you are a physicist discovering a PDE. Use ONLY
+           the provided d_axis(field, axis, order) for derivatives (max order 4), with
+           axis=0 for the single spatial coordinate x1. For mathematical functions you
+           are STRICTLY LIMITED to np.sin, np.cos, np.tanh and np.exp. Do not call any
+           other np.* routine, do not import anything, and do not write numerical
+           algorithms. Ordinary arithmetic (+ - * / **) and params[0..4] are free.
+        2. OUTPUT FORMAT: write the complete formula, assign it to f1_t_pred, and
+           strictly end with return f1_t_pred. No placeholders. Mind the shapes: x is
+           (Nx, 1) and f1 is (Nx, Nt), so a coordinate factor must broadcast against
+           f1 -- write x or x[:, 0:1], never x[:, 0].
+        3. PARETO EVOLUTION: the frontier trades MSE against complexity. Complexity
+           counts the derivative calls, the arithmetic operations and every params
+           you use, so the same term written more compactly is preferred.
+        4. OPTIMIZATION STRATEGY:{PARETO_FRONTIER_PLACEHOLDER}
+    """
+    return f1_t_pred
+------------------------------------------------------
+MSE          : N/A
+Complexity   : N/A
+Sample time  : 1.561069369316101
+Evaluate time: 2.5445194244384766
+Sample orders: 39
+======================================================
+
+
+================= Evaluated Function =================
+def equation(x: np.ndarray, f1: np.ndarray, params: np.ndarray, d_axis: callable) -> np.ndarray:
+    """ Mathematical function for the RHS of an unknown 1D PDE.
+
+    Args:
+        x: spatial coordinate grid, shape (Nx, 1).
+        f1: the measured field, shape (Nx, Nt).
+        params: a fixed-length array of exactly 5 entries. Use only indices 0..4.
+        d_axis: spatial derivative. Call d_axis(field, axis, order); axis=0 is x1.
+
+    Return:
+        `f1_t_pred`, a numpy array with the grid shape.
+
+    STRICT CONSTRAINT:
+        1. SPATIAL DERIVATIVES & MATH: you are a physicist discovering a PDE. Use ONLY
+           the provided d_axis(field, axis, order) for derivatives (max order 4), with
+           axis=0 for the single spatial coordinate x1. For mathematical functions you
+           are STRICTLY LIMITED to np.sin, np.cos, np.tanh and np.exp. Do not call any
+           other np.* routine, do not import anything, and do not write numerical
+           algorithms. Ordinary arithmetic (+ - * / **) and params[0..4] are free.
+        2. OUTPUT FORMAT: write the complete formula, assign it to f1_t_pred, and
+           strictly end with return f1_t_pred. No placeholders. Mind the shapes: x is
+           (Nx, 1) and f1 is (Nx, Nt), so a coordinate factor must broadcast against
+           f1 -- write x or x[:, 0:1], never x[:, 0].
+        3. PARETO EVOLUTION: the frontier trades MSE against complexity. Complexity
+           counts the derivative calls, the arithmetic operations and every params
+           you use, so the same term written more compactly is preferred.
+        4. OPTIMIZATION STRATEGY:{PARETO_FRONTIER_PLACEHOLDER}
+    """
+    # Gaussian envelope for local gain peaked at x1=0
+    envelope = np.exp(-params[0] * x[:, 0:1]**2)
+
+    # Local gain: envelope scales the growth rate
+    gain = params[1] * envelope * f1
+
+    # Anti-diffusion: negative second-order term (MSE ~1e-5)
+    anti_diffusion = -params[2] * d_axis(f1, 0, 2)
+
+    # Fourth-order damping for smallest scales
+    fourth_order = params[3] * d_axis(f1, 0, 4)
+
+    # Cubic-quintic nonlinearity: 
+    # -f pulls back to zero, +f^3 turns around past threshold, -f^5 caps
+    nonlinear = -params[4] * f1 + params[4] * f1**3 - 0.5 * params[4] * f1**5
+
+    f1_t_pred = gain + anti_diffusion + fourth_order + nonlinear
+
+    return f1_t_pred
+------------------------------------------------------
+MSE          : 1.94e-05
+Complexity   : 43
+Sample time  : 1.561069369316101
+Evaluate time: 15.95003867149353
+Sample orders: 40
+======================================================
+
+
+================= Evaluated Function =================
+def equation(x: np.ndarray, f1: np.ndarray, params: np.ndarray, d_axis: callable) -> np.ndarray:
+    """ Mathematical function for the RHS of an unknown 1D PDE.
+
+    Args:
+        x: spatial coordinate grid, shape (Nx, 1).
+        f1: the measured field, shape (Nx, Nt).
+        params: a fixed-length array of exactly 5 entries. Use only indices 0..4.
+        d_axis: spatial derivative. Call d_axis(field, axis, order); axis=0 is x1.
+
+    Return:
+        `f1_t_pred`, a numpy array with the grid shape.
+
+    STRICT CONSTRAINT:
+        1. SPATIAL DERIVATIVES & MATH: you are a physicist discovering a PDE. Use ONLY
+           the provided d_axis(field, axis, order) for derivatives (max order 4), with
+           axis=0 for the single spatial coordinate x1. For mathematical functions you
+           are STRICTLY LIMITED to np.sin, np.cos, np.tanh and np.exp. Do not call any
+           other np.* routine, do not import anything, and do not write numerical
+           algorithms. Ordinary arithmetic (+ - * / **) and params[0..4] are free.
+        2. OUTPUT FORMAT: write the complete formula, assign it to f1_t_pred, and
+           strictly end with return f1_t_pred. No placeholders. Mind the shapes: x is
+           (Nx, 1) and f1 is (Nx, Nt), so a coordinate factor must broadcast against
+           f1 -- write x or x[:, 0:1], never x[:, 0].
+        3. PARETO EVOLUTION: the frontier trades MSE against complexity. Complexity
+           counts the derivative calls, the arithmetic operations and every params
+           you use, so the same term written more compactly is preferred.
+        4. OPTIMIZATION STRATEGY:{PARETO_FRONTIER_PLACEHOLDER}
+    """
+    # Gaussian envelope peaked at x1=0, switches on local gain
+    envelope = np.exp(-params[0] * x[:, 0:1]**2)
+
+    # Local gain term: envelope multiplies field
+    gain = params[1] * envelope * f1
+
+    # Anti-diffusion: negative second-order term (selects length scale)
+    anti_diffusion = -params[2] * d_axis(f1, 0, 2)
+
+    # Fourth-order damping for shortest scales
+    fourth_order = params[3] * d_axis(f1, 0, 4)
+
+    # Nonlinear response: -f pulls back, +f^3 turns around, -f^5 caps
+    nonlinear = -params[4] * f1 + params[4] * f1**3 - 0.5 * params[4] * f1**5
+
+    f1_t_pred = gain + anti_diffusion + fourth_order + nonlinear
+
+    return f1_t_pred✅ [EVALUATED] MSE: 1.94e-05 | Params: [ 1.038501  0.146869  1.732119 -0.890016 -0.502391  1.      ]
+✅ [EVALUATED] MSE: 1.94e-05 | Params: [ 1.038509  0.146867  1.732145 -0.890027 -0.502366  1.      ]
+
+------------------------------------------------------
+MSE          : 1.94e-05
+Complexity   : 41
+Sample time  : 1.7460653185844421
+Evaluate time: 17.171772480010986
+Sample orders: 41
+======================================================
+
+
+================= Evaluated Function =================
+def equation(x: np.ndarray, f1: np.ndarray, params: np.ndarray, d_axis: callable) -> np.ndarray:
+    """ Mathematical function for the RHS of an unknown 1D PDE.
+
+    Args:
+        x: spatial coordinate grid, shape (Nx, 1).
+        f1: the measured field, shape (Nx, Nt).
+        params: a fixed-length array of exactly 5 entries. Use only indices 0..4.
+        d_axis: spatial derivative. Call d_axis(field, axis, order); axis=0 is x1.
+
+    Return:
+        `f1_t_pred`, a numpy array with the grid shape.
+
+    STRICT CONSTRAINT:
+        1. SPATIAL DERIVATIVES & MATH: you are a physicist discovering a PDE. Use ONLY
+           the provided d_axis(field, axis, order) for derivatives (max order 4), with
+           axis=0 for the single spatial coordinate x1. For mathematical functions you
+           are STRICTLY LIMITED to np.sin, np.cos, np.tanh and np.exp. Do not call any
+           other np.* routine, do not import anything, and do not write numerical
+           algorithms. Ordinary arithmetic (+ - * / **) and params[0..4] are free.
+        2. OUTPUT FORMAT: write the complete formula, assign it to f1_t_pred, and
+           strictly end with return f1_t_pred. No placeholders. Mind the shapes: x is
+           (Nx, 1) and f1 is (Nx, Nt), so a coordinate factor must broadcast against
+           f1 -- write x or x[:, 0:1], never x[:, 0].
+        3. PARETO EVOLUTION: the frontier trades MSE against complexity. Complexity
+           counts the derivative calls, the arithmetic operations and every params
+           you use, so the same term written more compactly is preferred.
+        4. OPTIMIZATION STRATEGY:{PARETO_FRONTIER_PLACEHOLDER}
+    """
+    # Gaussian envelope peaked at x1 = 0
+    envelope = np.exp(-params[1] * x[:, 0:1]**2)
+
+    # Local gain: envelope drives growth where field is present
+    gain = params[0] * envelope * f1
+
+    # Anti-diffusion: negative second-order term selects length scale
+    anti_diffusion = -params[2] * d_axis(f1, 0, 2)
+
+    # Fourth-order damping: keeps shortest scales damped
+    fourth_order = params[3] * d_axis(f1, 0, 4)
+
+    # Nonlinear response: cubic-quintic polynomial
+    nonlinear = -params[4] * f1 + params[4] * f1**3 - 0.5 * params[4] * f1**5
+
+    f1_t_pred = gain + anti_diffusion + fourth_order + nonlinear
+
+    return f1_t_pred
+------------------------------------------------------
+MSE          : 1.94e-05
+Complexity   : 39
+Sample time  : 1.7460653185844421
+Evaluate time: 21.6981041431427
+Sample orders: 42
+======================================================
+
+
+================= Evaluated Function =================
+def equation(x: np.ndarray, f1: np.ndarray, params: np.ndarray, d_axis: callable) -> np.ndarray:
+    """ Mathematical function for the RHS of an unknown 1D PDE.
+
+    Args:
+        x: spatial coordinate grid, shape (Nx, 1).
+        f1: the measured field, shape (Nx, Nt).
+        params: a fixed-length array of exactly 5 entries. Use only indices 0..4.
+        d_axis: spatial derivative. Call d_axis(field, axis, order); axis=0 is x1.
+
+    Return:
+        `f1_t_pred`, a numpy array with the grid shape.
+
+    STRICT CONSTRAINT:
+        1. SPATIAL DERIVATIVES & MATH: you are a physicist discovering a PDE. Use ONLY
+           the provided d_axis(field, axis, order) for derivatives (max order 4), with
+           axis=0 for the single spatial coordinate x1. For mathematical functions you
+           are STRICTLY LIMITED to np.sin, np.cos, np.tanh and np.exp. Do not call any
+           other np.* routine, do not import anything, and do not write numerical
+           algorithms. Ordinary arithmetic (+ - * / **) and params[0..4] are free.
+        2. OUTPUT FORMAT: write the complete formula, assign it to f1_t_pred, and
+           strictly end with return f1_t_pred. No placeholders. Mind the shapes: x is
+           (Nx, 1) and f1 is (Nx, Nt), so a coordinate factor must broadcast against
+           f1 -- write x or x[:, 0:1], never x[:, 0].
+        3. PARETO EVOLUTION: the frontier trades MSE against complexity. Complexity
+           counts the derivative calls, the arithmetic operations and every params
+           you use, so the same term written more compactly is preferred.
+        4. OPTIMIZATION STRATEGY:{PARETO_FRONTIER_PLACEHOLDER}
+    """
+    f1_t_pred = params[0] * np.exp(-params[1] * x[:, 0:1]**2) * f1 - params[2] * d_axis(f1, 0, 2) + params[3] * d_axis(f1, 0, 4) + params[4] * (-f1 + f1**3 - 0.5 * f1**5)
+
+    return f1_t_pred
+------------------------------------------------------
+MSE          : 1.94e-05
+Complexity   : 30
+Sample time  : 1.7460653185844421
+Evaluate time: 13.658538818359375
+Sample orders: 43
+======================================================
+
+
+🚫 [UNPARSABLE] the reply carried no executable body; draw dropped
+Execution Error: name 'f1_t_pred' is not defined
+✅ [EVALUATED] MSE: 1.94e-05 | Params: [ 0.14687   1.038527  1.732192 -0.890045 -0.502329  1.      ]
+✅ [EVALUATED] MSE: 1.94e-05 | Params: [ 1.038509  0.146867  1.732145 -0.890027 -0.502366  1.      ]
+Execution Error: unexpected indent (<string>, line 141)
+⏱️  [NO SCORE] the sandbox returned nothing for this draw (timeout 60s, or a runtime error); it gets no MSE and no frontier slot
+================= Evaluated Function =================
+def equation(x: np.ndarray, f1: np.ndarray, params: np.ndarray, d_axis: callable) -> np.ndarray:
+    """ Mathematical function for the RHS of an unknown 1D PDE.
+
+    Args:
+        x: spatial coordinate grid, shape (Nx, 1).
+        f1: the measured field, shape (Nx, Nt).
+        params: a fixed-length array of exactly 5 entries. Use only indices 0..4.
+        d_axis: spatial derivative. Call d_axis(field, axis, order); axis=0 is x1.
+
+    Return:
+        `f1_t_pred`, a numpy array with the grid shape.
+
+    STRICT CONSTRAINT:
+        1. SPATIAL DERIVATIVES & MATH: you are a physicist discovering a PDE. Use ONLY
+           the provided d_axis(field, axis, order) for derivatives (max order 4), with
+           axis=0 for the single spatial coordinate x1. For mathematical functions you
+           are STRICTLY LIMITED to np.sin, np.cos, np.tanh and np.exp. Do not call any
+           other np.* routine, do not import anything, and do not write numerical
+           algorithms. Ordinary arithmetic (+ - * / **) and params[0..4] are free.
+        2. OUTPUT FORMAT: write the complete formula, assign it to f1_t_pred, and
+           strictly end with return f1_t_pred. No placeholders. Mind the shapes: x is
+           (Nx, 1) and f1 is (Nx, Nt), so a coordinate factor must broadcast against
+           f1 -- write x or x[:, 0:1], never x[:, 0].
+        3. PARETO EVOLUTION: the frontier trades MSE against complexity. Complexity
+           counts the derivative calls, the arithmetic operations and every params
+           you use, so the same term written more compactly is preferred.
+        4. OPTIMIZATION STRATEGY:{PARETO_FRONTIER_PLACEHOLDER}
+    """
+    return f1_t_pred
+------------------------------------------------------
+MSE          : N/A
+Complexity   : N/A
+Sample time  : 2.3926738500595093
+Evaluate time: 2.7934553623199463
+Sample orders: 45
+======================================================
+
+
+================= Evaluated Function =================
+def equation(x: np.ndarray, f1: np.ndarray, params: np.ndarray, d_axis: callable) -> np.ndarray:
+    """ Mathematical function for the RHS of an unknown 1D PDE.
+
+    Args:
+        x: spatial coordinate grid, shape (Nx, 1).
+        f1: the measured field, shape (Nx, Nt).
+        params: a fixed-length array of exactly 5 entries. Use only indices 0..4.
+        d_axis: spatial derivative. Call d_axis(field, axis, order); axis=0 is x1.
+
+    Return:
+        `f1_t_pred`, a numpy array with the grid shape.
+
+    STRICT CONSTRAINT:
+        1. SPATIAL DERIVATIVES & MATH: you are a physicist discovering a PDE. Use ONLY
+           the provided d_axis(field, axis, order) for derivatives (max order 4), with
+           axis=0 for the single spatial coordinate x1. For mathematical functions you
+           are STRICTLY LIMITED to np.sin, np.cos, np.tanh and np.exp. Do not call any
+           other np.* routine, do not import anything, and do not write numerical
+           algorithms. Ordinary arithmetic (+ - * / **) and params[0..4] are free.
+        2. OUTPUT FORMAT: write the complete formula, assign it to f1_t_pred, and
+           strictly end with return f1_t_pred. No placeholders. Mind the shapes: x is
+           (Nx, 1) and f1 is (Nx, Nt), so a coordinate factor must broadcast against
+           f1 -- write x or x[:, 0:1], never x[:, 0].
+        3. PARETO EVOLUTION: the frontier trades MSE against complexity. Complexity
+           counts the derivative calls, the arithmetic operations and every params
+           you use, so the same term written more compactly is preferred.
+        4. OPTIMIZATION STRATEGY:{PARETO_FRONTIER_PLACEHOLDER}
+    """
+    # Gaussian envelope peaked at x1=0 for local gain
+    envelope = np.exp(-params[0] * x[:, 0:1]**2)
+
+    # Local gain: envelope amplifies existing field
+    gain = params[1] * envelope * f1
+
+    # Anti-diffusion: negative second-order term selects preferred length scale
+    anti_diffusion = -params[2] * d_axis(f1, 0, 2)
+
+    # Fourth-order damping for shortest scales
+    fourth_order = params[3] * d_axis(f1, 0, 4)
+
+    # Nonlinear response: -f pulls small back, +f³ turns around, -f⁵ caps
+    nonlinear = params[4] * (-f1 + f1**3 - 0.5 * f1**5)
+
+    f1_t_pred = gain + anti_diffusion + fourth_order + nonlinear
+
+    return f1_t_pred
+------------------------------------------------------
+MSE          : 1.94e-05
+Complexity   : 37
+Sample time  : 2.3926738500595093
+Evaluate time: 26.584123373031616
+Sample orders: 46
+======================================================
+
+
+================= Evaluated Function =================
+def equation(x: np.ndarray, f1: np.ndarray, params: np.ndarray, d_axis: callable) -> np.ndarray:
+    """ Mathematical function for the RHS of an unknown 1D PDE.
+
+    Args:
+        x: spatial coordinate grid, shape (Nx, 1).
+        f1: the measured field, shape (Nx, Nt).
+        params: a fixed-length array of exactly 5 entries. Use only indices 0..4.
+        d_axis: spatial derivative. Call d_axis(field, axis, order); axis=0 is x1.
+
+    Return:
+        `f1_t_pred`, a numpy array with the grid shape.
+
+    STRICT CONSTRAINT:
+        1. SPATIAL DERIVATIVES & MATH: you are a physicist discovering a PDE. Use ONLY
+           the provided d_axis(field, axis, order) for derivatives (max order 4), with
+           axis=0 for the single spatial coordinate x1. For mathematical functions you
+           are STRICTLY LIMITED to np.sin, np.cos, np.tanh and np.exp. Do not call any
+           other np.* routine, do not import anything, and do not write numerical
+           algorithms. Ordinary arithmetic (+ - * / **) and params[0..4] are free.
+        2. OUTPUT FORMAT: write the complete formula, assign it to f1_t_pred, and
+           strictly end with return f1_t_pred. No placeholders. Mind the shapes: x is
+           (Nx, 1) and f1 is (Nx, Nt), so a coordinate factor must broadcast against
+           f1 -- write x or x[:, 0:1], never x[:, 0].
+        3. PARETO EVOLUTION: the frontier trades MSE against complexity. Complexity
+           counts the derivative calls, the arithmetic operations and every params
+           you use, so the same term written more compactly is preferred.
+        4. OPTIMIZATION STRATEGY:{PARETO_FRONTIER_PLACEHOLDER}
+    """
+    # Local gain with Gaussian envelope peaked at x1=0
+    envelope_gain = params[0] * np.exp(-params[1] * x[:, 0:1]**2) * f1
+
+    # Anti-diffusion (negative second-order term)
+    anti_diffusion = -params[2] * d_axis(f1, 0, 2)
+
+    # Fourth-order damping for shortest scales
+    fourth_order = params[3] * d_axis(f1, 0, 4)
+
+    # Nonlinear response: -f pulls back, +f³ turns around, -f⁵ caps
+    nonlinear = -params[4] * (f1 - f1**3 + 0.5 * f1**5)
+
+    f1_t_pred = envelope_gain + anti_diffusion + fourth_order + nonlinear
+
+    return f1_t_pred
+------------------------------------------------------
+MSE          : 1.94e-05
+Complexity   : 37
+Sample time  : 2.3926738500595093
+Evaluate time: 13.743478775024414
+Sample orders: 47
+======================================================
+
+
+⏱️  [NO SCORE] the sandbox returned nothing for this draw (timeout 60s, or a runtime error); it gets no MSE and no frontier slot
+================= Evaluated Function =================
+def equation(x: np.ndarray, f1: np.ndarray, params: np.ndarray, d_axis: callable) -> np.ndarray:
+    """ Mathematical function for the RHS of an unknown 1D PDE.
+
+    Args:
+        x: spatial coordinate grid, shape (Nx, 1).
+        f1: the measured field, shape (Nx, Nt).
+        params: a fixed-length array of exactly 5 entries. Use only indices 0..4.
+        d_axis: spatial derivative. Call d_axis(field, axis, order); axis=0 is x1.
+
+    Return:
+        `f1_t_pred`, a numpy array with the grid shape.
+
+    STRICT CONSTRAINT:
+        1. SPATIAL DERIVATIVES & MATH: you are a physicist discovering a PDE. Use ONLY
+           the provided d_axis(field, axis, order) for derivatives (max order 4), with
+           axis=0 for the single spatial coordinate x1. For mathematical functions you
+           are STRICTLY LIMITED to np.sin, np.cos, np.tanh and np.exp. Do not call any
+           other np.* routine, do not import anything, and do not write numerical
+           algorithms. Ordinary arithmetic (+ - * / **) and params[0..4] are free.
+        2. OUTPUT FORMAT: write the complete formula, assign it to f1_t_pred, and
+           strictly end with return f1_t_pred. No placeholders. Mind the shapes: x is
+           (Nx, 1) and f1 is (Nx, Nt), so a coordinate factor must broadcast against
+           f1 -- write x or x[:, 0:1], never x[:, 0].
+        3. PARETO EVOLUTION: the frontier trades MSE against complexity. Complexity
+           counts the derivative calls, the arithmetic operations and every params
+           you use, so the same term written more compactly is preferred.
+        4. OPTIMIZATION STRATEGY:{PARETO_FRONTIER_PLACEHOLDER}
+    """
+    # Gaussian envelope peaked at x1=0, switches on local gain
+        envelope = np.exp(-params[0] * x[:, 0:1]**2)
+
+        # Local gain term: envelope multiplies field
+        gain = params[1] * envelope * f1
+
+        # Anti-diffusion: negative second-order term (selects length scale)
+        anti_diffusion = -params[2] * d_axis(f1, 0, 2)
+
+        # Fourth-order damping for shortest scales
+        fourth_order = params[3] * d_axis(f1, 0, 4)
+
+        # Nonlinear response: -f pulls back, +f^3 turns around, -f^5 caps
+        nonlinear = -params[4] * f1 + params[4] * f1**3 - 0.5 * params[4] * f1**5
+
+        f1_t_pred = gain + anti_diffusion + fourth_order + nonlinear
+
+        return f1_t_pred✅ [EVALUATED] MSE: 1.94e-05 | Params: [ 0.146869  1.038523  1.732181 -0.890042 -0.502339  1.      ]
+✅ [EVALUATED] MSE: 1.94e-05 | Params: [ 0.146869  1.038523  1.732181 -0.890042 -0.502339  1.      ]
+✅ [EVALUATED] MSE: 1.94e-05 | Params: [ 1.038509  0.146867  1.732145 -0.890027 -0.502366  1.      ]
+✅ [EVALUATED] MSE: 1.94e-05 | Params: [ 1.038518  0.146876  1.732203 -0.89005  -0.502338  1.      ]
+
+------------------------------------------------------
+MSE          : N/A
+Complexity   : N/A
+Sample time  : 2.3926738500595093
+Evaluate time: 2.6660141944885254
+Sample orders: 48
+======================================================
+
+
+================= Evaluated Function =================
+def equation(x: np.ndarray, f1: np.ndarray, params: np.ndarray, d_axis: callable) -> np.ndarray:
+    """ Mathematical function for the RHS of an unknown 1D PDE.
+
+    Args:
+        x: spatial coordinate grid, shape (Nx, 1).
+        f1: the measured field, shape (Nx, Nt).
+        params: a fixed-length array of exactly 5 entries. Use only indices 0..4.
+        d_axis: spatial derivative. Call d_axis(field, axis, order); axis=0 is x1.
+
+    Return:
+        `f1_t_pred`, a numpy array with the grid shape.
+
+    STRICT CONSTRAINT:
+        1. SPATIAL DERIVATIVES & MATH: you are a physicist discovering a PDE. Use ONLY
+           the provided d_axis(field, axis, order) for derivatives (max order 4), with
+           axis=0 for the single spatial coordinate x1. For mathematical functions you
+           are STRICTLY LIMITED to np.sin, np.cos, np.tanh and np.exp. Do not call any
+           other np.* routine, do not import anything, and do not write numerical
+           algorithms. Ordinary arithmetic (+ - * / **) and params[0..4] are free.
+        2. OUTPUT FORMAT: write the complete formula, assign it to f1_t_pred, and
+           strictly end with return f1_t_pred. No placeholders. Mind the shapes: x is
+           (Nx, 1) and f1 is (Nx, Nt), so a coordinate factor must broadcast against
+           f1 -- write x or x[:, 0:1], never x[:, 0].
+        3. PARETO EVOLUTION: the frontier trades MSE against complexity. Complexity
+           counts the derivative calls, the arithmetic operations and every params
+           you use, so the same term written more compactly is preferred.
+        4. OPTIMIZATION STRATEGY:{PARETO_FRONTIER_PLACEHOLDER}
+    """
+    # Gaussian envelope for local gain
+    envelope = np.exp(-params[0] * x[:, 0:1]**2)
+
+    # Local gain term: envelope multiplies field
+    local_gain = params[1] * envelope * f1
+
+    # Anti-diffusion (negative second derivative)
+    anti_diffusion = -params[2] * d_axis(f1, 0, 2)
+
+    # Fourth-order damping (positive fourth derivative)
+    fourth_order_damping = params[3] * d_axis(f1, 0, 4)
+
+    # Nonlinear response: pull back, turn around, cap
+    nonlinear = -params[4] * f1 + params[4] * f1**3 - 0.5 * params[4] * f1**5
+
+    f1_t_pred = local_gain + anti_diffusion + fourth_order_damping + nonlinear
+
+    return f1_t_pred
+------------------------------------------------------
+MSE          : 1.94e-05
+Complexity   : 37
+Sample time  : 1.5678098797798157
+Evaluate time: 16.78111958503723
+Sample orders: 49
+======================================================
+
+
+================= Evaluated Function =================
+def equation(x: np.ndarray, f1: np.ndarray, params: np.ndarray, d_axis: callable) -> np.ndarray:
+    """ Mathematical function for the RHS of an unknown 1D PDE.
+
+    Args:
+        x: spatial coordinate grid, shape (Nx, 1).
+        f1: the measured field, shape (Nx, Nt).
+        params: a fixed-length array of exactly 5 entries. Use only indices 0..4.
+        d_axis: spatial derivative. Call d_axis(field, axis, order); axis=0 is x1.
+
+    Return:
+        `f1_t_pred`, a numpy array with the grid shape.
+
+    STRICT CONSTRAINT:
+        1. SPATIAL DERIVATIVES & MATH: you are a physicist discovering a PDE. Use ONLY
+           the provided d_axis(field, axis, order) for derivatives (max order 4), with
+           axis=0 for the single spatial coordinate x1. For mathematical functions you
+           are STRICTLY LIMITED to np.sin, np.cos, np.tanh and np.exp. Do not call any
+           other np.* routine, do not import anything, and do not write numerical
+           algorithms. Ordinary arithmetic (+ - * / **) and params[0..4] are free.
+        2. OUTPUT FORMAT: write the complete formula, assign it to f1_t_pred, and
+           strictly end with return f1_t_pred. No placeholders. Mind the shapes: x is
+           (Nx, 1) and f1 is (Nx, Nt), so a coordinate factor must broadcast against
+           f1 -- write x or x[:, 0:1], never x[:, 0].
+        3. PARETO EVOLUTION: the frontier trades MSE against complexity. Complexity
+           counts the derivative calls, the arithmetic operations and every params
+           you use, so the same term written more compactly is preferred.
+        4. OPTIMIZATION STRATEGY:{PARETO_FRONTIER_PLACEHOLDER}
+    """
+    # Envelope: Gaussian peaked at x1=0
+    envelope = np.exp(-params[0] * x[:, 0:1]**2)
+
+    # Local gain: envelope * field
+    gain = params[1] * envelope * f1
+
+    # Anti-diffusion (negative second derivative)
+    anti_diffusion = -params[2] * d_axis(f1, 0, 2)
+
+    # Fourth-order damping (positive fourth derivative for stability at small scales)
+    fourth_order = params[3] * d_axis(f1, 0, 4)
+
+    # Nonlinear response: cubic and quintic terms
+    # -f: pulls small departures back to zero
+    # +f^3: turns around past threshold  
+    # -f^5: caps runaway
+    nonlinear = -params[4] * f1 + params[4] * f1**3 - 0.5 * params[4] * f1**5
+
+    f1_t_pred = gain + anti_diffusion + fourth_order + nonlinear
+
+    return f1_t_pred
+------------------------------------------------------
+MSE          : 1.94e-05
+Complexity   : 41
+Sample time  : 1.5678098797798157
+Evaluate time: 16.830825328826904
+Sample orders: 50
+======================================================
+
+
+================= Evaluated Function =================
+def equation(x: np.ndarray, f1: np.ndarray, params: np.ndarray, d_axis: callable) -> np.ndarray:
+    """ Mathematical function for the RHS of an unknown 1D PDE.
+
+    Args:
+        x: spatial coordinate grid, shape (Nx, 1).
+        f1: the measured field, shape (Nx, Nt).
+        params: a fixed-length array of exactly 5 entries. Use only indices 0..4.
+        d_axis: spatial derivative. Call d_axis(field, axis, order); axis=0 is x1.
+
+    Return:
+        `f1_t_pred`, a numpy array with the grid shape.
+
+    STRICT CONSTRAINT:
+        1. SPATIAL DERIVATIVES & MATH: you are a physicist discovering a PDE. Use ONLY
+           the provided d_axis(field, axis, order) for derivatives (max order 4), with
+           axis=0 for the single spatial coordinate x1. For mathematical functions you
+           are STRICTLY LIMITED to np.sin, np.cos, np.tanh and np.exp. Do not call any
+           other np.* routine, do not import anything, and do not write numerical
+           algorithms. Ordinary arithmetic (+ - * / **) and params[0..4] are free.
+        2. OUTPUT FORMAT: write the complete formula, assign it to f1_t_pred, and
+           strictly end with return f1_t_pred. No placeholders. Mind the shapes: x is
+           (Nx, 1) and f1 is (Nx, Nt), so a coordinate factor must broadcast against
+           f1 -- write x or x[:, 0:1], never x[:, 0].
+        3. PARETO EVOLUTION: the frontier trades MSE against complexity. Complexity
+           counts the derivative calls, the arithmetic operations and every params
+           you use, so the same term written more compactly is preferred.
+        4. OPTIMIZATION STRATEGY:{PARETO_FRONTIER_PLACEHOLDER}
+    """
+    f1_t_pred = params[0] * np.exp(-params[1] * x[:, 0:1]**2) * f1 - params[2] * d_axis(f1, 0, 2) + params[3] * d_axis(f1, 0, 4) - params[4] * (f1 - f1**3 + 0.5 * f1**5)
+
+    return f1_t_pred
+------------------------------------------------------
+MSE          : 1.94e-05
+Complexity   : 29
+Sample time  : 1.5678098797798157
+Evaluate time: 13.014125108718872
+Sample orders: 51
+======================================================
+
+
+================= Evaluated Function =================
+def equation(x: np.ndarray, f1: np.ndarray, params: np.ndarray, d_axis: callable) -> np.ndarray:
+    """ Mathematical function for the RHS of an unknown 1D PDE.
+
+    Args:
+        x: spatial coordinate grid, shape (Nx, 1).
+        f1: the measured field, shape (Nx, Nt).
+        params: a fixed-length array of exactly 5 entries. Use only indices 0..4.
+        d_axis: spatial derivative. Call d_axis(field, axis, order); axis=0 is x1.
+
+    Return:
+        `f1_t_pred`, a numpy array with the grid shape.
+
+    STRICT CONSTRAINT:
+        1. SPATIAL DERIVATIVES & MATH: you are a physicist discovering a PDE. Use ONLY
+           the provided d_axis(field, axis, order) for derivatives (max order 4), with
+           axis=0 for the single spatial coordinate x1. For mathematical functions you
+           are STRICTLY LIMITED to np.sin, np.cos, np.tanh and np.exp. Do not call any
+           other np.* routine, do not import anything, and do not write numerical
+           algorithms. Ordinary arithmetic (+ - * / **) and params[0..4] are free.
+        2. OUTPUT FORMAT: write the complete formula, assign it to f1_t_pred, and
+           strictly end with return f1_t_pred. No placeholders. Mind the shapes: x is
+           (Nx, 1) and f1 is (Nx, Nt), so a coordinate factor must broadcast against
+           f1 -- write x or x[:, 0:1], never x[:, 0].
+        3. PARETO EVOLUTION: the frontier trades MSE against complexity. Complexity
+           counts the derivative calls, the arithmetic operations and every params
+           you use, so the same term written more compactly is preferred.
+        4. OPTIMIZATION STRATEGY:{PARETO_FRONTIER_PLACEHOLDER}
+    """
+    # Local gain from Gaussian envelope peaked at x=0
+    gain = params[0] * np.exp(-params[1] * x[:, 0:1]**2) * f1
+
+    # Anti-diffusion (negative second-order) + fourth-order damping  
+    linear_spatial = -params[2] * d_axis(f1, 0, 2) + params[3] * d_axis(f1, 0, 4)
+
+    # Cubic-quintic nonlinearity with same coefficient for efficiency
+    nonlinear = -params[4] * (f1 - f1**3 + 0.5 * f1**5)
+
+    f1_t_pred = gain + linear_spatial + nonlinear
+
+    return f1_t_pred✅ [EVALUATED] MSE: 1.94e-05 | Params: [ 1.038509  0.146867  1.732145 -0.890027 -0.502366  1.      ]
+✅ [EVALUATED] MSE: 1.94e-05 | Params: [ 0.146869  1.038523  1.732181 -0.890042 -0.502339  1.      ]
+✅ [EVALUATED] MSE: 1.94e-05 | Params: [ 0.14687   1.038527  1.732192 -0.890045 -0.502329  1.      ]
+✅ [EVALUATED] MSE: 1.94e-05 | Params: [ 0.14687   1.038527  1.732192 -0.890045 -0.502329  1.      ]
+
+------------------------------------------------------
+MSE          : 1.94e-05
+Complexity   : 36
+Sample time  : 1.5678098797798157
+Evaluate time: 12.355565786361694
+Sample orders: 52
+======================================================
+
+
+================= Evaluated Function =================
+def equation(x: np.ndarray, f1: np.ndarray, params: np.ndarray, d_axis: callable) -> np.ndarray:
+    """ Mathematical function for the RHS of an unknown 1D PDE.
+
+    Args:
+        x: spatial coordinate grid, shape (Nx, 1).
+        f1: the measured field, shape (Nx, Nt).
+        params: a fixed-length array of exactly 5 entries. Use only indices 0..4.
+        d_axis: spatial derivative. Call d_axis(field, axis, order); axis=0 is x1.
+
+    Return:
+        `f1_t_pred`, a numpy array with the grid shape.
+
+    STRICT CONSTRAINT:
+        1. SPATIAL DERIVATIVES & MATH: you are a physicist discovering a PDE. Use ONLY
+           the provided d_axis(field, axis, order) for derivatives (max order 4), with
+           axis=0 for the single spatial coordinate x1. For mathematical functions you
+           are STRICTLY LIMITED to np.sin, np.cos, np.tanh and np.exp. Do not call any
+           other np.* routine, do not import anything, and do not write numerical
+           algorithms. Ordinary arithmetic (+ - * / **) and params[0..4] are free.
+        2. OUTPUT FORMAT: write the complete formula, assign it to f1_t_pred, and
+           strictly end with return f1_t_pred. No placeholders. Mind the shapes: x is
+           (Nx, 1) and f1 is (Nx, Nt), so a coordinate factor must broadcast against
+           f1 -- write x or x[:, 0:1], never x[:, 0].
+        3. PARETO EVOLUTION: the frontier trades MSE against complexity. Complexity
+           counts the derivative calls, the arithmetic operations and every params
+           you use, so the same term written more compactly is preferred.
+        4. OPTIMIZATION STRATEGY:{PARETO_FRONTIER_PLACEHOLDER}
+    """
+    f1_t_pred = params[0] * np.exp(-params[1] * x[:, 0:1]**2) * f1 - params[2] * d_axis(f1, 0, 2) + params[3] * d_axis(f1, 0, 4) - params[4] * (f1 - f1**3 + 0.5 * f1**5)
+
+    return f1_t_pred
+------------------------------------------------------
+MSE          : 1.94e-05
+Complexity   : 29
+Sample time  : 1.7031258344650269
+Evaluate time: 15.582423210144043
+Sample orders: 53
+======================================================
+
+
+================= Evaluated Function =================
+def equation(x: np.ndarray, f1: np.ndarray, params: np.ndarray, d_axis: callable) -> np.ndarray:
+    """ Mathematical function for the RHS of an unknown 1D PDE.
+
+    Args:
+        x: spatial coordinate grid, shape (Nx, 1).
+        f1: the measured field, shape (Nx, Nt).
+        params: a fixed-length array of exactly 5 entries. Use only indices 0..4.
+        d_axis: spatial derivative. Call d_axis(field, axis, order); axis=0 is x1.
+
+    Return:
+        `f1_t_pred`, a numpy array with the grid shape.
+
+    STRICT CONSTRAINT:
+        1. SPATIAL DERIVATIVES & MATH: you are a physicist discovering a PDE. Use ONLY
+           the provided d_axis(field, axis, order) for derivatives (max order 4), with
+           axis=0 for the single spatial coordinate x1. For mathematical functions you
+           are STRICTLY LIMITED to np.sin, np.cos, np.tanh and np.exp. Do not call any
+           other np.* routine, do not import anything, and do not write numerical
+           algorithms. Ordinary arithmetic (+ - * / **) and params[0..4] are free.
+        2. OUTPUT FORMAT: write the complete formula, assign it to f1_t_pred, and
+           strictly end with return f1_t_pred. No placeholders. Mind the shapes: x is
+           (Nx, 1) and f1 is (Nx, Nt), so a coordinate factor must broadcast against
+           f1 -- write x or x[:, 0:1], never x[:, 0].
+        3. PARETO EVOLUTION: the frontier trades MSE against complexity. Complexity
+           counts the derivative calls, the arithmetic operations and every params
+           you use, so the same term written more compactly is preferred.
+        4. OPTIMIZATION STRATEGY:{PARETO_FRONTIER_PLACEHOLDER}
+    """
+    # Gaussian envelope for local gain (bell-shaped, peaked at x1 = 0)
+    envelope = np.exp(-params[0] * x[:, 0:1]**2)
+
+    # Local gain: field grows where envelope is large
+    local_gain = params[1] * envelope * f1
+
+    # Anti-diffusion: opposite sign to smoothing, selects preferred length scale
+    anti_diffusion = -params[2] * d_axis(f1, 0, 2)
+
+    # Fourth-order damping: keeps shortest scales damped
+    fourth_order_damping = params[3] * d_axis(f1, 0, 4)
+
+    # Nonlinear response: polynomial in field, pulls small departures back,
+    # turns around past threshold, caps runaway via higher-order term
+    nonlinear = -params[4] * f1 + params[4] * f1**3 - 0.5 * params[4] * f1**5
+
+    f1_t_pred = local_gain + anti_diffusion + fourth_order_damping + nonlinear
+
+    return f1_t_pred
+------------------------------------------------------
+MSE          : 1.94e-05
+Complexity   : 39
+Sample time  : 1.7031258344650269
+Evaluate time: 17.246528148651123
+Sample orders: 54
+======================================================
+
+
+================= Evaluated Function =================
+def equation(x: np.ndarray, f1: np.ndarray, params: np.ndarray, d_axis: callable) -> np.ndarray:
+    """ Mathematical function for the RHS of an unknown 1D PDE.
+
+    Args:
+        x: spatial coordinate grid, shape (Nx, 1).
+        f1: the measured field, shape (Nx, Nt).
+        params: a fixed-length array of exactly 5 entries. Use only indices 0..4.
+        d_axis: spatial derivative. Call d_axis(field, axis, order); axis=0 is x1.
+
+    Return:
+        `f1_t_pred`, a numpy array with the grid shape.
+
+    STRICT CONSTRAINT:
+        1. SPATIAL DERIVATIVES & MATH: you are a physicist discovering a PDE. Use ONLY
+           the provided d_axis(field, axis, order) for derivatives (max order 4), with
+           axis=0 for the single spatial coordinate x1. For mathematical functions you
+           are STRICTLY LIMITED to np.sin, np.cos, np.tanh and np.exp. Do not call any
+           other np.* routine, do not import anything, and do not write numerical
+           algorithms. Ordinary arithmetic (+ - * / **) and params[0..4] are free.
+        2. OUTPUT FORMAT: write the complete formula, assign it to f1_t_pred, and
+           strictly end with return f1_t_pred. No placeholders. Mind the shapes: x is
+           (Nx, 1) and f1 is (Nx, Nt), so a coordinate factor must broadcast against
+           f1 -- write x or x[:, 0:1], never x[:, 0].
+        3. PARETO EVOLUTION: the frontier trades MSE against complexity. Complexity
+           counts the derivative calls, the arithmetic operations and every params
+           you use, so the same term written more compactly is preferred.
+        4. OPTIMIZATION STRATEGY:{PARETO_FRONTIER_PLACEHOLDER}
+    """
+    # Gaussian envelope for local gain
+    envelope = np.exp(-params[0] * x[:, 0:1]**2)
+
+    # Local gain
+    local_gain = params[1] * envelope * f1
+
+    # Anti-diffusion
+    anti_diffusion = -params[2] * d_axis(f1, 0, 2)
+
+    # Fourth-order damping
+    fourth_order = params[3] * d_axis(f1, 0, 4)
+
+    # Nonlinear response (pull back, threshold, cap)
+    nonlinear = -params[4] * (f1 - f1**3 + 0.5 * f1**5)
+
+    f1_t_pred = local_gain + anti_diffusion + fourth_order + nonlinear
+
+    return f1_t_pred
+------------------------------------------------------
+MSE          : 1.94e-05
+Complexity   : 33
+Sample time  : 1.7031258344650269
+Evaluate time: 25.05071473121643
+Sample orders: 55
+======================================================
+
+
+================= Evaluated Function =================
+def equation(x: np.ndarray, f1: np.ndarray, params: np.ndarray, d_axis: callable) -> np.ndarray:
+    """ Mathematical function for the RHS of an unknown 1D PDE.
+
+    Args:
+        x: spatial coordinate grid, shape (Nx, 1).
+        f1: the measured field, shape (Nx, Nt).
+        params: a fixed-length array of exactly 5 entries. Use only indices 0..4.
+        d_axis: spatial derivative. Call d_axis(field, axis, order); axis=0 is x1.
+
+    Return:
+        `f1_t_pred`, a numpy array with the grid shape.
+
+    STRICT CONSTRAINT:
+        1. SPATIAL DERIVATIVES & MATH: you are a physicist discovering a PDE. Use ONLY
+           the provided d_axis(field, axis, order) for derivatives (max order 4), with
+           axis=0 for the single spatial coordinate x1. For mathematical functions you
+           are STRICTLY LIMITED to np.sin, np.cos, np.tanh and np.exp. Do not call any
+           other np.* routine, do not import anything, and do not write numerical
+           algorithms. Ordinary arithmetic (+ - * / **) and params[0..4] are free.
+        2. OUTPUT FORMAT: write the complete formula, assign it to f1_t_pred, and
+           strictly end with return f1_t_pred. No placeholders. Mind the shapes: x is
+           (Nx, 1) and f1 is (Nx, Nt), so a coordinate factor must broadcast against
+           f1 -- write x or x[:, 0:1], never x[:, 0].
+        3. PARETO EVOLUTION: the frontier trades MSE against complexity. Complexity
+           counts the derivative calls, the arithmetic operations and every params
+           you use, so the same term written more compactly is preferred.
+        4. OPTIMIZATION STRATEGY:{PARETO_FRONTIER_PLACEHOLDER}
+    """
+    # Bell-shaped envelope for local gain
+    envelope = np.exp(-params[0] * x[:, 0:1]**2)
+
+    # Local gain term
+    local_gain = params[1] * envelope * f1
+
+    # Anti-diffusion (negative second derivative)
+    anti_diffusion = -params[2] * d_axis(f1, 0, 2)
+
+    # Fourth-order damping
+    fourth_order = params[3] * d_axis(f1, 0, 4)
+
+    # Nonlinear response: linear pull-back, cubic turn-around, quintic cap
+    nonlinear = -params[4] * (f1 - f1**3 + 0.5 * f1**5)
+
+    f1_t_pred = local_gain + anti_diffusion + fourth_order + nonlinear
+    return f1_t_pred
+------------------------------------------------------
+MSE          : 1.94e-05
+Complexity   : 36
+Sample time  : 1.7031258344650269
+Evaluate time: 26.533895254135132
+Sample orders: 56
+======================================================
+
+
+🚫 [UNPARSABLE] the reply carried no executable body; draw dropped
+✅ [EVALUATED] MSE: 1.94e-05 | Params: [ 0.14687   1.038527  1.732192 -0.890045 -0.502329  1.      ]
+✅ [EVALUATED] MSE: 3.52e-05 | Params: [65.591988  9.617556  1.592039 -0.818088 -0.878056  1.      ]
+✅ [EVALUATED] MSE: 1.94e-05 | Params: [ 0.14687   1.038527  1.732192 -0.890045 -0.502329  1.      ]
+================= Evaluated Function =================
+def equation(x: np.ndarray, f1: np.ndarray, params: np.ndarray, d_axis: callable) -> np.ndarray:
+    """ Mathematical function for the RHS of an unknown 1D PDE.
+
+    Args:
+        x: spatial coordinate grid, shape (Nx, 1).
+        f1: the measured field, shape (Nx, Nt).
+        params: a fixed-length array of exactly 5 entries. Use only indices 0..4.
+        d_axis: spatial derivative. Call d_axis(field, axis, order); axis=0 is x1.
+
+    Return:
+        `f1_t_pred`, a numpy array with the grid shape.
+
+    STRICT CONSTRAINT:
+        1. SPATIAL DERIVATIVES & MATH: you are a physicist discovering a PDE. Use ONLY
+           the provided d_axis(field, axis, order) for derivatives (max order 4), with
+           axis=0 for the single spatial coordinate x1. For mathematical functions you
+           are STRICTLY LIMITED to np.sin, np.cos, np.tanh and np.exp. Do not call any
+           other np.* routine, do not import anything, and do not write numerical
+           algorithms. Ordinary arithmetic (+ - * / **) and params[0..4] are free.
+        2. OUTPUT FORMAT: write the complete formula, assign it to f1_t_pred, and
+           strictly end with return f1_t_pred. No placeholders. Mind the shapes: x is
+           (Nx, 1) and f1 is (Nx, Nt), so a coordinate factor must broadcast against
+           f1 -- write x or x[:, 0:1], never x[:, 0].
+        3. PARETO EVOLUTION: the frontier trades MSE against complexity. Complexity
+           counts the derivative calls, the arithmetic operations and every params
+           you use, so the same term written more compactly is preferred.
+        4. OPTIMIZATION STRATEGY:{PARETO_FRONTIER_PLACEHOLDER}
+    """
+    # Bell-shaped envelope for local gain
+    envelope = np.exp(-params[0] * x[:, 0:1]**2)
+
+    # Local gain term
+    gain = params[1] * envelope * f1
+
+    # Anti-diffusion (negative second derivative)
+    anti_diff = -params[2] * d_axis(f1, 0, 2)
+
+    # Fourth-order damping
+    damping = params[3] * d_axis(f1, 0, 4)
+
+    # Nonlinear response: -f1 + f1³ - 0.5*f1⁵
+    # This pulls back small values, grows past threshold, and caps
+    nonlinear = -params[4] * (f1 - f1**3 + 0.5 * f1**5)
+
+    f1_t_pred = gain + anti_diff + damping + nonlinear
+
+    return f1_t_pred
+------------------------------------------------------
+MSE          : 1.94e-05
+Complexity   : 38
+Sample time  : 3.7025444507598877
+Evaluate time: 24.66569423675537
+Sample orders: 58
+======================================================
+
+
+================= Evaluated Function =================
+def equation(x: np.ndarray, f1: np.ndarray, params: np.ndarray, d_axis: callable) -> np.ndarray:
+    """ Mathematical function for the RHS of an unknown 1D PDE.
+
+    Args:
+        x: spatial coordinate grid, shape (Nx, 1).
+        f1: the measured field, shape (Nx, Nt).
+        params: a fixed-length array of exactly 5 entries. Use only indices 0..4.
+        d_axis: spatial derivative. Call d_axis(field, axis, order); axis=0 is x1.
+
+    Return:
+        `f1_t_pred`, a numpy array with the grid shape.
+
+    STRICT CONSTRAINT:
+        1. SPATIAL DERIVATIVES & MATH: you are a physicist discovering a PDE. Use ONLY
+           the provided d_axis(field, axis, order) for derivatives (max order 4), with
+           axis=0 for the single spatial coordinate x1. For mathematical functions you
+           are STRICTLY LIMITED to np.sin, np.cos, np.tanh and np.exp. Do not call any
+           other np.* routine, do not import anything, and do not write numerical
+           algorithms. Ordinary arithmetic (+ - * / **) and params[0..4] are free.
+        2. OUTPUT FORMAT: write the complete formula, assign it to f1_t_pred, and
+           strictly end with return f1_t_pred. No placeholders. Mind the shapes: x is
+           (Nx, 1) and f1 is (Nx, Nt), so a coordinate factor must broadcast against
+           f1 -- write x or x[:, 0:1], never x[:, 0].
+        3. PARETO EVOLUTION: the frontier trades MSE against complexity. Complexity
+           counts the derivative calls, the arithmetic operations and every params
+           you use, so the same term written more compactly is preferred.
+        4. OPTIMIZATION STRATEGY:{PARETO_FRONTIER_PLACEHOLDER}
+    """
+    # Bell-shaped envelope for local gain
+    envelope = np.exp(-params[0] * x[:, 0:1]**2)
+    local_gain = params[1] * envelope * f1
+    
+    # Anti-diffusion (negative second derivative)
+    anti_diffusion = -params[2] * d_axis(f1, 0, 2)
+    
+    # Fourth-order damping
+    fourth_order = params[3] * d_axis(f1, 0, 4)
+    
+    # Nonlinear response: polynomial in f1
+    nonlinear = -params[4] * f1 + params[4] * f1**3 - params[4] * f1**5
+    
+    f1_t_pred = local_gain + anti_diffusion + fourth_order + nonlinear
+    
+    return f1_t_pred
+------------------------------------------------------
+MSE          : 3.52e-05
+Complexity   : 37
+Sample time  : 3.7025444507598877
+Evaluate time: 24.400195360183716
+Sample orders: 59
+======================================================
+
+
+================= Evaluated Function =================
+def equation(x: np.ndarray, f1: np.ndarray, params: np.ndarray, d_axis: callable) -> np.ndarray:
+    """ Mathematical function for the RHS of an unknown 1D PDE.
+
+    Args:
+        x: spatial coordinate grid, shape (Nx, 1).
+        f1: the measured field, shape (Nx, Nt).
+        params: a fixed-length array of exactly 5 entries. Use only indices 0..4.
+        d_axis: spatial derivative. Call d_axis(field, axis, order); axis=0 is x1.
+
+    Return:
+        `f1_t_pred`, a numpy array with the grid shape.
+
+    STRICT CONSTRAINT:
+        1. SPATIAL DERIVATIVES & MATH: you are a physicist discovering a PDE. Use ONLY
+           the provided d_axis(field, axis, order) for derivatives (max order 4), with
+           axis=0 for the single spatial coordinate x1. For mathematical functions you
+           are STRICTLY LIMITED to np.sin, np.cos, np.tanh and np.exp. Do not call any
+           other np.* routine, do not import anything, and do not write numerical
+           algorithms. Ordinary arithmetic (+ - * / **) and params[0..4] are free.
+        2. OUTPUT FORMAT: write the complete formula, assign it to f1_t_pred, and
+           strictly end with return f1_t_pred. No placeholders. Mind the shapes: x is
+           (Nx, 1) and f1 is (Nx, Nt), so a coordinate factor must broadcast against
+           f1 -- write x or x[:, 0:1], never x[:, 0].
+        3. PARETO EVOLUTION: the frontier trades MSE against complexity. Complexity
+           counts the derivative calls, the arithmetic operations and every params
+           you use, so the same term written more compactly is preferred.
+        4. OPTIMIZATION STRATEGY:{PARETO_FRONTIER_PLACEHOLDER}
+    """
+    # Gaussian envelope for local gain
+    envelope = np.exp(-params[0] * x[:, 0:1]**2)
+
+    # Local gain: envelope amplifies the field
+    local_gain = params[1] * envelope * f1
+
+    # Anti-diffusion (negative second derivative promotes growth)
+    anti_diffusion = -params[2] * d_axis(f1, 0, 2)
+
+    # Fourth-order damping (suppresses shortest scales)
+    fourth_order_damping = params[3] * d_axis(f1, 0, 4)
+
+    # Nonlinear response: linear damping, cubic growth, quintic cap
+    # f1 - f1^3 + 0.5*f1^5 gives: small f1 → damping, medium f1 → growth, large f1 → cap
+    nonlinear = -params[4] * (f1 - f1**3 + 0.5 * f1**5)
+
+    f1_t_pred = local_gain + anti_diffusion + fourth_order_damping + nonlinear
+
+    return f1_t_pred
+------------------------------------------------------
+MSE          : 1.94e-05
+Complexity   : 36
+Sample time  : 3.7025444507598877
+Evaluate time: 24.613642692565918
+Sample orders: 60
+======================================================
+
+
+🚫 [UNPARSABLE] the reply carried no executable body; draw dropped
+✅ [EVALUATED] MSE: 1.86e-05 | Params: [ 1.074803  0.140235  1.758413 -0.900696 -0.453974  1.      ]
+✅ [EVALUATED] MSE: 1.94e-05 | Params: [ 1.038509  0.146867  1.732145 -0.890027 -0.502366  1.      ]
+✅ [EVALUATED] MSE: 5.30e-05 | Params: [37.569277  6.428707  1.549336 -0.803245 -0.888044  1.      ]
+Execution Error: name 'f1_t_pred' is not defined
+================= Evaluated Function =================
+def equation(x: np.ndarray, f1: np.ndarray, params: np.ndarray, d_axis: callable) -> np.ndarray:
+    """ Mathematical function for the RHS of an unknown 1D PDE.
+
+    Args:
+        x: spatial coordinate grid, shape (Nx, 1).
+        f1: the measured field, shape (Nx, Nt).
+        params: a fixed-length array of exactly 5 entries. Use only indices 0..4.
+        d_axis: spatial derivative. Call d_axis(field, axis, order); axis=0 is x1.
+
+    Return:
+        `f1_t_pred`, a numpy array with the grid shape.
+
+    STRICT CONSTRAINT:
+        1. SPATIAL DERIVATIVES & MATH: you are a physicist discovering a PDE. Use ONLY
+           the provided d_axis(field, axis, order) for derivatives (max order 4), with
+           axis=0 for the single spatial coordinate x1. For mathematical functions you
+           are STRICTLY LIMITED to np.sin, np.cos, np.tanh and np.exp. Do not call any
+           other np.* routine, do not import anything, and do not write numerical
+           algorithms. Ordinary arithmetic (+ - * / **) and params[0..4] are free.
+        2. OUTPUT FORMAT: write the complete formula, assign it to f1_t_pred, and
+           strictly end with return f1_t_pred. No placeholders. Mind the shapes: x is
+           (Nx, 1) and f1 is (Nx, Nt), so a coordinate factor must broadcast against
+           f1 -- write x or x[:, 0:1], never x[:, 0].
+        3. PARETO EVOLUTION: the frontier trades MSE against complexity. Complexity
+           counts the derivative calls, the arithmetic operations and every params
+           you use, so the same term written more compactly is preferred.
+        4. OPTIMIZATION STRATEGY:{PARETO_FRONTIER_PLACEHOLDER}
+    """
+    f1_t_pred = params[0] * np.exp(-params[1] * x[:, 0:1]**2) * f1 - params[2] * d_axis(f1, 0, 2) + params[3] * d_axis(f1, 0, 4) - params[4] * (f1 - f1**3 + 0.33 * f1**5)
+
+    return f1_t_pred
+------------------------------------------------------
+MSE          : 1.86e-05
+Complexity   : 29
+Sample time  : 1.6671478748321533
+Evaluate time: 14.391788959503174
+Sample orders: 62
+======================================================
+
+
+================= Evaluated Function =================
+def equation(x: np.ndarray, f1: np.ndarray, params: np.ndarray, d_axis: callable) -> np.ndarray:
+    """ Mathematical function for the RHS of an unknown 1D PDE.
+
+    Args:
+        x: spatial coordinate grid, shape (Nx, 1).
+        f1: the measured field, shape (Nx, Nt).
+        params: a fixed-length array of exactly 5 entries. Use only indices 0..4.
+        d_axis: spatial derivative. Call d_axis(field, axis, order); axis=0 is x1.
+
+    Return:
+        `f1_t_pred`, a numpy array with the grid shape.
+
+    STRICT CONSTRAINT:
+        1. SPATIAL DERIVATIVES & MATH: you are a physicist discovering a PDE. Use ONLY
+           the provided d_axis(field, axis, order) for derivatives (max order 4), with
+           axis=0 for the single spatial coordinate x1. For mathematical functions you
+           are STRICTLY LIMITED to np.sin, np.cos, np.tanh and np.exp. Do not call any
+           other np.* routine, do not import anything, and do not write numerical
+           algorithms. Ordinary arithmetic (+ - * / **) and params[0..4] are free.
+        2. OUTPUT FORMAT: write the complete formula, assign it to f1_t_pred, and
+           strictly end with return f1_t_pred. No placeholders. Mind the shapes: x is
+           (Nx, 1) and f1 is (Nx, Nt), so a coordinate factor must broadcast against
+           f1 -- write x or x[:, 0:1], never x[:, 0].
+        3. PARETO EVOLUTION: the frontier trades MSE against complexity. Complexity
+           counts the derivative calls, the arithmetic operations and every params
+           you use, so the same term written more compactly is preferred.
+        4. OPTIMIZATION STRATEGY:{PARETO_FRONTIER_PLACEHOLDER}
+    """
+    f1_t_pred = params[0] * np.exp(-params[1] * x[:, 0:1]**2) * f1 - params[2] * d_axis(f1, 0, 2) + params[3] * d_axis(f1, 0, 4) - params[4] * (f1 - f1**3 + 0.5 * f1**5)
+    return f1_t_pred
+------------------------------------------------------
+MSE          : 1.94e-05
+Complexity   : 29
+Sample time  : 1.6671478748321533
+Evaluate time: 14.167598247528076
+Sample orders: 63
+======================================================
+
+
+================= Evaluated Function =================
+def equation(x: np.ndarray, f1: np.ndarray, params: np.ndarray, d_axis: callable) -> np.ndarray:
+    """ Mathematical function for the RHS of an unknown 1D PDE.
+
+    Args:
+        x: spatial coordinate grid, shape (Nx, 1).
+        f1: the measured field, shape (Nx, Nt).
+        params: a fixed-length array of exactly 5 entries. Use only indices 0..4.
+        d_axis: spatial derivative. Call d_axis(field, axis, order); axis=0 is x1.
+
+    Return:
+        `f1_t_pred`, a numpy array with the grid shape.
+
+    STRICT CONSTRAINT:
+        1. SPATIAL DERIVATIVES & MATH: you are a physicist discovering a PDE. Use ONLY
+           the provided d_axis(field, axis, order) for derivatives (max order 4), with
+           axis=0 for the single spatial coordinate x1. For mathematical functions you
+           are STRICTLY LIMITED to np.sin, np.cos, np.tanh and np.exp. Do not call any
+           other np.* routine, do not import anything, and do not write numerical
+           algorithms. Ordinary arithmetic (+ - * / **) and params[0..4] are free.
+        2. OUTPUT FORMAT: write the complete formula, assign it to f1_t_pred, and
+           strictly end with return f1_t_pred. No placeholders. Mind the shapes: x is
+           (Nx, 1) and f1 is (Nx, Nt), so a coordinate factor must broadcast against
+           f1 -- write x or x[:, 0:1], never x[:, 0].
+        3. PARETO EVOLUTION: the frontier trades MSE against complexity. Complexity
+           counts the derivative calls, the arithmetic operations and every params
+           you use, so the same term written more compactly is preferred.
+        4. OPTIMIZATION STRATEGY:{PARETO_FRONTIER_PLACEHOLDER}
+    """
+    # Gaussian envelope peaked at x1=0
+    envelope = np.exp(-params[0] * x[:, 0:1]**2)
+
+    # Local gain term
+    local_gain = params[1] * envelope * f1
+
+    # Anti-diffusion (negative second derivative)
+    anti_diffusion = -params[2] * d_axis(f1, 0, 2)
+
+    # Fourth-order damping
+    fourth_order_damping = params[3] * d_axis(f1, 0, 4)
+
+    # Nonlinear response: pull back, turn around, cap
+    # This represents: -a*f + b*f^3 - c*f^5 with common factor
+    nonlinear = -params[4] * (f1 - f1**3/3 + f1**5/5)
+
+    f1_t_pred = local_gain + anti_diffusion + fourth_order_damping + nonlinear
+
+    return f1_t_pred
+------------------------------------------------------
+MSE          : 5.30e-05
+Complexity   : 40
+Sample time  : 1.6671478748321533
+Evaluate time: 22.300376653671265
+Sample orders: 64
+======================================================
+
+
+⏱️  [NO SCORE] the sandbox returned nothing for this draw (timeout 60s, or a runtime error); it gets no MSE and no frontier slot
+================= Evaluated Function =================
+def equation(x: np.ndarray, f1: np.ndarray, params: np.ndarray, d_axis: callable) -> np.ndarray:
+    """ Mathematical function for the RHS of an unknown 1D PDE.
+
+    Args:
+        x: spatial coordinate grid, shape (Nx, 1).
+        f1: the measured field, shape (Nx, Nt).
+        params: a fixed-length array of exactly 5 entries. Use only indices 0..4.
+        d_axis: spatial derivative. Call d_axis(field, axis, order); axis=0 is x1.
+
+    Return:
+        `f1_t_pred`, a numpy array with the grid shape.
+
+    STRICT CONSTRAINT:
+        1. SPATIAL DERIVATIVES & MATH: you are a physicist discovering a PDE. Use ONLY
+           the provided d_axis(field, axis, order) for derivatives (max order 4), with
+           axis=0 for the single spatial coordinate x1. For mathematical functions you
+           are STRICTLY LIMITED to np.sin, np.cos, np.tanh and np.exp. Do not call any
+           other np.* routine, do not import anything, and do not write numerical
+           algorithms. Ordinary arithmetic (+ - * / **) and params[0..4] are free.
+        2. OUTPUT FORMAT: write the complete formula, assign it to f1_t_pred, and
+           strictly end with return f1_t_pred. No placeholders. Mind the shapes: x is
+           (Nx, 1) and f1 is (Nx, Nt), so a coordinate factor must broadcast against
+           f1 -- write x or x[:, 0:1], never x[:, 0].
+        3. PARETO EVOLUTION: the frontier trades MSE against complexity. Complexity
+           counts the derivative calls, the arithmetic operations and every params
+           you use, so the same term written more compactly is preferred.
+        4. OPTIMIZATION STRATEGY:{PARETO_FRONTIER_PLACEHOLDER}
+    """
+    return f1_t_pred✅ [EVALUATED] MSE: 1.86e-05 | Params: [ 1.074803  0.140235  1.758413 -0.900696 -0.453974  1.      ]
+Execution Error: name 'f1_t_pred' is not defined
+✅ [EVALUATED] MSE: 1.86e-05 | Params: [ 1.074803  0.140235  1.758413 -0.900696 -0.453974  1.      ]
+
+------------------------------------------------------
+MSE          : N/A
+Complexity   : N/A
+Sample time  : 2.264048159122467
+Evaluate time: 2.649008274078369
+Sample orders: 65
+======================================================
+
+
+================= Evaluated Function =================
+def equation(x: np.ndarray, f1: np.ndarray, params: np.ndarray, d_axis: callable) -> np.ndarray:
+    """ Mathematical function for the RHS of an unknown 1D PDE.
+
+    Args:
+        x: spatial coordinate grid, shape (Nx, 1).
+        f1: the measured field, shape (Nx, Nt).
+        params: a fixed-length array of exactly 5 entries. Use only indices 0..4.
+        d_axis: spatial derivative. Call d_axis(field, axis, order); axis=0 is x1.
+
+    Return:
+        `f1_t_pred`, a numpy array with the grid shape.
+
+    STRICT CONSTRAINT:
+        1. SPATIAL DERIVATIVES & MATH: you are a physicist discovering a PDE. Use ONLY
+           the provided d_axis(field, axis, order) for derivatives (max order 4), with
+           axis=0 for the single spatial coordinate x1. For mathematical functions you
+           are STRICTLY LIMITED to np.sin, np.cos, np.tanh and np.exp. Do not call any
+           other np.* routine, do not import anything, and do not write numerical
+           algorithms. Ordinary arithmetic (+ - * / **) and params[0..4] are free.
+        2. OUTPUT FORMAT: write the complete formula, assign it to f1_t_pred, and
+           strictly end with return f1_t_pred. No placeholders. Mind the shapes: x is
+           (Nx, 1) and f1 is (Nx, Nt), so a coordinate factor must broadcast against
+           f1 -- write x or x[:, 0:1], never x[:, 0].
+        3. PARETO EVOLUTION: the frontier trades MSE against complexity. Complexity
+           counts the derivative calls, the arithmetic operations and every params
+           you use, so the same term written more compactly is preferred.
+        4. OPTIMIZATION STRATEGY:{PARETO_FRONTIER_PLACEHOLDER}
+    """
+    f1_t_pred = params[0] * np.exp(-params[1] * x[:, 0:1]**2) * f1 - params[2] * d_axis(f1, 0, 2) + params[3] * d_axis(f1, 0, 4) - params[4] * (f1 - f1**3 + 0.33 * f1**5)
+
+    return f1_t_pred
+------------------------------------------------------
+MSE          : 1.86e-05
+Complexity   : 29
+Sample time  : 2.264048159122467
+Evaluate time: 17.842663288116455
+Sample orders: 66
+======================================================
+
+
+⏱️  [NO SCORE] the sandbox returned nothing for this draw (timeout 60s, or a runtime error); it gets no MSE and no frontier slot
+================= Evaluated Function =================
+def equation(x: np.ndarray, f1: np.ndarray, params: np.ndarray, d_axis: callable) -> np.ndarray:
+    """ Mathematical function for the RHS of an unknown 1D PDE.
+
+    Args:
+        x: spatial coordinate grid, shape (Nx, 1).
+        f1: the measured field, shape (Nx, Nt).
+        params: a fixed-length array of exactly 5 entries. Use only indices 0..4.
+        d_axis: spatial derivative. Call d_axis(field, axis, order); axis=0 is x1.
+
+    Return:
+        `f1_t_pred`, a numpy array with the grid shape.
+
+    STRICT CONSTRAINT:
+        1. SPATIAL DERIVATIVES & MATH: you are a physicist discovering a PDE. Use ONLY
+           the provided d_axis(field, axis, order) for derivatives (max order 4), with
+           axis=0 for the single spatial coordinate x1. For mathematical functions you
+           are STRICTLY LIMITED to np.sin, np.cos, np.tanh and np.exp. Do not call any
+           other np.* routine, do not import anything, and do not write numerical
+           algorithms. Ordinary arithmetic (+ - * / **) and params[0..4] are free.
+        2. OUTPUT FORMAT: write the complete formula, assign it to f1_t_pred, and
+           strictly end with return f1_t_pred. No placeholders. Mind the shapes: x is
+           (Nx, 1) and f1 is (Nx, Nt), so a coordinate factor must broadcast against
+           f1 -- write x or x[:, 0:1], never x[:, 0].
+        3. PARETO EVOLUTION: the frontier trades MSE against complexity. Complexity
+           counts the derivative calls, the arithmetic operations and every params
+           you use, so the same term written more compactly is preferred.
+        4. OPTIMIZATION STRATEGY:{PARETO_FRONTIER_PLACEHOLDER}
+    """
+    return f1_t_pred
+------------------------------------------------------
+MSE          : N/A
+Complexity   : N/A
+Sample time  : 2.264048159122467
+Evaluate time: 2.5897674560546875
+Sample orders: 67
+======================================================
+
+
+================= Evaluated Function =================
+def equation(x: np.ndarray, f1: np.ndarray, params: np.ndarray, d_axis: callable) -> np.ndarray:
+    """ Mathematical function for the RHS of an unknown 1D PDE.
+
+    Args:
+        x: spatial coordinate grid, shape (Nx, 1).
+        f1: the measured field, shape (Nx, Nt).
+        params: a fixed-length array of exactly 5 entries. Use only indices 0..4.
+        d_axis: spatial derivative. Call d_axis(field, axis, order); axis=0 is x1.
+
+    Return:
+        `f1_t_pred`, a numpy array with the grid shape.
+
+    STRICT CONSTRAINT:
+        1. SPATIAL DERIVATIVES & MATH: you are a physicist discovering a PDE. Use ONLY
+           the provided d_axis(field, axis, order) for derivatives (max order 4), with
+           axis=0 for the single spatial coordinate x1. For mathematical functions you
+           are STRICTLY LIMITED to np.sin, np.cos, np.tanh and np.exp. Do not call any
+           other np.* routine, do not import anything, and do not write numerical
+           algorithms. Ordinary arithmetic (+ - * / **) and params[0..4] are free.
+        2. OUTPUT FORMAT: write the complete formula, assign it to f1_t_pred, and
+           strictly end with return f1_t_pred. No placeholders. Mind the shapes: x is
+           (Nx, 1) and f1 is (Nx, Nt), so a coordinate factor must broadcast against
+           f1 -- write x or x[:, 0:1], never x[:, 0].
+        3. PARETO EVOLUTION: the frontier trades MSE against complexity. Complexity
+           counts the derivative calls, the arithmetic operations and every params
+           you use, so the same term written more compactly is preferred.
+        4. OPTIMIZATION STRATEGY:{PARETO_FRONTIER_PLACEHOLDER}
+    """
+    f1_t_pred = params[0] * np.exp(-params[1] * x[:, 0:1]**2) * f1 - params[2] * d_axis(f1, 0, 2) + params[3] * d_axis(f1, 0, 4) - params[4] * (f1 - f1**3 + 0.33 * f1**5)
+
+    return f1_t_pred
+------------------------------------------------------
+MSE          : 1.86e-05
+Complexity   : 29
+Sample time  : 2.264048159122467
+Evaluate time: 17.526905298233032
+Sample orders: 68
+======================================================
+
+
+🚫 [UNPARSABLE] the reply carried no executable body; draw dropped
+🚫 [UNPARSABLE] the reply carried no executable body; draw dropped
+✅ [EVALUATED] MSE: 1.86e-05 | Params: [ 1.074803  0.140235  1.758413 -0.900696 -0.453974  1.      ]
+Execution Error: name 'f1_t_pred' is not defined
+================= Evaluated Function =================
+def equation(x: np.ndarray, f1: np.ndarray, params: np.ndarray, d_axis: callable) -> np.ndarray:
+    """ Mathematical function for the RHS of an unknown 1D PDE.
+
+    Args:
+        x: spatial coordinate grid, shape (Nx, 1).
+        f1: the measured field, shape (Nx, Nt).
+        params: a fixed-length array of exactly 5 entries. Use only indices 0..4.
+        d_axis: spatial derivative. Call d_axis(field, axis, order); axis=0 is x1.
+
+    Return:
+        `f1_t_pred`, a numpy array with the grid shape.
+
+    STRICT CONSTRAINT:
+        1. SPATIAL DERIVATIVES & MATH: you are a physicist discovering a PDE. Use ONLY
+           the provided d_axis(field, axis, order) for derivatives (max order 4), with
+           axis=0 for the single spatial coordinate x1. For mathematical functions you
+           are STRICTLY LIMITED to np.sin, np.cos, np.tanh and np.exp. Do not call any
+           other np.* routine, do not import anything, and do not write numerical
+           algorithms. Ordinary arithmetic (+ - * / **) and params[0..4] are free.
+        2. OUTPUT FORMAT: write the complete formula, assign it to f1_t_pred, and
+           strictly end with return f1_t_pred. No placeholders. Mind the shapes: x is
+           (Nx, 1) and f1 is (Nx, Nt), so a coordinate factor must broadcast against
+           f1 -- write x or x[:, 0:1], never x[:, 0].
+        3. PARETO EVOLUTION: the frontier trades MSE against complexity. Complexity
+           counts the derivative calls, the arithmetic operations and every params
+           you use, so the same term written more compactly is preferred.
+        4. OPTIMIZATION STRATEGY:{PARETO_FRONTIER_PLACEHOLDER}
+    """
+    f1_t_pred = params[0] * np.exp(-params[1] * x[:, 0:1]**2) * f1 - params[2] * d_axis(f1, 0, 2) + params[3] * d_axis(f1, 0, 4) - params[4] * (f1 - f1**3 + 0.33 * f1**5)
+
+    return f1_t_pred
+------------------------------------------------------
+MSE          : 1.86e-05
+Complexity   : 29
+Sample time  : 5.406687438488007
+Evaluate time: 13.983716011047363
+Sample orders: 71
+======================================================
+
+
+⏱️  [NO SCORE] the sandbox returned nothing for this draw (timeout 60s, or a runtime error); it gets no MSE and no frontier slot
+================= Evaluated Function =================
+def equation(x: np.ndarray, f1: np.ndarray, params: np.ndarray, d_axis: callable) -> np.ndarray:
+    """ Mathematical function for the RHS of an unknown 1D PDE.
+
+    Args:
+        x: spatial coordinate grid, shape (Nx, 1).
+        f1: the measured field, shape (Nx, Nt).
+        params: a fixed-length array of exactly 5 entries. Use only indices 0..4.
+        d_axis: spatial derivative. Call d_axis(field, axis, order); axis=0 is x1.
+
+    Return:
+        `f1_t_pred`, a numpy array with the grid shape.
+
+    STRICT CONSTRAINT:
+        1. SPATIAL DERIVATIVES & MATH: you are a physicist discovering a PDE. Use ONLY
+           the provided d_axis(field, axis, order) for derivatives (max order 4), with
+           axis=0 for the single spatial coordinate x1. For mathematical functions you
+           are STRICTLY LIMITED to np.sin, np.cos, np.tanh and np.exp. Do not call any
+           other np.* routine, do not import anything, and do not write numerical
+           algorithms. Ordinary arithmetic (+ - * / **) and params[0..4] are free.
+        2. OUTPUT FORMAT: write the complete formula, assign it to f1_t_pred, and
+           strictly end with return f1_t_pred. No placeholders. Mind the shapes: x is
+           (Nx, 1) and f1 is (Nx, Nt), so a coordinate factor must broadcast against
+           f1 -- write x or x[:, 0:1], never x[:, 0].
+        3. PARETO EVOLUTION: the frontier trades MSE against complexity. Complexity
+           counts the derivative calls, the arithmetic operations and every params
+           you use, so the same term written more compactly is preferred.
+        4. OPTIMIZATION STRATEGY:{PARETO_FRONTIER_PLACEHOLDER}
+    """
+    return f1_t_pred
+------------------------------------------------------
+MSE          : N/A
+Complexity   : N/A
+Sample time  : 5.406687438488007
+Evaluate time: 2.5487189292907715
+Sample orders: 72
+======================================================
+
+
+🚫 [UNPARSABLE] the reply carried no executable body; draw dropped
+🚫 [UNPARSABLE] the reply carried no executable body; draw dropped
+🚫 [UNPARSABLE] the reply carried no executable body; draw dropped
+Execution Error: name 'f1_t_pred' is not defined
+⏱️  [NO SCORE] the sandbox returned nothing for this draw (timeout 60s, or a runtime error); it gets no MSE and no frontier slot
+================= Evaluated Function =================
+def equation(x: np.ndarray, f1: np.ndarray, params: np.ndarray, d_axis: callable) -> np.ndarray:
+    """ Mathematical function for the RHS of an unknown 1D PDE.
+
+    Args:
+        x: spatial coordinate grid, shape (Nx, 1).
+        f1: the measured field, shape (Nx, Nt).
+        params: a fixed-length array of exactly 5 entries. Use only indices 0..4.
+        d_axis: spatial derivative. Call d_axis(field, axis, order); axis=0 is x1.
+
+    Return:
+        `f1_t_pred`, a numpy array with the grid shape.
+
+    STRICT CONSTRAINT:
+        1. SPATIAL DERIVATIVES & MATH: you are a physicist discovering a PDE. Use ONLY
+           the provided d_axis(field, axis, order) for derivatives (max order 4), with
+           axis=0 for the single spatial coordinate x1. For mathematical functions you
+           are STRICTLY LIMITED to np.sin, np.cos, np.tanh and np.exp. Do not call any
+           other np.* routine, do not import anything, and do not write numerical
+           algorithms. Ordinary arithmetic (+ - * / **) and params[0..4] are free.
+        2. OUTPUT FORMAT: write the complete formula, assign it to f1_t_pred, and
+           strictly end with return f1_t_pred. No placeholders. Mind the shapes: x is
+           (Nx, 1) and f1 is (Nx, Nt), so a coordinate factor must broadcast against
+           f1 -- write x or x[:, 0:1], never x[:, 0].
+        3. PARETO EVOLUTION: the frontier trades MSE against complexity. Complexity
+           counts the derivative calls, the arithmetic operations and every params
+           you use, so the same term written more compactly is preferred.
+        4. OPTIMIZATION STRATEGY:{PARETO_FRONTIER_PLACEHOLDER}
+    """
+    return f1_t_pred
+------------------------------------------------------
+MSE          : N/A
+Complexity   : N/A
+Sample time  : 3.1658849716186523
+Evaluate time: 2.555917739868164
+Sample orders: 76
+======================================================
+
+
+🚫 [UNPARSABLE] the reply carried no executable body; draw dropped
+Execution Error: name 'f1_t_pred' is not defined
+✅ [EVALUATED] MSE: 1.86e-05 | Params: [ 1.074803  0.140235  1.758413 -0.900696 -0.453974  1.      ]
+⏱️  [NO SCORE] the sandbox returned nothing for this draw (timeout 60s, or a runtime error); it gets no MSE and no frontier slot
+================= Evaluated Function =================
+def equation(x: np.ndarray, f1: np.ndarray, params: np.ndarray, d_axis: callable) -> np.ndarray:
+    """ Mathematical function for the RHS of an unknown 1D PDE.
+
+    Args:
+        x: spatial coordinate grid, shape (Nx, 1).
+        f1: the measured field, shape (Nx, Nt).
+        params: a fixed-length array of exactly 5 entries. Use only indices 0..4.
+        d_axis: spatial derivative. Call d_axis(field, axis, order); axis=0 is x1.
+
+    Return:
+        `f1_t_pred`, a numpy array with the grid shape.
+
+    STRICT CONSTRAINT:
+        1. SPATIAL DERIVATIVES & MATH: you are a physicist discovering a PDE. Use ONLY
+           the provided d_axis(field, axis, order) for derivatives (max order 4), with
+           axis=0 for the single spatial coordinate x1. For mathematical functions you
+           are STRICTLY LIMITED to np.sin, np.cos, np.tanh and np.exp. Do not call any
+           other np.* routine, do not import anything, and do not write numerical
+           algorithms. Ordinary arithmetic (+ - * / **) and params[0..4] are free.
+        2. OUTPUT FORMAT: write the complete formula, assign it to f1_t_pred, and
+           strictly end with return f1_t_pred. No placeholders. Mind the shapes: x is
+           (Nx, 1) and f1 is (Nx, Nt), so a coordinate factor must broadcast against
+           f1 -- write x or x[:, 0:1], never x[:, 0].
+        3. PARETO EVOLUTION: the frontier trades MSE against complexity. Complexity
+           counts the derivative calls, the arithmetic operations and every params
+           you use, so the same term written more compactly is preferred.
+        4. OPTIMIZATION STRATEGY:{PARETO_FRONTIER_PLACEHOLDER}
+    """
+    return f1_t_pred
+------------------------------------------------------
+MSE          : N/A
+Complexity   : N/A
+Sample time  : 2.9951853156089783
+Evaluate time: 2.5343146324157715
+Sample orders: 78
+======================================================
+
+
+================= Evaluated Function =================
+def equation(x: np.ndarray, f1: np.ndarray, params: np.ndarray, d_axis: callable) -> np.ndarray:
+    """ Mathematical function for the RHS of an unknown 1D PDE.
+
+    Args:
+        x: spatial coordinate grid, shape (Nx, 1).
+        f1: the measured field, shape (Nx, Nt).
+        params: a fixed-length array of exactly 5 entries. Use only indices 0..4.
+        d_axis: spatial derivative. Call d_axis(field, axis, order); axis=0 is x1.
+
+    Return:
+        `f1_t_pred`, a numpy array with the grid shape.
+
+    STRICT CONSTRAINT:
+        1. SPATIAL DERIVATIVES & MATH: you are a physicist discovering a PDE. Use ONLY
+           the provided d_axis(field, axis, order) for derivatives (max order 4), with
+           axis=0 for the single spatial coordinate x1. For mathematical functions you
+           are STRICTLY LIMITED to np.sin, np.cos, np.tanh and np.exp. Do not call any
+           other np.* routine, do not import anything, and do not write numerical
+           algorithms. Ordinary arithmetic (+ - * / **) and params[0..4] are free.
+        2. OUTPUT FORMAT: write the complete formula, assign it to f1_t_pred, and
+           strictly end with return f1_t_pred. No placeholders. Mind the shapes: x is
+           (Nx, 1) and f1 is (Nx, Nt), so a coordinate factor must broadcast against
+           f1 -- write x or x[:, 0:1], never x[:, 0].
+        3. PARETO EVOLUTION: the frontier trades MSE against complexity. Complexity
+           counts the derivative calls, the arithmetic operations and every params
+           you use, so the same term written more compactly is preferred.
+        4. OPTIMIZATION STRATEGY:{PARETO_FRONTIER_PLACEHOLDER}
+    """
+    f1_t_pred = params[0] * np.exp(-params[1] * x[:, 0:1]**2) * f1 - params[2] * d_axis(f1, 0, 2) + params[3] * d_axis(f1, 0, 4) - params[4] * (f1 - f1**3 + 0.33 * f1**5)
+
+    return f1_t_pred
+------------------------------------------------------
+MSE          : 1.86e-05
+Complexity   : 29
+Sample time  : 2.9951853156089783
+Evaluate time: 13.881173372268677
+Sample orders: 79
+======================================================
+
+
+🚫 [UNPARSABLE] the reply carried no executable body; draw dropped
+✅ [EVALUATED] MSE: 1.86e-05 | Params: [ 1.074803  0.140235  1.758413 -0.900696 -0.453974  1.      ]
+✅ [EVALUATED] MSE: 3.51e-05 | Params: [ 9.345134 62.257928  1.594067 -0.818748 -0.874224  0.947279]
+✅ [EVALUATED] MSE: 1.86e-05 | Params: [ 1.074796  0.140233 -1.758375  0.90068  -0.453996  1.      ]
+Execution Error: name 'f1_t_pred' is not defined
+================= Evaluated Function =================
+def equation(x: np.ndarray, f1: np.ndarray, params: np.ndarray, d_axis: callable) -> np.ndarray:
+    """ Mathematical function for the RHS of an unknown 1D PDE.
+
+    Args:
+        x: spatial coordinate grid, shape (Nx, 1).
+        f1: the measured field, shape (Nx, Nt).
+        params: a fixed-length array of exactly 5 entries. Use only indices 0..4.
+        d_axis: spatial derivative. Call d_axis(field, axis, order); axis=0 is x1.
+
+    Return:
+        `f1_t_pred`, a numpy array with the grid shape.
+
+    STRICT CONSTRAINT:
+        1. SPATIAL DERIVATIVES & MATH: you are a physicist discovering a PDE. Use ONLY
+           the provided d_axis(field, axis, order) for derivatives (max order 4), with
+           axis=0 for the single spatial coordinate x1. For mathematical functions you
+           are STRICTLY LIMITED to np.sin, np.cos, np.tanh and np.exp. Do not call any
+           other np.* routine, do not import anything, and do not write numerical
+           algorithms. Ordinary arithmetic (+ - * / **) and params[0..4] are free.
+        2. OUTPUT FORMAT: write the complete formula, assign it to f1_t_pred, and
+           strictly end with return f1_t_pred. No placeholders. Mind the shapes: x is
+           (Nx, 1) and f1 is (Nx, Nt), so a coordinate factor must broadcast against
+           f1 -- write x or x[:, 0:1], never x[:, 0].
+        3. PARETO EVOLUTION: the frontier trades MSE against complexity. Complexity
+           counts the derivative calls, the arithmetic operations and every params
+           you use, so the same term written more compactly is preferred.
+        4. OPTIMIZATION STRATEGY:{PARETO_FRONTIER_PLACEHOLDER}
+    """
+    f1_t_pred = params[0] * np.exp(-params[1] * x[:, 0:1]**2) * f1 - params[2] * d_axis(f1, 0, 2) + params[3] * d_axis(f1, 0, 4) - params[4] * (f1 - f1**3 + 0.33 * f1**5)
+    return f1_t_pred
+------------------------------------------------------
+MSE          : 1.86e-05
+Complexity   : 29
+Sample time  : 1.8388864398002625
+Evaluate time: 13.820840835571289
+Sample orders: 81
+======================================================
+
+
+================= Evaluated Function =================
+def equation(x: np.ndarray, f1: np.ndarray, params: np.ndarray, d_axis: callable) -> np.ndarray:
+    """ Mathematical function for the RHS of an unknown 1D PDE.
+
+    Args:
+        x: spatial coordinate grid, shape (Nx, 1).
+        f1: the measured field, shape (Nx, Nt).
+        params: a fixed-length array of exactly 5 entries. Use only indices 0..4.
+        d_axis: spatial derivative. Call d_axis(field, axis, order); axis=0 is x1.
+
+    Return:
+        `f1_t_pred`, a numpy array with the grid shape.
+
+    STRICT CONSTRAINT:
+        1. SPATIAL DERIVATIVES & MATH: you are a physicist discovering a PDE. Use ONLY
+           the provided d_axis(field, axis, order) for derivatives (max order 4), with
+           axis=0 for the single spatial coordinate x1. For mathematical functions you
+           are STRICTLY LIMITED to np.sin, np.cos, np.tanh and np.exp. Do not call any
+           other np.* routine, do not import anything, and do not write numerical
+           algorithms. Ordinary arithmetic (+ - * / **) and params[0..4] are free.
+        2. OUTPUT FORMAT: write the complete formula, assign it to f1_t_pred, and
+           strictly end with return f1_t_pred. No placeholders. Mind the shapes: x is
+           (Nx, 1) and f1 is (Nx, Nt), so a coordinate factor must broadcast against
+           f1 -- write x or x[:, 0:1], never x[:, 0].
+        3. PARETO EVOLUTION: the frontier trades MSE against complexity. Complexity
+           counts the derivative calls, the arithmetic operations and every params
+           you use, so the same term written more compactly is preferred.
+        4. OPTIMIZATION STRATEGY:{PARETO_FRONTIER_PLACEHOLDER}
+    """
+    f1_t_pred = params[0] * np.exp(-params[1] * x[:, 0:1]**2) * f1 - params[2] * d_axis(f1, 0, 2) + params[3] * d_axis(f1, 0, 4) - params[4] * (f1 - params[5] * f1**3 + params[5]**2 * f1**5)
+
+    return f1_t_pred
+------------------------------------------------------
+MSE          : 3.51e-05
+Complexity   : 34
+Sample time  : 1.8388864398002625
+Evaluate time: 36.202136278152466
+Sample orders: 82
+======================================================
+
+
+================= Evaluated Function =================
+def equation(x: np.ndarray, f1: np.ndarray, params: np.ndarray, d_axis: callable) -> np.ndarray:
+    """ Mathematical function for the RHS of an unknown 1D PDE.
+
+    Args:
+        x: spatial coordinate grid, shape (Nx, 1).
+        f1: the measured field, shape (Nx, Nt).
+        params: a fixed-length array of exactly 5 entries. Use only indices 0..4.
+        d_axis: spatial derivative. Call d_axis(field, axis, order); axis=0 is x1.
+
+    Return:
+        `f1_t_pred`, a numpy array with the grid shape.
+
+    STRICT CONSTRAINT:
+        1. SPATIAL DERIVATIVES & MATH: you are a physicist discovering a PDE. Use ONLY
+           the provided d_axis(field, axis, order) for derivatives (max order 4), with
+           axis=0 for the single spatial coordinate x1. For mathematical functions you
+           are STRICTLY LIMITED to np.sin, np.cos, np.tanh and np.exp. Do not call any
+           other np.* routine, do not import anything, and do not write numerical
+           algorithms. Ordinary arithmetic (+ - * / **) and params[0..4] are free.
+        2. OUTPUT FORMAT: write the complete formula, assign it to f1_t_pred, and
+           strictly end with return f1_t_pred. No placeholders. Mind the shapes: x is
+           (Nx, 1) and f1 is (Nx, Nt), so a coordinate factor must broadcast against
+           f1 -- write x or x[:, 0:1], never x[:, 0].
+        3. PARETO EVOLUTION: the frontier trades MSE against complexity. Complexity
+           counts the derivative calls, the arithmetic operations and every params
+           you use, so the same term written more compactly is preferred.
+        4. OPTIMIZATION STRATEGY:{PARETO_FRONTIER_PLACEHOLDER}
+    """
+    f1_t_pred = params[0] * np.exp(-params[1] * x[:, 0:1]**2) * f1 + params[2] * d_axis(f1, 0, 2) - params[3] * d_axis(f1, 0, 4) - params[4] * (f1 - f1**3 + 0.33 * f1**5)
+
+    return f1_t_pred
+------------------------------------------------------
+MSE          : 1.86e-05
+Complexity   : 29
+Sample time  : 1.8388864398002625
+Evaluate time: 15.34190034866333
+Sample orders: 83
+======================================================
+
+
+⏱️  [NO SCORE] the sandbox returned nothing for this draw (timeout 60s, or a runtime error); it gets no MSE and no frontier slot
+================= Evaluated Function =================
+def equation(x: np.ndarray, f1: np.ndarray, params: np.ndarray, d_axis: callable) -> np.ndarray:
+    """ Mathematical function for the RHS of an unknown 1D PDE.
+
+    Args:
+        x: spatial coordinate grid, shape (Nx, 1).
+        f1: the measured field, shape (Nx, Nt).
+        params: a fixed-length array of exactly 5 entries. Use only indices 0..4.
+        d_axis: spatial derivative. Call d_axis(field, axis, order); axis=0 is x1.
+
+    Return:
+        `f1_t_pred`, a numpy array with the grid shape.
+
+    STRICT CONSTRAINT:
+        1. SPATIAL DERIVATIVES & MATH: you are a physicist discovering a PDE. Use ONLY
+           the provided d_axis(field, axis, order) for derivatives (max order 4), with
+           axis=0 for the single spatial coordinate x1. For mathematical functions you
+           are STRICTLY LIMITED to np.sin, np.cos, np.tanh and np.exp. Do not call any
+           other np.* routine, do not import anything, and do not write numerical
+           algorithms. Ordinary arithmetic (+ - * / **) and params[0..4] are free.
+        2. OUTPUT FORMAT: write the complete formula, assign it to f1_t_pred, and
+           strictly end with return f1_t_pred. No placeholders. Mind the shapes: x is
+           (Nx, 1) and f1 is (Nx, Nt), so a coordinate factor must broadcast against
+           f1 -- write x or x[:, 0:1], never x[:, 0].
+        3. PARETO EVOLUTION: the frontier trades MSE against complexity. Complexity
+           counts the derivative calls, the arithmetic operations and every params
+           you use, so the same term written more compactly is preferred.
+        4. OPTIMIZATION STRATEGY:{PARETO_FRONTIER_PLACEHOLDER}
+    """
+    return f1_t_pred✅ [EVALUATED] MSE: 1.86e-05 | Params: [ 1.074796  0.140233 -1.758375  0.90068  -0.453996  1.      ]
+
+------------------------------------------------------
+MSE          : N/A
+Complexity   : N/A
+Sample time  : 1.8388864398002625
+Evaluate time: 2.7601754665374756
+Sample orders: 84
+======================================================
+
+
+================= Evaluated Function =================
+def equation(x: np.ndarray, f1: np.ndarray, params: np.ndarray, d_axis: callable) -> np.ndarray:
+    """ Mathematical function for the RHS of an unknown 1D PDE.
+
+    Args:
+        x: spatial coordinate grid, shape (Nx, 1).
+        f1: the measured field, shape (Nx, Nt).
+        params: a fixed-length array of exactly 5 entries. Use only indices 0..4.
+        d_axis: spatial derivative. Call d_axis(field, axis, order); axis=0 is x1.
+
+    Return:
+        `f1_t_pred`, a numpy array with the grid shape.
+
+    STRICT CONSTRAINT:
+        1. SPATIAL DERIVATIVES & MATH: you are a physicist discovering a PDE. Use ONLY
+           the provided d_axis(field, axis, order) for derivatives (max order 4), with
+           axis=0 for the single spatial coordinate x1. For mathematical functions you
+           are STRICTLY LIMITED to np.sin, np.cos, np.tanh and np.exp. Do not call any
+           other np.* routine, do not import anything, and do not write numerical
+           algorithms. Ordinary arithmetic (+ - * / **) and params[0..4] are free.
+        2. OUTPUT FORMAT: write the complete formula, assign it to f1_t_pred, and
+           strictly end with return f1_t_pred. No placeholders. Mind the shapes: x is
+           (Nx, 1) and f1 is (Nx, Nt), so a coordinate factor must broadcast against
+           f1 -- write x or x[:, 0:1], never x[:, 0].
+        3. PARETO EVOLUTION: the frontier trades MSE against complexity. Complexity
+           counts the derivative calls, the arithmetic operations and every params
+           you use, so the same term written more compactly is preferred.
+        4. OPTIMIZATION STRATEGY:{PARETO_FRONTIER_PLACEHOLDER}
+    """
+    f1_t_pred = params[0] * np.exp(-params[1] * x[:, 0:1]**2) * f1 + params[2] * d_axis(f1, 0, 2) - params[3] * d_axis(f1, 0, 4) - params[4] * (f1 - f1**3 + 0.33 * f1**5)
+
+    return f1_t_pred
+------------------------------------------------------
+MSE          : 1.86e-05
+Complexity   : 29
+Sample time  : 2.389527380466461
+Evaluate time: 23.23052740097046
+Sample orders: 85
+======================================================
+
+
+🚫 [UNPARSABLE] the reply carried no executable body; draw dropped
+🚫 [UNPARSABLE] the reply carried no executable body; draw dropped
+✅ [EVALUATED] MSE: 8.98e-06 | Params: [ 1.296314  0.113983 -1.894099  0.955791 -0.199404  2.670231]
+✅ [EVALUATED] MSE: 4.18e-05 | Params: [ 6.916952 36.505912 -1.603989  0.823381 -0.846635  0.423916]
+================= Evaluated Function =================
+def equation(x: np.ndarray, f1: np.ndarray, params: np.ndarray, d_axis: callable) -> np.ndarray:
+    """ Mathematical function for the RHS of an unknown 1D PDE.
+
+    Args:
+        x: spatial coordinate grid, shape (Nx, 1).
+        f1: the measured field, shape (Nx, Nt).
+        params: a fixed-length array of exactly 5 entries. Use only indices 0..4.
+        d_axis: spatial derivative. Call d_axis(field, axis, order); axis=0 is x1.
+
+    Return:
+        `f1_t_pred`, a numpy array with the grid shape.
+
+    STRICT CONSTRAINT:
+        1. SPATIAL DERIVATIVES & MATH: you are a physicist discovering a PDE. Use ONLY
+           the provided d_axis(field, axis, order) for derivatives (max order 4), with
+           axis=0 for the single spatial coordinate x1. For mathematical functions you
+           are STRICTLY LIMITED to np.sin, np.cos, np.tanh and np.exp. Do not call any
+           other np.* routine, do not import anything, and do not write numerical
+           algorithms. Ordinary arithmetic (+ - * / **) and params[0..4] are free.
+        2. OUTPUT FORMAT: write the complete formula, assign it to f1_t_pred, and
+           strictly end with return f1_t_pred. No placeholders. Mind the shapes: x is
+           (Nx, 1) and f1 is (Nx, Nt), so a coordinate factor must broadcast against
+           f1 -- write x or x[:, 0:1], never x[:, 0].
+        3. PARETO EVOLUTION: the frontier trades MSE against complexity. Complexity
+           counts the derivative calls, the arithmetic operations and every params
+           you use, so the same term written more compactly is preferred.
+        4. OPTIMIZATION STRATEGY:{PARETO_FRONTIER_PLACEHOLDER}
+    """
+    f1_t_pred = params[0] * np.exp(-params[1] * x[:, 0:1]**2) * f1 + params[2] * d_axis(f1, 0, 2) - params[3] * d_axis(f1, 0, 4) - params[4] * (f1 - params[5] * f1**3 + f1**5)
+
+    return f1_t_pred
+------------------------------------------------------
+MSE          : 8.98e-06
+Complexity   : 30
+Sample time  : 2.389527380466461
+Evaluate time: 39.84911918640137
+Sample orders: 88
+======================================================
+
+
+================= Evaluated Function =================
+def equation(x: np.ndarray, f1: np.ndarray, params: np.ndarray, d_axis: callable) -> np.ndarray:
+    """ Mathematical function for the RHS of an unknown 1D PDE.
+
+    Args:
+        x: spatial coordinate grid, shape (Nx, 1).
+        f1: the measured field, shape (Nx, Nt).
+        params: a fixed-length array of exactly 5 entries. Use only indices 0..4.
+        d_axis: spatial derivative. Call d_axis(field, axis, order); axis=0 is x1.
+
+    Return:
+        `f1_t_pred`, a numpy array with the grid shape.
+
+    STRICT CONSTRAINT:
+        1. SPATIAL DERIVATIVES & MATH: you are a physicist discovering a PDE. Use ONLY
+           the provided d_axis(field, axis, order) for derivatives (max order 4), with
+           axis=0 for the single spatial coordinate x1. For mathematical functions you
+           are STRICTLY LIMITED to np.sin, np.cos, np.tanh and np.exp. Do not call any
+           other np.* routine, do not import anything, and do not write numerical
+           algorithms. Ordinary arithmetic (+ - * / **) and params[0..4] are free.
+        2. OUTPUT FORMAT: write the complete formula, assign it to f1_t_pred, and
+           strictly end with return f1_t_pred. No placeholders. Mind the shapes: x is
+           (Nx, 1) and f1 is (Nx, Nt), so a coordinate factor must broadcast against
+           f1 -- write x or x[:, 0:1], never x[:, 0].
+        3. PARETO EVOLUTION: the frontier trades MSE against complexity. Complexity
+           counts the derivative calls, the arithmetic operations and every params
+           you use, so the same term written more compactly is preferred.
+        4. OPTIMIZATION STRATEGY:{PARETO_FRONTIER_PLACEHOLDER}
+    """
+    f1_t_pred = params[0] * np.exp(-params[1] * x[:, 0:1]**2) * f1 + params[2] * d_axis(f1, 0, 2) - params[3] * d_axis(f1, 0, 4) - params[4] * (f1 - params[5] * f1**3)
+
+    return f1_t_pred
+------------------------------------------------------
+MSE          : 4.18e-05
+Complexity   : 27
+Sample time  : 2.100668966770172
+Evaluate time: 39.05556082725525
+Sample orders: 89
+======================================================
+
+
+🚫 [UNPARSABLE] the reply carried no executable body; draw dropped
+✅ [EVALUATED] MSE: 8.98e-06 | Params: [ 1.296314  0.113983 -1.894099  0.955791 -0.199404  2.670231]
+================= Evaluated Function =================
+def equation(x: np.ndarray, f1: np.ndarray, params: np.ndarray, d_axis: callable) -> np.ndarray:
+    """ Mathematical function for the RHS of an unknown 1D PDE.
+
+    Args:
+        x: spatial coordinate grid, shape (Nx, 1).
+        f1: the measured field, shape (Nx, Nt).
+        params: a fixed-length array of exactly 5 entries. Use only indices 0..4.
+        d_axis: spatial derivative. Call d_axis(field, axis, order); axis=0 is x1.
+
+    Return:
+        `f1_t_pred`, a numpy array with the grid shape.
+
+    STRICT CONSTRAINT:
+        1. SPATIAL DERIVATIVES & MATH: you are a physicist discovering a PDE. Use ONLY
+           the provided d_axis(field, axis, order) for derivatives (max order 4), with
+           axis=0 for the single spatial coordinate x1. For mathematical functions you
+           are STRICTLY LIMITED to np.sin, np.cos, np.tanh and np.exp. Do not call any
+           other np.* routine, do not import anything, and do not write numerical
+           algorithms. Ordinary arithmetic (+ - * / **) and params[0..4] are free.
+        2. OUTPUT FORMAT: write the complete formula, assign it to f1_t_pred, and
+           strictly end with return f1_t_pred. No placeholders. Mind the shapes: x is
+           (Nx, 1) and f1 is (Nx, Nt), so a coordinate factor must broadcast against
+           f1 -- write x or x[:, 0:1], never x[:, 0].
+        3. PARETO EVOLUTION: the frontier trades MSE against complexity. Complexity
+           counts the derivative calls, the arithmetic operations and every params
+           you use, so the same term written more compactly is preferred.
+        4. OPTIMIZATION STRATEGY:{PARETO_FRONTIER_PLACEHOLDER}
+    """
+    f1_t_pred = params[0] * np.exp(-params[1] * x[:, 0:1]**2) * f1 + params[2] * d_axis(f1, 0, 2) - params[3] * d_axis(f1, 0, 4) - params[4] * (f1 - params[5] * f1**3 + f1**5)
+
+    return f1_t_pred
+------------------------------------------------------
+MSE          : 8.98e-06
+Complexity   : 30
+Sample time  : 2.100668966770172
+Evaluate time: 36.94880199432373
+Sample orders: 91
+======================================================
+
+
+🚫 [UNPARSABLE] the reply carried no executable body; draw dropped
+✅ [EVALUATED] MSE: 1.94e-05 | Params: [ 1.038542  0.146864 -1.732197  0.890047 -0.502306  1.      ]
+✅ [EVALUATED] MSE: 8.98e-06 | Params: [ 1.296314  0.113983 -1.894099  0.955791 -0.199404  2.670231]
+================= Evaluated Function =================
+def equation(x: np.ndarray, f1: np.ndarray, params: np.ndarray, d_axis: callable) -> np.ndarray:
+    """ Mathematical function for the RHS of an unknown 1D PDE.
+
+    Args:
+        x: spatial coordinate grid, shape (Nx, 1).
+        f1: the measured field, shape (Nx, Nt).
+        params: a fixed-length array of exactly 5 entries. Use only indices 0..4.
+        d_axis: spatial derivative. Call d_axis(field, axis, order); axis=0 is x1.
+
+    Return:
+        `f1_t_pred`, a numpy array with the grid shape.
+
+    STRICT CONSTRAINT:
+        1. SPATIAL DERIVATIVES & MATH: you are a physicist discovering a PDE. Use ONLY
+           the provided d_axis(field, axis, order) for derivatives (max order 4), with
+           axis=0 for the single spatial coordinate x1. For mathematical functions you
+           are STRICTLY LIMITED to np.sin, np.cos, np.tanh and np.exp. Do not call any
+           other np.* routine, do not import anything, and do not write numerical
+           algorithms. Ordinary arithmetic (+ - * / **) and params[0..4] are free.
+        2. OUTPUT FORMAT: write the complete formula, assign it to f1_t_pred, and
+           strictly end with return f1_t_pred. No placeholders. Mind the shapes: x is
+           (Nx, 1) and f1 is (Nx, Nt), so a coordinate factor must broadcast against
+           f1 -- write x or x[:, 0:1], never x[:, 0].
+        3. PARETO EVOLUTION: the frontier trades MSE against complexity. Complexity
+           counts the derivative calls, the arithmetic operations and every params
+           you use, so the same term written more compactly is preferred.
+        4. OPTIMIZATION STRATEGY:{PARETO_FRONTIER_PLACEHOLDER}
+    """
+    f1_t_pred = params[0] * np.exp(-params[1] * x[:, 0:1]**2) * f1 + params[2] * d_axis(f1, 0, 2) - params[3] * d_axis(f1, 0, 4) - params[4] * (f1 - f1**3 + 0.5 * f1**5)
+
+    return f1_t_pred
+------------------------------------------------------
+MSE          : 1.94e-05
+Complexity   : 29
+Sample time  : 5.553359389305115
+Evaluate time: 19.275999069213867
+Sample orders: 93
+======================================================
+
+
+================= Evaluated Function =================
+def equation(x: np.ndarray, f1: np.ndarray, params: np.ndarray, d_axis: callable) -> np.ndarray:
+    """ Mathematical function for the RHS of an unknown 1D PDE.
+
+    Args:
+        x: spatial coordinate grid, shape (Nx, 1).
+        f1: the measured field, shape (Nx, Nt).
+        params: a fixed-length array of exactly 5 entries. Use only indices 0..4.
+        d_axis: spatial derivative. Call d_axis(field, axis, order); axis=0 is x1.
+
+    Return:
+        `f1_t_pred`, a numpy array with the grid shape.
+
+    STRICT CONSTRAINT:
+        1. SPATIAL DERIVATIVES & MATH: you are a physicist discovering a PDE. Use ONLY
+           the provided d_axis(field, axis, order) for derivatives (max order 4), with
+           axis=0 for the single spatial coordinate x1. For mathematical functions you
+           are STRICTLY LIMITED to np.sin, np.cos, np.tanh and np.exp. Do not call any
+           other np.* routine, do not import anything, and do not write numerical
+           algorithms. Ordinary arithmetic (+ - * / **) and params[0..4] are free.
+        2. OUTPUT FORMAT: write the complete formula, assign it to f1_t_pred, and
+           strictly end with return f1_t_pred. No placeholders. Mind the shapes: x is
+           (Nx, 1) and f1 is (Nx, Nt), so a coordinate factor must broadcast against
+           f1 -- write x or x[:, 0:1], never x[:, 0].
+        3. PARETO EVOLUTION: the frontier trades MSE against complexity. Complexity
+           counts the derivative calls, the arithmetic operations and every params
+           you use, so the same term written more compactly is preferred.
+        4. OPTIMIZATION STRATEGY:{PARETO_FRONTIER_PLACEHOLDER}
+    """
+    f1_t_pred = params[0] * np.exp(-params[1] * x[:, 0:1]**2) * f1 + params[2] * d_axis(f1, 0, 2) - params[3] * d_axis(f1, 0, 4) - params[4] * (f1 - params[5] * f1**3 + f1**5)
+
+    return f1_t_pred
+------------------------------------------------------
+MSE          : 8.98e-06
+Complexity   : 30
+Sample time  : 5.553359389305115
+Evaluate time: 28.019280672073364
+Sample orders: 94
+======================================================
+
+
+🚫 [UNPARSABLE] the reply carried no executable body; draw dropped
+🚫 [UNPARSABLE] the reply carried no executable body; draw dropped
+🚫 [UNPARSABLE] the reply carried no executable body; draw dropped
+🚫 [UNPARSABLE] the reply carried no executable body; draw dropped
+✅ [EVALUATED] MSE: 8.98e-06 | Params: [ 1.296314  0.113983 -1.894099  0.955791 -0.199404  2.670231]
+Execution Error: name 'f1_t_pred' is not defined
+================= Evaluated Function =================
+def equation(x: np.ndarray, f1: np.ndarray, params: np.ndarray, d_axis: callable) -> np.ndarray:
+    """ Mathematical function for the RHS of an unknown 1D PDE.
+
+    Args:
+        x: spatial coordinate grid, shape (Nx, 1).
+        f1: the measured field, shape (Nx, Nt).
+        params: a fixed-length array of exactly 5 entries. Use only indices 0..4.
+        d_axis: spatial derivative. Call d_axis(field, axis, order); axis=0 is x1.
+
+    Return:
+        `f1_t_pred`, a numpy array with the grid shape.
+
+    STRICT CONSTRAINT:
+        1. SPATIAL DERIVATIVES & MATH: you are a physicist discovering a PDE. Use ONLY
+           the provided d_axis(field, axis, order) for derivatives (max order 4), with
+           axis=0 for the single spatial coordinate x1. For mathematical functions you
+           are STRICTLY LIMITED to np.sin, np.cos, np.tanh and np.exp. Do not call any
+           other np.* routine, do not import anything, and do not write numerical
+           algorithms. Ordinary arithmetic (+ - * / **) and params[0..4] are free.
+        2. OUTPUT FORMAT: write the complete formula, assign it to f1_t_pred, and
+           strictly end with return f1_t_pred. No placeholders. Mind the shapes: x is
+           (Nx, 1) and f1 is (Nx, Nt), so a coordinate factor must broadcast against
+           f1 -- write x or x[:, 0:1], never x[:, 0].
+        3. PARETO EVOLUTION: the frontier trades MSE against complexity. Complexity
+           counts the derivative calls, the arithmetic operations and every params
+           you use, so the same term written more compactly is preferred.
+        4. OPTIMIZATION STRATEGY:{PARETO_FRONTIER_PLACEHOLDER}
+    """
+    f1_t_pred = params[0] * np.exp(-params[1] * x[:, 0:1]**2) * f1 + params[2] * d_axis(f1, 0, 2) - params[3] * d_axis(f1, 0, 4) - params[4] * (f1 - params[5] * f1**3 + f1**5)
+
+    return f1_t_pred
+------------------------------------------------------
+MSE          : 8.98e-06
+Complexity   : 30
+Sample time  : 2.2168626189231873
+Evaluate time: 23.074504137039185
+Sample orders: 99
+======================================================
+
+
+⏱️  [NO SCORE] the sandbox returned nothing for this draw (timeout 60s, or a runtime error); it gets no MSE and no frontier slot
+================= Evaluated Function =================
+def equation(x: np.ndarray, f1: np.ndarray, params: np.ndarray, d_axis: callable) -> np.ndarray:
+    """ Mathematical function for the RHS of an unknown 1D PDE.
+
+    Args:
+        x: spatial coordinate grid, shape (Nx, 1).
+        f1: the measured field, shape (Nx, Nt).
+        params: a fixed-length array of exactly 5 entries. Use only indices 0..4.
+        d_axis: spatial derivative. Call d_axis(field, axis, order); axis=0 is x1.
+
+    Return:
+        `f1_t_pred`, a numpy array with the grid shape.
+
+    STRICT CONSTRAINT:
+        1. SPATIAL DERIVATIVES & MATH: you are a physicist discovering a PDE. Use ONLY
+           the provided d_axis(field, axis, order) for derivatives (max order 4), with
+           axis=0 for the single spatial coordinate x1. For mathematical functions you
+           are STRICTLY LIMITED to np.sin, np.cos, np.tanh and np.exp. Do not call any
+           other np.* routine, do not import anything, and do not write numerical
+           algorithms. Ordinary arithmetic (+ - * / **) and params[0..4] are free.
+        2. OUTPUT FORMAT: write the complete formula, assign it to f1_t_pred, and
+           strictly end with return f1_t_pred. No placeholders. Mind the shapes: x is
+           (Nx, 1) and f1 is (Nx, Nt), so a coordinate factor must broadcast against
+           f1 -- write x or x[:, 0:1], never x[:, 0].
+        3. PARETO EVOLUTION: the frontier trades MSE against complexity. Complexity
+           counts the derivative calls, the arithmetic operations and every params
+           you use, so the same term written more compactly is preferred.
+        4. OPTIMIZATION STRATEGY:{PARETO_FRONTIER_PLACEHOLDER}
+    """
+    return f1_t_pred
+------------------------------------------------------
+MSE          : N/A
+Complexity   : N/A
+Sample time  : 2.2168626189231873
+Evaluate time: 2.507833242416382
+Sample orders: 100
+======================================================
+
+
+
+==================================================
+🎉 Evolution Finished! Final Pareto Frontier:
+[1] MSE: 8.98e-06 | Complexity: 30
+f1_t_pred = params[0] * np.exp(-params[1] * x[:, 0:1]**2) * f1 + params[2] * d_axis(f1, 0, 2) - params[3] * d_axis(f1, 0, 4) - params[4] * (f1 - params[5] * f1**3 + f1**5)
+
+    return f1_t_pred
+
+[2] MSE: 8.98e-06 | Complexity: 30
+f1_t_pred = params[0] * np.exp(-params[1] * x[:, 0:1]**2) * f1 + params[2] * d_axis(f1, 0, 2) - params[3] * d_axis(f1, 0, 4) - params[4] * (f1 - params[5] * f1**3 + f1**5)
+
+    return f1_t_pred
+
+[3] MSE: 8.98e-06 | Complexity: 30
+f1_t_pred = params[0] * np.exp(-params[1] * x[:, 0:1]**2) * f1 + params[2] * d_axis(f1, 0, 2) - params[3] * d_axis(f1, 0, 4) - params[4] * (f1 - params[5] * f1**3 + f1**5)
+
+    return f1_t_pred
+
+[4] MSE: 8.98e-06 | Complexity: 30
+f1_t_pred = params[0] * np.exp(-params[1] * x[:, 0:1]**2) * f1 + params[2] * d_axis(f1, 0, 2) - params[3] * d_axis(f1, 0, 4) - params[4] * (f1 - params[5] * f1**3 + f1**5)
+
+    return f1_t_pred
+
+[5] MSE: 1.86e-05 | Complexity: 29
+f1_t_pred = params[0] * np.exp(-params[1] * x[:, 0:1]**2) * f1 + params[2] * d_axis(f1, 0, 2) - params[3] * d_axis(f1, 0, 4) - params[4] * (f1 - f1**3 + 0.33 * f1**5)
+
+    return f1_t_pred
+
+[6] MSE: 1.86e-05 | Complexity: 29
+f1_t_pred = params[0] * np.exp(-params[1] * x[:, 0:1]**2) * f1 + params[2] * d_axis(f1, 0, 2) - params[3] * d_axis(f1, 0, 4) - params[4] * (f1 - f1**3 + 0.33 * f1**5)
+
+    return f1_t_pred
+
+[7] MSE: 4.18e-05 | Complexity: 27
+f1_t_pred = params[0] * np.exp(-params[1] * x[:, 0:1]**2) * f1 + params[2] * d_axis(f1, 0, 2) - params[3] * d_axis(f1, 0, 4) - params[4] * (f1 - params[5] * f1**3)
+
+    return f1_t_pred
+
+[8] MSE: 3.40e-02 | Complexity: 4
+f1_t_pred = params[0] * d_axis(f1, 0, 2)
+
+    return f1_t_pred
+
+==================================================
+✅ Final Pareto front successfully saved to: ..\results_swift_hohenberg_base\final_pareto_front.json
