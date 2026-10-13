@@ -1,0 +1,39 @@
+{
+ "arms": [
+  {
+   "tag": "A3",
+   "setting": "前沿反馈（无库、无图）",
+   "run": "18_零先验_细粒度反馈/results_pareto",
+   "best_mse": 0.00034796672828068636,
+   "evaluated": 49,
+   "distinct_mse": 9,
+   "collapsed": true,
+   "library_entries": 0,
+   "gain_vs_anonymous_baseline": 0.38
+  },
+  {
+   "tag": "A4",
+   "setting": "+ 图的细粒度反馈",
+   "run": "18_零先验_细粒度反馈/results_both",
+   "best_mse": 4.774682902948103e-05,
+   "evaluated": 46,
+   "distinct_mse": 45,
+   "collapsed": false,
+   "library_entries": 0,
+   "gain_vs_anonymous_baseline": 2.8
+  },
+  {
+   "tag": "A5",
+   "setting": "+ 观测驱动的算子库",
+   "run": "19_观测驱动算子库/results",
+   "best_mse": 3.528995871272879e-05,
+   "evaluated": 97,
+   "distinct_mse": 94,
+   "collapsed": false,
+   "library_entries": 33,
+   "gain_vs_anonymous_baseline": 3.79
+  }
+ ],
+ "anonymous_baseline": 0.0001336,
+ "semi_anonymous_reference": 3.128e-11
+}
