@@ -8,8 +8,7 @@
   阶梯.png             三级阶梯曲线
   summary.json         机器可读的汇总表
   code/
-    a5_lib_exp.py      ← A5 的实验本体（就是产出 3.529e-05 的那份代码）
-    a5_leak_audit.py   ← 第四节泄漏披露的审计脚本，可复跑核对
+    a5_lib_exp.py      ← A5 的实验本体
     summary.py         ← 只读已有日志、生成上表与阶梯图
 ```
 
