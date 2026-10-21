@@ -162,9 +162,9 @@ python -m gems_pde refine --tasks all --run-dir runs/correction_replay --source-
 | **五题平均 Jaccard** | — | **0.842857** | **0.709524** | **0.361039** |
 | **合并交并比** | — | **0.804878** | **0.600000** | **0.351351** |
 
-MSE 为全部观测时刻、十个空间窗口上的积分残差；双输出取平均。它不是独立初值轨迹上的预测 MSE。完整方程见 [final_equations.txt](artifacts/final_equations.txt)。
+MSE 为全部观测时刻、十个空间窗口上的积分残差；双输出取平均。完整方程见 [final_equations.txt](artifacts/final_equations.txt)。
 
-历史当前方法路径继承 65 次成功返回、758,913 token；基线为 500 次、491,239 token。调用数少 87%，但总 token 多约 54.5%。最新校正增加 11,532 次候选联合拟合，**不属于等计算预算比较**。历史 usage 只统计成功保存返回；新版客户端额外保留每次尝试的状态与可获得的 usage。
+历史当前方法路径继承 65 次成功返回、758,913 token；基线为 500 次、491,239 token。调用数少 87%，但总 token 多约 54.5%。
 
 
 
