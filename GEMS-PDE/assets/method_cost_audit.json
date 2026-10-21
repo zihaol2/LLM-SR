@@ -1,0 +1,230 @@
+{
+  "method_name": "GEMS-PDE: experiment42 persistent search + experiment44 local correction",
+  "proposed_end_to_end_LLM": {
+    "completions": 65,
+    "prompt_tokens": 740390,
+    "completion_tokens": 18523,
+    "total_tokens": 758913
+  },
+  "adapted_LLM_PDESR_100_baseline_LLM": {
+    "completions": 500,
+    "prompt_tokens": 425797,
+    "completion_tokens": 65442,
+    "total_tokens": 491239
+  },
+  "continuation_new_API_calls": 0,
+  "continuation_joint_fit_candidates": 11532,
+  "continuation_batch_wall_seconds": 1686.6600210666656,
+  "continuation_parallel_workers": 2,
+  "end_to_end_CPU_time_comparison": "Not measured reliably; continuation wall time is not CPU core time.",
+  "method_comparison": [
+    {
+      "task": "Topography_Chemotaxis",
+      "previous42": {
+        "method": "proposed",
+        "anonymous_id": "T01",
+        "task": "Topography_Chemotaxis",
+        "MSE": 1.2614628114096957e-12,
+        "jaccard": 1.0,
+        "intersection": 7,
+        "union": 7,
+        "complexity": 24,
+        "mechanisms": 3
+      },
+      "current44": {
+        "task": "Topography_Chemotaxis",
+        "anonymous_id": "T01",
+        "MSE": 1.2614628114096957e-12,
+        "jaccard": 1.0,
+        "intersection": 7,
+        "union": 7,
+        "complexity": 24,
+        "mechanisms": 3
+      },
+      "baseline100_reused": {
+        "method": "baseline_100",
+        "anonymous_id": "T01",
+        "task": "Topography_Chemotaxis",
+        "MSE": 0.0003090759710912302,
+        "jaccard": 0.42857142857142855,
+        "intersection": 3,
+        "union": 7,
+        "complexity": 9,
+        "mechanisms": 2
+      }
+    },
+    {
+      "task": "Morphogenesis",
+      "previous42": {
+        "method": "proposed",
+        "anonymous_id": "T02",
+        "task": "Morphogenesis",
+        "MSE": 1.5598779022116362e-14,
+        "jaccard": 1.0,
+        "intersection": 3,
+        "union": 3,
+        "complexity": 21,
+        "mechanisms": 3
+      },
+      "current44": {
+        "task": "Morphogenesis",
+        "anonymous_id": "T02",
+        "MSE": 1.5598779022116362e-14,
+        "jaccard": 1.0,
+        "intersection": 3,
+        "union": 3,
+        "complexity": 21,
+        "mechanisms": 3
+      },
+      "baseline100_reused": {
+        "method": "baseline_100",
+        "anonymous_id": "T02",
+        "task": "Morphogenesis",
+        "MSE": 0.0028474856225488196,
+        "jaccard": 0.3333333333333333,
+        "intersection": 1,
+        "union": 3,
+        "complexity": 4,
+        "mechanisms": 1
+      }
+    },
+    {
+      "task": "Forced_Swift_Hohenberg",
+      "previous42": {
+        "method": "proposed",
+        "anonymous_id": "T03",
+        "task": "Forced_Swift_Hohenberg",
+        "MSE": 1.8697048386713124e-08,
+        "jaccard": 0.7142857142857143,
+        "intersection": 5,
+        "union": 7,
+        "complexity": 47,
+        "mechanisms": 6
+      },
+      "current44": {
+        "task": "Forced_Swift_Hohenberg",
+        "anonymous_id": "T03",
+        "MSE": 1.8697048386713124e-08,
+        "jaccard": 0.7142857142857143,
+        "intersection": 5,
+        "union": 7,
+        "complexity": 47,
+        "mechanisms": 6
+      },
+      "baseline100_reused": {
+        "method": "baseline_100",
+        "anonymous_id": "T03",
+        "task": "Forced_Swift_Hohenberg",
+        "MSE": 0.0026378466055068665,
+        "jaccard": 0.2857142857142857,
+        "intersection": 2,
+        "union": 7,
+        "complexity": 23,
+        "mechanisms": 4
+      }
+    },
+    {
+      "task": "Traffic_Flow_Bottleneck",
+      "previous42": {
+        "method": "proposed",
+        "anonymous_id": "T04",
+        "task": "Traffic_Flow_Bottleneck",
+        "MSE": 3.466650467790983e-09,
+        "jaccard": 0.5,
+        "intersection": 8,
+        "union": 16,
+        "complexity": 54,
+        "mechanisms": 5
+      },
+      "current44": {
+        "task": "Traffic_Flow_Bottleneck",
+        "anonymous_id": "T04",
+        "MSE": 8.259740463834766e-13,
+        "jaccard": 0.8333333333333334,
+        "intersection": 10,
+        "union": 12,
+        "complexity": 46,
+        "mechanisms": 5
+      },
+      "baseline100_reused": {
+        "method": "baseline_100",
+        "anonymous_id": "T04",
+        "task": "Traffic_Flow_Bottleneck",
+        "MSE": 0.0004339512898227782,
+        "jaccard": 0.09090909090909091,
+        "intersection": 1,
+        "union": 11,
+        "complexity": 9,
+        "mechanisms": 2
+      }
+    },
+    {
+      "task": "Predator_Prey",
+      "previous42": {
+        "method": "proposed",
+        "anonymous_id": "T05",
+        "task": "Predator_Prey",
+        "MSE": 7.386199769256527e-06,
+        "jaccard": 0.3333333333333333,
+        "intersection": 4,
+        "union": 12,
+        "complexity": 32,
+        "mechanisms": 5
+      },
+      "current44": {
+        "task": "Predator_Prey",
+        "anonymous_id": "T05",
+        "MSE": 3.3203167927133133e-13,
+        "jaccard": 0.6666666666666666,
+        "intersection": 8,
+        "union": 12,
+        "complexity": 53,
+        "mechanisms": 8
+      },
+      "baseline100_reused": {
+        "method": "baseline_100",
+        "anonymous_id": "T05",
+        "task": "Predator_Prey",
+        "MSE": 1.7677549538456148e-06,
+        "jaccard": 0.6666666666666666,
+        "intersection": 6,
+        "union": 9,
+        "complexity": 19,
+        "mechanisms": 5
+      }
+    }
+  ],
+  "prior_search_summary": {
+    "mean_jaccard": 0.7095238095238096,
+    "pooled_jaccard": 0.6,
+    "exact_structural_matches": 2,
+    "completions": 65,
+    "total_tokens": 758913
+  },
+  "latest_summary": {
+    "mean_jaccard": 0.8428571428571429,
+    "pooled_jaccard": 0.8048780487804879,
+    "exact_matches": 2,
+    "fresh_API_calls": 0,
+    "joint_fit_candidates": 11532,
+    "previous42": {
+      "mean_jaccard": 0.7095238095238096,
+      "pooled_jaccard": 0.6,
+      "exact_structural_matches": 2,
+      "completions": 65,
+      "total_tokens": 758913
+    },
+    "baseline100_reused": {
+      "mean_jaccard": 0.36103896103896094,
+      "pooled_jaccard": 0.35135135135135137,
+      "exact_structural_matches": 0,
+      "completions": 500,
+      "total_tokens": 491239
+    }
+  },
+  "calls_ratio": 0.13,
+  "token_ratio": 1.544895661785811,
+  "baseline_valid_completions": 445,
+  "scope": "One spatial coordinate, scalar or multiple fields, spatial derivative orders up to four, fixed operator grammar.",
+  "evidence_status": "Shared rules and no ground-truth input to search; five historically inspected development tasks, not a blind generalization benchmark."
+}
