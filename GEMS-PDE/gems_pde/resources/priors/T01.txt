@@ -1,0 +1,8 @@
+[D1]
+Find the mathematical function skeleton for the time derivative of a scalar field in a
+one-dimensional system where a localized profile spreads and approaches a saturated
+state.
+
+[V1]
+u is the scalar state field. x is the spatial coordinate. t is time. u_t is the time
+derivative of u.

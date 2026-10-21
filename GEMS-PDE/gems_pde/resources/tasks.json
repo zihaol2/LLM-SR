@@ -1,0 +1,32 @@
+[
+  {
+    "id": "T01",
+    "name": "Topography_Chemotaxis",
+    "data": "data/T01/data.mat",
+    "prior": "priors/T01.txt"
+  },
+  {
+    "id": "T02",
+    "name": "Morphogenesis",
+    "data": "data/T02/data.mat",
+    "prior": "priors/T02.txt"
+  },
+  {
+    "id": "T03",
+    "name": "Forced_Swift_Hohenberg",
+    "data": "data/T03/data.mat",
+    "prior": "priors/T03.txt"
+  },
+  {
+    "id": "T04",
+    "name": "Traffic_Flow_Bottleneck",
+    "data": "data/T04/data.mat",
+    "prior": "priors/T04.txt"
+  },
+  {
+    "id": "T05",
+    "name": "Predator_Prey",
+    "data": "data/T05/data.mat",
+    "prior": "priors/T05.txt"
+  }
+]

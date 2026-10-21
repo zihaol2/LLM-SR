@@ -1,0 +1,8 @@
+[D1]
+Find the mathematical function skeletons for the time derivatives of two co-evolving
+scalar fields in a one-dimensional system: one broad field that spreads and saturates,
+and one localized field that decays.
+
+[V1]
+u and v are scalar state fields. x is the spatial coordinate. t is time. u_t and v_t are
+the time derivatives of u and v.
