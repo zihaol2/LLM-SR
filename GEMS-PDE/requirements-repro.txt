@@ -1,0 +1,5 @@
+# Versions used by the local historical run and packaging checks.
+numpy==2.1.2
+scipy==1.16.3
+sympy==1.13.3
+requests==2.32.3
