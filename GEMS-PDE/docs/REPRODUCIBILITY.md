@@ -6,22 +6,8 @@
 2. `refine --source-dir artifacts/published/proposed42`：从历史选中状态重新运行完整邻域联合拟合；零 API，有完整数值计算。
 3. `search / baseline / run`：新 API 运行，依赖用户的端点、模型和配额。未保证服务端仍提供相同模型修订版本。
 
-本次代码整理只进行了离线核对和模拟 LLM 的小型端到端测试，没有再次执行五题真实 API 实验。
 
-## 历史来源映射
 
-| 发布模块 | 整理来源 |
-|---|---|
-| `mechanisms.py`, `observations.py` | 38 的通用构造与观测接口 |
-| `common.py` | 42/44 完全相同的拟合与复杂度实现 |
-| `search.py` | 42 持久档案搜索 |
-| `refine.py` | 44 完整单步邻域校正 |
-| `baseline_adapter.py` | 39 的完整函数 AST 适配 |
-| `baseline.py` | 42 每题 100 返回的基线 |
-| `vendor/llmpdesr` | 本地原版复现目录中的 buffer、代码解析和所需配置 |
-| `scoring.py` | 38 起沿用的冻结后结构评分器 |
-
-`artifacts/source_provenance.json` 保存历史相对路径与 SHA-256；它是来源说明，不是运行时路径配置。数据 .mat 原样复制；先验只导出 D1b/V1 部分，不包含历史 spec 的数据段和强提示段。
 
 ## 打包改动及其影响
 
