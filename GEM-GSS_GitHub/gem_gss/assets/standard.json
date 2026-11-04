@@ -1,0 +1,217 @@
+{
+  "version": "GEM-operator-standard-1.0",
+  "status": "Normative specification and offline scalar-component validator; not wired into frozen discovery code",
+  "scope": {
+    "mathematical": "Finite compositions of registered real elementary functions, arithmetic, and all finite multi-index spatial derivatives of declared fields and expressions",
+    "equation_form": "Each output component u_r,t = F_r(x,t,j^m u;theta)",
+    "spatial_dimension": "Any fixed positive integer d at the representation level",
+    "field_count": "Any fixed positive integer q at the representation level",
+    "coordinates": "Cartesian by default; other coordinate charts require explicit metric/coefficient definitions",
+    "coverage_claim": "Relative expressivity within the registered language, not completeness for all smooth functions or all PDEs"
+  },
+  "execution_profile": {
+    "max_spatial_order": 4,
+    "time_target_order": 1,
+    "existing_numerical_backends": "Historical 1D and scalar 2D adapters only; new functions and general d/q still need numerical integration",
+    "depth_node_and_fit_budgets": "Separate search settings; not mathematical definitions or literature-guaranteed constants"
+  },
+  "scalar_core": [
+    "Constant",
+    "Coordinate",
+    "Field",
+    "Parameter",
+    "Negate",
+    "Add",
+    "Subtract",
+    "Multiply",
+    "Divide",
+    "Power",
+    "UnaryFunction",
+    "PD(expression,multi_index)"
+  ],
+  "functions": {
+    "Exp": {
+      "aliases": [
+        "exp"
+      ],
+      "real_domain": "R",
+      "sympy": "exp"
+    },
+    "Log": {
+      "aliases": [
+        "log",
+        "ln"
+      ],
+      "real_domain": "z>0",
+      "sympy": "log"
+    },
+    "Sin": {
+      "aliases": [
+        "sin"
+      ],
+      "real_domain": "R",
+      "sympy": "sin"
+    },
+    "Cos": {
+      "aliases": [
+        "cos"
+      ],
+      "real_domain": "R",
+      "sympy": "cos"
+    },
+    "Tan": {
+      "aliases": [
+        "tan"
+      ],
+      "real_domain": "cos(z)!=0",
+      "sympy": "tan"
+    },
+    "ArcSin": {
+      "aliases": [
+        "arcsin",
+        "asin"
+      ],
+      "real_domain": "-1<=z<=1; derivatives singular at endpoints",
+      "sympy": "asin"
+    },
+    "ArcCos": {
+      "aliases": [
+        "arccos",
+        "acos"
+      ],
+      "real_domain": "-1<=z<=1; derivatives singular at endpoints",
+      "sympy": "acos"
+    },
+    "ArcTan": {
+      "aliases": [
+        "arctan",
+        "atan"
+      ],
+      "real_domain": "R; unary form only",
+      "sympy": "atan"
+    },
+    "Sinh": {
+      "aliases": [
+        "sinh"
+      ],
+      "real_domain": "R",
+      "sympy": "sinh"
+    },
+    "Cosh": {
+      "aliases": [
+        "cosh"
+      ],
+      "real_domain": "R",
+      "sympy": "cosh"
+    },
+    "Tanh": {
+      "aliases": [
+        "tanh"
+      ],
+      "real_domain": "R",
+      "sympy": "tanh"
+    },
+    "ArcSinh": {
+      "aliases": [
+        "arcsinh",
+        "asinh"
+      ],
+      "real_domain": "R",
+      "sympy": "asinh"
+    },
+    "ArcCosh": {
+      "aliases": [
+        "arccosh",
+        "acosh"
+      ],
+      "real_domain": "z>=1; derivatives singular at 1",
+      "sympy": "acosh"
+    },
+    "ArcTanh": {
+      "aliases": [
+        "arctanh",
+        "atanh"
+      ],
+      "real_domain": "-1<z<1",
+      "sympy": "atanh"
+    },
+    "Sqrt": {
+      "aliases": [
+        "sqrt"
+      ],
+      "real_domain": "z>=0; derivatives singular at 0",
+      "sympy": "sqrt"
+    },
+    "CubeRoot": {
+      "aliases": [
+        "cbrt"
+      ],
+      "real_domain": "R, real root; derivatives singular at 0",
+      "sympy": "real_root"
+    },
+    "Sinc": {
+      "aliases": [
+        "sinc"
+      ],
+      "real_domain": "R; sin(z)/z with value 1 at z=0, NOT NumPy normalized sinc",
+      "sympy": "sinc"
+    }
+  },
+  "derived_macros": {
+    "Grad": "(PD(E,e_i))_i",
+    "Hessian": "(PD(E,e_i+e_j))_ij",
+    "Divergence": "sum_i PD(V_i,e_i)",
+    "Curl3D": "(D_2 V_3-D_3 V_2,D_3 V_1-D_1 V_3,D_1 V_2-D_2 V_1)",
+    "Vorticity2D": "D_1 V_2-D_2 V_1; scalar out-of-plane component",
+    "Laplacian": "sum_i PD(E,2e_i)",
+    "Biharmonic": "sum_ij PD(E,2e_i+2e_j)",
+    "Dot": "sum_i V_i W_i",
+    "TensorContraction": "Explicit finite component sums with declared shapes and contraction axes",
+    "Transport": "sum_i V_i PD(E,e_i)",
+    "AnisotropicNondivergence": "sum_ij A_ij PD(E,e_i+e_j)",
+    "AnisotropicFlux": "sum_ij PD(A_ij PD(E,e_j),e_i)"
+  },
+  "derivative_order": "max order of children for arithmetic/functions; |alpha| + child order for PD. Thus (u_xx)^2 has PDE order 2, not 4",
+  "graph_contract": {
+    "node": "Registered expression with typed component form, declared symbols, parameters, order, domain and canonical syntax key",
+    "edge": "Each nonconstant dependency is recorded with construction_id, operation, operand position and birth round; alternative derivations reuse the node and retain separate construction records",
+    "canonicalization": "Aliases and exact syntactic duplicates; continuous identities are separate annotations and do not silently merge different numerical evaluation paths",
+    "cost": "Expression-based complexity; macro expansion does not make a compound mechanism cost one node"
+  },
+  "domain_policy": "Real-valued domains and required differentiability must be checked separately in numerical execution. The offline validator certifies syntax/order only; it never replaces Log(E) with Log(abs(E)+epsilon)",
+  "not_in_v1": [
+    "Nonlocal integrals",
+    "Fractional derivatives",
+    "Delays",
+    "Unspecified special functions",
+    "Nonsmooth Piecewise/Abs without a separate execution profile",
+    "Implicit or higher-time-order discovery without a new residual adapter"
+  ],
+  "sources": [
+    {
+      "title": "Wolfram Elementary Functions",
+      "url": "https://reference.wolfram.com/language/guide/ElementaryFunctions.html",
+      "supports": "Names, meanings and domains of elementary functions"
+    },
+    {
+      "title": "Wolfram Differential Operators",
+      "url": "https://reference.wolfram.com/language/guide/DifferentialOperators.html",
+      "supports": "Derivative and standard differential operator notation"
+    },
+    {
+      "title": "Wolfram Numerical Solution of PDEs",
+      "url": "https://reference.wolfram.com/language/tutorial/NDSolvePDE.html",
+      "supports": "Preserving operator/divergence form instead of forcing derivative expansion"
+    },
+    {
+      "title": "Baker and Doran, Jet Bundles and the Formal Theory of PDEs (2001), sections 2-5",
+      "url": "https://arxiv.org/abs/math/0106090",
+      "supports": "Multi-index jets and finite-order local PDE representation"
+    },
+    {
+      "title": "Rudy et al., Data-driven discovery of PDEs (2017)",
+      "url": "https://arxiv.org/abs/1609.06401",
+      "supports": "Data-driven libraries combining nonlinear functions and spatial partial derivatives; not universal completeness"
+    }
+  ]
+}

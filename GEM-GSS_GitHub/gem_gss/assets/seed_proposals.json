@@ -1,0 +1,1055 @@
+{
+  "T01": {
+    "L0": [
+      {
+        "id": "L01",
+        "expr": "u",
+        "parents": []
+      },
+      {
+        "id": "L02",
+        "expr": "u**2",
+        "parents": []
+      },
+      {
+        "id": "L03",
+        "expr": "u**3",
+        "parents": []
+      },
+      {
+        "id": "L04",
+        "expr": "a*u",
+        "parents": []
+      },
+      {
+        "id": "L05",
+        "expr": "a*u**2",
+        "parents": []
+      },
+      {
+        "id": "L06",
+        "expr": "a*u**3",
+        "parents": []
+      },
+      {
+        "id": "L07",
+        "expr": "a*u + b*u**2",
+        "parents": []
+      },
+      {
+        "id": "L08",
+        "expr": "a*u + b*u**2 + k*u**3",
+        "parents": []
+      }
+    ],
+    "G0": [
+      {
+        "id": "G01",
+        "expr": "PD(u, [1])",
+        "parents": []
+      },
+      {
+        "id": "G02",
+        "expr": "PD(u, [2])",
+        "parents": []
+      },
+      {
+        "id": "G03",
+        "expr": "PD(u, [3])",
+        "parents": []
+      },
+      {
+        "id": "G04",
+        "expr": "PD(u, [4])",
+        "parents": []
+      },
+      {
+        "id": "G05",
+        "expr": "u*PD(u, [1])",
+        "parents": []
+      },
+      {
+        "id": "G06",
+        "expr": "u*PD(u, [2])",
+        "parents": []
+      },
+      {
+        "id": "G07",
+        "expr": "u**2*PD(u, [1])",
+        "parents": []
+      },
+      {
+        "id": "G08",
+        "expr": "u**2*PD(u, [2])",
+        "parents": []
+      },
+      {
+        "id": "G09",
+        "expr": "PD(u, [1])**2",
+        "parents": []
+      },
+      {
+        "id": "G10",
+        "expr": "PD(u, [2])**2",
+        "parents": []
+      },
+      {
+        "id": "G11",
+        "expr": "PD(u, [1])*PD(u, [2])",
+        "parents": []
+      },
+      {
+        "id": "G12",
+        "expr": "a*PD(u, [2])",
+        "parents": []
+      },
+      {
+        "id": "G13",
+        "expr": "a*PD(u, [1])",
+        "parents": []
+      },
+      {
+        "id": "G14",
+        "expr": "a*PD(u, [2]) + b*u",
+        "parents": []
+      },
+      {
+        "id": "G15",
+        "expr": "a*PD(u, [2]) + b*u**2",
+        "parents": []
+      },
+      {
+        "id": "G16",
+        "expr": "a*PD(u, [2]) + b*u**3",
+        "parents": []
+      },
+      {
+        "id": "G17",
+        "expr": "a*PD(u, [2]) + b*u*PD(u, [1])",
+        "parents": []
+      },
+      {
+        "id": "G18",
+        "expr": "a*PD(u, [2]) + b*PD(u, [1])**2",
+        "parents": []
+      },
+      {
+        "id": "G19",
+        "expr": "a*PD(u, [2]) + b*u**2*PD(u, [1])",
+        "parents": []
+      },
+      {
+        "id": "G20",
+        "expr": "a*PD(u, [2]) + b*u*PD(u, [2])",
+        "parents": []
+      },
+      {
+        "id": "G21",
+        "expr": "a*PD(u, [2]) + b*PD(u, [1]) + k*u",
+        "parents": []
+      },
+      {
+        "id": "G22",
+        "expr": "a*PD(u, [2]) + b*PD(u, [1]) + k*u**2",
+        "parents": []
+      },
+      {
+        "id": "G23",
+        "expr": "a*PD(u, [2]) + b*PD(u, [1]) + k*u**3",
+        "parents": []
+      },
+      {
+        "id": "G24",
+        "expr": "a*PD(u, [2]) + b*PD(u, [1]) + k*u*PD(u, [1])",
+        "parents": []
+      }
+    ]
+  },
+  "T02": {
+    "L0": [
+      {
+        "id": "L01",
+        "expr": "a*u",
+        "parents": []
+      },
+      {
+        "id": "L02",
+        "expr": "a*u**2",
+        "parents": []
+      },
+      {
+        "id": "L03",
+        "expr": "a*PD(u, [2])",
+        "parents": []
+      },
+      {
+        "id": "L04",
+        "expr": "a*u*PD(u, [1])",
+        "parents": []
+      },
+      {
+        "id": "L05",
+        "expr": "a*Exp(-u)",
+        "parents": []
+      },
+      {
+        "id": "L06",
+        "expr": "a*Tanh(u)",
+        "parents": []
+      },
+      {
+        "id": "L07",
+        "expr": "a*Sinc(u)",
+        "parents": []
+      },
+      {
+        "id": "L08",
+        "expr": "a*PD(u, [1])**2",
+        "parents": []
+      }
+    ],
+    "G0": [
+      {
+        "id": "G01",
+        "expr": "a*PD(u, [1])",
+        "parents": []
+      },
+      {
+        "id": "G02",
+        "expr": "a*PD(u, [3])",
+        "parents": []
+      },
+      {
+        "id": "G03",
+        "expr": "a*PD(u, [4])",
+        "parents": []
+      },
+      {
+        "id": "G04",
+        "expr": "a*u*PD(u, [2])",
+        "parents": []
+      },
+      {
+        "id": "G05",
+        "expr": "a*PD(u, [1])*PD(u, [2])",
+        "parents": []
+      },
+      {
+        "id": "G06",
+        "expr": "a*PD(u, [2])**2",
+        "parents": []
+      },
+      {
+        "id": "G07",
+        "expr": "a*Sin(u)",
+        "parents": []
+      },
+      {
+        "id": "G08",
+        "expr": "a*Cos(u)",
+        "parents": []
+      },
+      {
+        "id": "G09",
+        "expr": "a*Sinh(u)",
+        "parents": []
+      },
+      {
+        "id": "G10",
+        "expr": "a*Cosh(u)",
+        "parents": []
+      },
+      {
+        "id": "G11",
+        "expr": "a*Log(1+u**2)",
+        "parents": []
+      },
+      {
+        "id": "G12",
+        "expr": "a*Sqrt(1+u**2)",
+        "parents": []
+      },
+      {
+        "id": "G13",
+        "expr": "a*ArcTan(u)",
+        "parents": []
+      },
+      {
+        "id": "G14",
+        "expr": "a*ArcSin(u/(1+u**2))",
+        "parents": []
+      },
+      {
+        "id": "G15",
+        "expr": "a*Exp(-u**2)",
+        "parents": []
+      },
+      {
+        "id": "G16",
+        "expr": "a*u**3",
+        "parents": []
+      },
+      {
+        "id": "G17",
+        "expr": "a*u/(1+u**2)",
+        "parents": []
+      },
+      {
+        "id": "G18",
+        "expr": "a*PD(u, [1])/u",
+        "parents": []
+      },
+      {
+        "id": "G19",
+        "expr": "a*PD(u, [2])/u",
+        "parents": []
+      },
+      {
+        "id": "G20",
+        "expr": "a*PD(u, [1])*Exp(-u)",
+        "parents": []
+      },
+      {
+        "id": "G21",
+        "expr": "a*PD(u, [2])*Tanh(u)",
+        "parents": []
+      },
+      {
+        "id": "G22",
+        "expr": "a*PD(u, [1])**3",
+        "parents": []
+      },
+      {
+        "id": "G23",
+        "expr": "a*PD(u, [1])*PD(u, [3])",
+        "parents": []
+      },
+      {
+        "id": "G24",
+        "expr": "a*PD(PD(u, [1])**2, [1])",
+        "parents": []
+      }
+    ]
+  },
+  "T03": {
+    "L0": [
+      {
+        "id": "L01",
+        "expr": "a",
+        "parents": []
+      },
+      {
+        "id": "L02",
+        "expr": "a*u",
+        "parents": []
+      },
+      {
+        "id": "L03",
+        "expr": "a*u**2",
+        "parents": []
+      },
+      {
+        "id": "L04",
+        "expr": "a*PD(u, [1])",
+        "parents": []
+      },
+      {
+        "id": "L05",
+        "expr": "a*PD(u, [2])",
+        "parents": []
+      },
+      {
+        "id": "L06",
+        "expr": "a*Sin(u)",
+        "parents": []
+      },
+      {
+        "id": "L07",
+        "expr": "a*Exp(u)",
+        "parents": []
+      },
+      {
+        "id": "L08",
+        "expr": "a*Tanh(u)",
+        "parents": []
+      }
+    ],
+    "G0": [
+      {
+        "id": "G01",
+        "expr": "a*u*PD(u, [1])",
+        "parents": []
+      },
+      {
+        "id": "G02",
+        "expr": "a*u**3",
+        "parents": []
+      },
+      {
+        "id": "G03",
+        "expr": "a*PD(u, [1])**2",
+        "parents": []
+      },
+      {
+        "id": "G04",
+        "expr": "a*PD(u, [3])",
+        "parents": []
+      },
+      {
+        "id": "G05",
+        "expr": "a*PD(u, [4])",
+        "parents": []
+      },
+      {
+        "id": "G06",
+        "expr": "a*Cos(u)",
+        "parents": []
+      },
+      {
+        "id": "G07",
+        "expr": "a*Log(1 + u**2)",
+        "parents": []
+      },
+      {
+        "id": "G08",
+        "expr": "a*Sqrt(1 + u**2)",
+        "parents": []
+      },
+      {
+        "id": "G09",
+        "expr": "a*Sinc(u)",
+        "parents": []
+      },
+      {
+        "id": "G10",
+        "expr": "a*Sinh(u)",
+        "parents": []
+      },
+      {
+        "id": "G11",
+        "expr": "a*ArcTan(u)",
+        "parents": []
+      },
+      {
+        "id": "G12",
+        "expr": "a*PD(u, [1])*PD(u, [2])",
+        "parents": []
+      },
+      {
+        "id": "G13",
+        "expr": "a*PD(u, [1])**3",
+        "parents": []
+      },
+      {
+        "id": "G14",
+        "expr": "a*PD(u, [1])*PD(u, [3])",
+        "parents": []
+      },
+      {
+        "id": "G15",
+        "expr": "a*PD(u, [2])**2",
+        "parents": []
+      },
+      {
+        "id": "G16",
+        "expr": "a*PD(u, [2])*PD(u, [3])",
+        "parents": []
+      },
+      {
+        "id": "G17",
+        "expr": "a*PD(u, [1])*PD(u, [2])*PD(u, [3])",
+        "parents": []
+      },
+      {
+        "id": "G18",
+        "expr": "a*PD(u, [1])**4",
+        "parents": []
+      },
+      {
+        "id": "G19",
+        "expr": "a*PD(u, [2])**3",
+        "parents": []
+      },
+      {
+        "id": "G20",
+        "expr": "a*PD(u, [1])*PD(u, [2])**2",
+        "parents": []
+      },
+      {
+        "id": "G21",
+        "expr": "a*PD(u, [1])**2*PD(u, [2])",
+        "parents": []
+      },
+      {
+        "id": "G22",
+        "expr": "a*PD(u, [1])*PD(u, [2])*PD(u, [3])*PD(u, [4])",
+        "parents": []
+      },
+      {
+        "id": "G23",
+        "expr": "a*PD(u, [1])**2*PD(u, [3])",
+        "parents": []
+      },
+      {
+        "id": "G24",
+        "expr": "a*PD(u, [2])*PD(u, [4])",
+        "parents": []
+      }
+    ]
+  },
+  "T04": {
+    "L0": [
+      {
+        "id": "L01",
+        "expr": "u",
+        "parents": []
+      },
+      {
+        "id": "L02",
+        "expr": "u*u",
+        "parents": []
+      },
+      {
+        "id": "L03",
+        "expr": "u**3",
+        "parents": []
+      },
+      {
+        "id": "L04",
+        "expr": "PD(u, [1])",
+        "parents": []
+      },
+      {
+        "id": "L05",
+        "expr": "PD(u, [2])",
+        "parents": []
+      },
+      {
+        "id": "L06",
+        "expr": "u*PD(u, [1])",
+        "parents": []
+      },
+      {
+        "id": "L07",
+        "expr": "PD(u, [1])**2",
+        "parents": []
+      },
+      {
+        "id": "L08",
+        "expr": "u*PD(u, [2])",
+        "parents": []
+      }
+    ],
+    "G0": [
+      {
+        "id": "G01",
+        "expr": "a*u + b*u**2",
+        "parents": [
+          "L01",
+          "L02"
+        ]
+      },
+      {
+        "id": "G02",
+        "expr": "a*u + b*u**3",
+        "parents": [
+          "L01",
+          "L03"
+        ]
+      },
+      {
+        "id": "G03",
+        "expr": "a*PD(u, [1]) + b*PD(u, [2])",
+        "parents": [
+          "L04",
+          "L05"
+        ]
+      },
+      {
+        "id": "G04",
+        "expr": "a*PD(u, [1]) + b*PD(u, [3])",
+        "parents": [
+          "L04"
+        ]
+      },
+      {
+        "id": "G05",
+        "expr": "a*PD(u, [2]) + b*PD(u, [4])",
+        "parents": [
+          "L05"
+        ]
+      },
+      {
+        "id": "G06",
+        "expr": "a*u*PD(u, [1]) + b*PD(u, [2])",
+        "parents": [
+          "L06",
+          "L05"
+        ]
+      },
+      {
+        "id": "G07",
+        "expr": "a*PD(u, [1])**2 + b*PD(u, [2])",
+        "parents": [
+          "L07",
+          "L05"
+        ]
+      },
+      {
+        "id": "G08",
+        "expr": "a*u*PD(u, [2]) + b*PD(u, [1])",
+        "parents": [
+          "L08",
+          "L04"
+        ]
+      },
+      {
+        "id": "G09",
+        "expr": "a*Exp(u) + b*PD(u, [2])",
+        "parents": [
+          "L05"
+        ]
+      },
+      {
+        "id": "G10",
+        "expr": "a*Log(u) + b*PD(u, [2])",
+        "parents": [
+          "L05"
+        ]
+      },
+      {
+        "id": "G11",
+        "expr": "a*Sin(u) + b*PD(u, [2])",
+        "parents": [
+          "L05"
+        ]
+      },
+      {
+        "id": "G12",
+        "expr": "a*Cos(u) + b*PD(u, [2])",
+        "parents": [
+          "L05"
+        ]
+      },
+      {
+        "id": "G13",
+        "expr": "a*Tanh(u) + b*PD(u, [2])",
+        "parents": [
+          "L05"
+        ]
+      },
+      {
+        "id": "G14",
+        "expr": "a*Sinh(u) + b*PD(u, [2])",
+        "parents": [
+          "L05"
+        ]
+      },
+      {
+        "id": "G15",
+        "expr": "a*Sqrt(u) + b*PD(u, [2])",
+        "parents": [
+          "L05"
+        ]
+      },
+      {
+        "id": "G16",
+        "expr": "a*CubeRoot(u) + b*PD(u, [2])",
+        "parents": [
+          "L05"
+        ]
+      },
+      {
+        "id": "G17",
+        "expr": "a*Sinc(u) + b*PD(u, [2])",
+        "parents": [
+          "L05"
+        ]
+      },
+      {
+        "id": "G18",
+        "expr": "a*Exp(-u) + b*PD(u, [2])",
+        "parents": [
+          "L05"
+        ]
+      },
+      {
+        "id": "G19",
+        "expr": "a*PD(u, [1])*PD(u, [2]) + b*PD(u, [3])",
+        "parents": [
+          "L04",
+          "L05"
+        ]
+      },
+      {
+        "id": "G20",
+        "expr": "a*u*PD(u, [1]) + b*PD(u, [3])",
+        "parents": [
+          "L06"
+        ]
+      },
+      {
+        "id": "G21",
+        "expr": "a*PD(u, [1])**2 + b*PD(u, [3])",
+        "parents": [
+          "L07"
+        ]
+      },
+      {
+        "id": "G22",
+        "expr": "a*PD(u, [2])**2 + b*PD(u, [4])",
+        "parents": [
+          "L05"
+        ]
+      },
+      {
+        "id": "G23",
+        "expr": "a*Exp(u)*PD(u, [1]) + b*PD(u, [2])",
+        "parents": [
+          "L04",
+          "L05"
+        ]
+      },
+      {
+        "id": "G24",
+        "expr": "a*Sin(u)*PD(u, [1]) + b*PD(u, [2])",
+        "parents": [
+          "L04",
+          "L05"
+        ]
+      }
+    ]
+  },
+  "T05": {
+    "L0": [
+      {
+        "id": "L01",
+        "expr": "a*u",
+        "parents": []
+      },
+      {
+        "id": "L02",
+        "expr": "a*v",
+        "parents": []
+      },
+      {
+        "id": "L03",
+        "expr": "a*PD(u,0)",
+        "parents": []
+      },
+      {
+        "id": "L04",
+        "expr": "a*PD(v,0)",
+        "parents": []
+      },
+      {
+        "id": "L05",
+        "expr": "a*PD(u,0,0)",
+        "parents": []
+      },
+      {
+        "id": "L06",
+        "expr": "a*PD(v,0,0)",
+        "parents": []
+      },
+      {
+        "id": "L07",
+        "expr": "a*u*v",
+        "parents": []
+      },
+      {
+        "id": "L08",
+        "expr": "a*Exp(-k*u)",
+        "parents": []
+      }
+    ],
+    "G0": [
+      {
+        "id": "G01",
+        "expr": "a*PD(u,0,0,0)",
+        "parents": []
+      },
+      {
+        "id": "G02",
+        "expr": "a*PD(v,0,0,0)",
+        "parents": []
+      },
+      {
+        "id": "G03",
+        "expr": "a*PD(u,0,0,0,0)",
+        "parents": []
+      },
+      {
+        "id": "G04",
+        "expr": "a*PD(v,0,0,0,0)",
+        "parents": []
+      },
+      {
+        "id": "G05",
+        "expr": "a*PD(u,0)*PD(u,0)",
+        "parents": []
+      },
+      {
+        "id": "G06",
+        "expr": "a*PD(v,0)*PD(v,0)",
+        "parents": []
+      },
+      {
+        "id": "G07",
+        "expr": "a*PD(u,0)*PD(v,0)",
+        "parents": []
+      },
+      {
+        "id": "G08",
+        "expr": "a*u*PD(u,0)",
+        "parents": []
+      },
+      {
+        "id": "G09",
+        "expr": "a*v*PD(v,0)",
+        "parents": []
+      },
+      {
+        "id": "G10",
+        "expr": "a*u*PD(v,0)",
+        "parents": []
+      },
+      {
+        "id": "G11",
+        "expr": "a*v*PD(u,0)",
+        "parents": []
+      },
+      {
+        "id": "G12",
+        "expr": "a*Tanh(k*u)",
+        "parents": []
+      },
+      {
+        "id": "G13",
+        "expr": "a*Tanh(k*v)",
+        "parents": []
+      },
+      {
+        "id": "G14",
+        "expr": "a*Sinc(k*u)",
+        "parents": []
+      },
+      {
+        "id": "G15",
+        "expr": "a*Sinc(k*v)",
+        "parents": []
+      },
+      {
+        "id": "G16",
+        "expr": "a*Exp(-k*v)",
+        "parents": []
+      },
+      {
+        "id": "G17",
+        "expr": "a*Exp(-k*u*u)",
+        "parents": []
+      },
+      {
+        "id": "G18",
+        "expr": "a*Exp(-k*v*v)",
+        "parents": []
+      },
+      {
+        "id": "G19",
+        "expr": "a*Sqrt(k+u*u)",
+        "parents": []
+      },
+      {
+        "id": "G20",
+        "expr": "a*Sqrt(k+v*v)",
+        "parents": []
+      },
+      {
+        "id": "G21",
+        "expr": "a*Log(k+u*u)",
+        "parents": []
+      },
+      {
+        "id": "G22",
+        "expr": "a*Log(k+v*v)",
+        "parents": []
+      },
+      {
+        "id": "G23",
+        "expr": "a*Sin(k*u)",
+        "parents": []
+      },
+      {
+        "id": "G24",
+        "expr": "a*Cos(k*v)",
+        "parents": []
+      }
+    ]
+  },
+  "T2D": {
+    "L0": [
+      {
+        "id": "L01",
+        "expr": "u",
+        "parents": []
+      },
+      {
+        "id": "L02",
+        "expr": "u*u",
+        "parents": []
+      },
+      {
+        "id": "L03",
+        "expr": "Sqrt(u)",
+        "parents": []
+      },
+      {
+        "id": "L04",
+        "expr": "Log(u)",
+        "parents": []
+      },
+      {
+        "id": "L05",
+        "expr": "PD(u,1,0)",
+        "parents": []
+      },
+      {
+        "id": "L06",
+        "expr": "PD(u,0,1)",
+        "parents": []
+      },
+      {
+        "id": "L07",
+        "expr": "PD(u,2,0)+PD(u,0,2)",
+        "parents": []
+      },
+      {
+        "id": "L08",
+        "expr": "u*PD(u,1,0)",
+        "parents": []
+      }
+    ],
+    "G0": [
+      {
+        "id": "G01",
+        "expr": "a*u",
+        "parents": []
+      },
+      {
+        "id": "G02",
+        "expr": "a*u*u",
+        "parents": []
+      },
+      {
+        "id": "G03",
+        "expr": "a*u**3",
+        "parents": []
+      },
+      {
+        "id": "G04",
+        "expr": "a*Sqrt(u)",
+        "parents": []
+      },
+      {
+        "id": "G05",
+        "expr": "a*Exp(-u)",
+        "parents": []
+      },
+      {
+        "id": "G06",
+        "expr": "a*Sin(u)",
+        "parents": []
+      },
+      {
+        "id": "G07",
+        "expr": "a*Tanh(u)",
+        "parents": []
+      },
+      {
+        "id": "G08",
+        "expr": "a*Log(u)",
+        "parents": []
+      },
+      {
+        "id": "G09",
+        "expr": "a*PD(u,1,0)",
+        "parents": []
+      },
+      {
+        "id": "G10",
+        "expr": "a*PD(u,0,1)",
+        "parents": []
+      },
+      {
+        "id": "G11",
+        "expr": "a*PD(u,2,0)",
+        "parents": []
+      },
+      {
+        "id": "G12",
+        "expr": "a*PD(u,0,2)",
+        "parents": []
+      },
+      {
+        "id": "G13",
+        "expr": "a*PD(u,1,1)",
+        "parents": []
+      },
+      {
+        "id": "G14",
+        "expr": "a*PD(u,2,0)+b*PD(u,0,2)",
+        "parents": []
+      },
+      {
+        "id": "G15",
+        "expr": "a*u*PD(u,1,0)+b*u*PD(u,0,1)",
+        "parents": []
+      },
+      {
+        "id": "G16",
+        "expr": "a*PD(u,1,0)**2+b*PD(u,0,1)**2",
+        "parents": []
+      },
+      {
+        "id": "G17",
+        "expr": "a*PD(u,2,0)*PD(u,0,2)-b*PD(u,1,1)**2",
+        "parents": []
+      },
+      {
+        "id": "G18",
+        "expr": "a*Sin(x)*u",
+        "parents": []
+      },
+      {
+        "id": "G19",
+        "expr": "a*Cos(y)*u",
+        "parents": []
+      },
+      {
+        "id": "G20",
+        "expr": "a*Sin(x)*PD(u,1,0)+b*Cos(y)*PD(u,0,1)",
+        "parents": []
+      },
+      {
+        "id": "G21",
+        "expr": "a*Sinc(x)*Sinc(y)*u",
+        "parents": []
+      },
+      {
+        "id": "G22",
+        "expr": "a*Exp(-(x*x+y*y))*u",
+        "parents": []
+      },
+      {
+        "id": "G23",
+        "expr": "a*u/(1+b*u)",
+        "parents": []
+      },
+      {
+        "id": "G24",
+        "expr": "a*PD(u,4,0)+b*PD(u,0,4)+k*PD(u,2,2)",
+        "parents": []
+      }
+    ]
+  }
+}

@@ -1,0 +1,773 @@
+{
+  "standard": {
+    "T01": {
+      "equations": {
+        "u": {
+          "terms": [
+            {
+              "id": "D000009",
+              "expr": "PD(u,(2,))",
+              "params": {},
+              "coefficient": 0.10000559349976537,
+              "fixed_coefficient": false
+            },
+            {
+              "id": "D000118",
+              "expr": "PD(((u*(1-(a*u)))*Cos((k*x))),(1,))",
+              "params": {
+                "a": 0.9999993707609736,
+                "k": 0.9999925910855739
+              },
+              "coefficient": -0.5000126602515129,
+              "fixed_coefficient": false
+            },
+            {
+              "id": "N002224",
+              "expr": "(u*(1-u))",
+              "params": {},
+              "coefficient": 0.9999997604993162,
+              "fixed_coefficient": false
+            }
+          ],
+          "MSE": 1.2615475046086644e-12,
+          "score": 3.4258626392462624e-09,
+          "complexity": 22,
+          "optimizer": {
+            "method": "variable_projection",
+            "nonlinear_parameters": 2,
+            "linear_coefficients": 3,
+            "starts": [
+              {
+                "success": true,
+                "status": 3,
+                "nfev": 2,
+                "message": "`xtol` termination condition is satisfied."
+              },
+              {
+                "success": true,
+                "status": 4,
+                "nfev": 3,
+                "message": "Both `ftol` and `xtol` termination conditions are satisfied."
+              }
+            ],
+            "success": true
+          },
+          "MSE_definition": "All observed times, GEM spatial-window residual; not forecast error",
+          "final_refit": false
+        }
+      },
+      "MSE": 1.2615475046086644e-12,
+      "complexity": 22,
+      "metrics": {
+        "legacy": {
+          "jaccard": 1.0,
+          "matched": 7,
+          "true_terms": 7,
+          "found_terms": 7,
+          "missing": [],
+          "extra": []
+        },
+        "strict_nonzero": {
+          "jaccard": 1.0,
+          "matched": 7,
+          "true_terms": 7,
+          "found_terms": 7,
+          "missing": [],
+          "extra": []
+        }
+      },
+      "API_calls": 21,
+      "usage": {
+        "prompt_tokens": 555790,
+        "completion_tokens": 43282,
+        "total_tokens": 599072
+      },
+      "search_fit_calls": 2821,
+      "terminal_fit_calls": 240,
+      "initial_root_attempt_coverage": {
+        "u": 1.0
+      }
+    },
+    "T02": {
+      "equations": {
+        "u": {
+          "terms": [
+            {
+              "id": "D000001",
+              "expr": "PD(u,(2,))",
+              "params": {},
+              "coefficient": 0.09999954403169561,
+              "fixed_coefficient": false
+            },
+            {
+              "id": "D000055",
+              "expr": "(u/(a+u))",
+              "params": {
+                "a": 0.5000028392250129
+              },
+              "coefficient": -1.000001095126113,
+              "fixed_coefficient": false
+            },
+            {
+              "id": "D000076",
+              "expr": "Exp(((-k)*(x**2)))",
+              "params": {
+                "k": 1.0000001243959682
+              },
+              "coefficient": 0.9999986642664025,
+              "fixed_coefficient": false
+            }
+          ],
+          "MSE": 1.4973446990737087e-14,
+          "score": 4.096270241894678e-11,
+          "complexity": 21,
+          "optimizer": {
+            "method": "variable_projection",
+            "nonlinear_parameters": 2,
+            "linear_coefficients": 3,
+            "starts": [
+              {
+                "success": true,
+                "status": 1,
+                "nfev": 3,
+                "message": "`gtol` termination condition is satisfied."
+              },
+              {
+                "success": true,
+                "status": 1,
+                "nfev": 7,
+                "message": "`gtol` termination condition is satisfied."
+              }
+            ],
+            "success": true
+          },
+          "MSE_definition": "All observed times, GEM spatial-window residual; not forecast error",
+          "final_refit": false
+        }
+      },
+      "MSE": 1.4973446990737087e-14,
+      "complexity": 21,
+      "metrics": {
+        "legacy": {
+          "jaccard": 1.0,
+          "matched": 3,
+          "true_terms": 3,
+          "found_terms": 3,
+          "missing": [],
+          "extra": []
+        },
+        "strict_nonzero": {
+          "jaccard": 1.0,
+          "matched": 3,
+          "true_terms": 3,
+          "found_terms": 3,
+          "missing": [],
+          "extra": []
+        }
+      },
+      "API_calls": 21,
+      "usage": {
+        "prompt_tokens": 918199,
+        "completion_tokens": 35636,
+        "total_tokens": 953835
+      },
+      "search_fit_calls": 4581,
+      "terminal_fit_calls": 503,
+      "initial_root_attempt_coverage": {
+        "u": 1.0
+      }
+    },
+    "T03": {
+      "equations": {
+        "u": {
+          "terms": [
+            {
+              "id": "D000002",
+              "expr": "PD(u,(2,))",
+              "params": {},
+              "coefficient": -1.9963358026232292,
+              "fixed_coefficient": false
+            },
+            {
+              "id": "D000006",
+              "expr": "(u**3)",
+              "params": {},
+              "coefficient": -0.9999788996176134,
+              "fixed_coefficient": false
+            },
+            {
+              "id": "D000008",
+              "expr": "PD(u,(4,))",
+              "params": {},
+              "coefficient": -0.9974145771785803,
+              "fixed_coefficient": false
+            },
+            {
+              "id": "D000047",
+              "expr": "(u**5)",
+              "params": {},
+              "coefficient": 0.9998813982661401,
+              "fixed_coefficient": false
+            },
+            {
+              "id": "D000083",
+              "expr": "(u*Exp(((-k)*(x**2))))",
+              "params": {
+                "k": 0.09971237318907471
+              },
+              "coefficient": 1.5008092402077924,
+              "fixed_coefficient": false
+            }
+          ],
+          "MSE": 3.7360150250047355e-08,
+          "score": 6.179135202041581e-06,
+          "complexity": 29,
+          "optimizer": {
+            "method": "variable_projection",
+            "nonlinear_parameters": 1,
+            "linear_coefficients": 5,
+            "starts": [
+              {
+                "success": true,
+                "status": 3,
+                "nfev": 4,
+                "message": "`xtol` termination condition is satisfied."
+              },
+              {
+                "success": true,
+                "status": 3,
+                "nfev": 9,
+                "message": "`xtol` termination condition is satisfied."
+              }
+            ],
+            "success": true
+          },
+          "MSE_definition": "All observed times, GEM spatial-window residual; not forecast error",
+          "final_refit": false
+        }
+      },
+      "MSE": 3.7360150250047355e-08,
+      "complexity": 29,
+      "metrics": {
+        "legacy": {
+          "jaccard": 1.0,
+          "matched": 5,
+          "true_terms": 5,
+          "found_terms": 5,
+          "missing": [],
+          "extra": []
+        },
+        "strict_nonzero": {
+          "jaccard": 1.0,
+          "matched": 5,
+          "true_terms": 5,
+          "found_terms": 5,
+          "missing": [],
+          "extra": []
+        }
+      },
+      "API_calls": 21,
+      "usage": {
+        "prompt_tokens": 785418,
+        "completion_tokens": 81577,
+        "total_tokens": 866995
+      },
+      "search_fit_calls": 3699,
+      "terminal_fit_calls": 1040,
+      "initial_root_attempt_coverage": {
+        "u": 1.0
+      }
+    },
+    "T04": {
+      "equations": {
+        "u": {
+          "terms": [
+            {
+              "id": "D000087",
+              "expr": "PD((PD(u,(1,))/u),(1,))",
+              "params": {},
+              "coefficient": -0.16899103652538983,
+              "fixed_coefficient": false
+            },
+            {
+              "id": "D000155",
+              "expr": "PD(((u*(1-(a*u)))*(1-(b*Tanh((k*x))))),(1,))",
+              "params": {
+                "a": 1.0000003597918259,
+                "b": 0.4999997376018847,
+                "k": 1.0000013296885502
+              },
+              "coefficient": -1.0000001890818377,
+              "fixed_coefficient": false
+            },
+            {
+              "id": "D001249",
+              "expr": "PD(Log((u**3)),(2,))",
+              "params": {},
+              "coefficient": 0.07299701836616694,
+              "fixed_coefficient": false
+            }
+          ],
+          "MSE": 1.9311258629952294e-14,
+          "score": 9.87705055970968e-11,
+          "complexity": 33,
+          "optimizer": {
+            "method": "variable_projection",
+            "nonlinear_parameters": 3,
+            "linear_coefficients": 3,
+            "starts": [
+              {
+                "success": true,
+                "status": 1,
+                "nfev": 1,
+                "message": "`gtol` termination condition is satisfied."
+              },
+              {
+                "success": true,
+                "status": 3,
+                "nfev": 7,
+                "message": "`xtol` termination condition is satisfied."
+              }
+            ],
+            "success": true
+          },
+          "MSE_definition": "All observed times, GEM spatial-window residual; not forecast error",
+          "final_refit": false
+        }
+      },
+      "MSE": 1.9311258629952294e-14,
+      "complexity": 33,
+      "metrics": {
+        "legacy": {
+          "jaccard": 1.0,
+          "fields": {
+            "u": {
+              "jaccard": 1.0,
+              "matched": 10,
+              "true_terms": 10,
+              "found_terms": 10,
+              "missing": [],
+              "extra": []
+            }
+          }
+        },
+        "strict_nonzero": {
+          "jaccard": 1.0,
+          "fields": {
+            "u": {
+              "jaccard": 1.0,
+              "matched": 10,
+              "true_terms": 10,
+              "found_terms": 10,
+              "missing": [],
+              "extra": []
+            }
+          }
+        }
+      },
+      "API_calls": 21,
+      "usage": {
+        "prompt_tokens": 501252,
+        "completion_tokens": 35532,
+        "total_tokens": 536784
+      },
+      "search_fit_calls": 2540,
+      "terminal_fit_calls": 95,
+      "initial_root_attempt_coverage": {
+        "u": 1.0
+      }
+    },
+    "T05": {
+      "equations": {
+        "u": {
+          "terms": [
+            {
+              "id": "D000030",
+              "expr": "PD(u,(2,))",
+              "params": {},
+              "coefficient": 0.21836074559502291,
+              "fixed_coefficient": false
+            },
+            {
+              "id": "D000061",
+              "expr": "(u*v)",
+              "params": {},
+              "coefficient": -0.49999966748999036,
+              "fixed_coefficient": false
+            },
+            {
+              "id": "D001146",
+              "expr": "((u**2)-u)",
+              "params": {},
+              "coefficient": -0.9999995793477785,
+              "fixed_coefficient": false
+            },
+            {
+              "id": "D001372",
+              "expr": "PD(PD(u,(1,)),(1,))",
+              "params": {},
+              "coefficient": -0.16836093259119272,
+              "fixed_coefficient": false
+            }
+          ],
+          "MSE": 6.225724905402291e-13,
+          "score": 7.524829877151514e-10,
+          "complexity": 21,
+          "optimizer": {
+            "method": "variable_projection",
+            "nonlinear_parameters": 0,
+            "linear_coefficients": 4,
+            "starts": [],
+            "success": true
+          },
+          "MSE_definition": "All observed times, GEM spatial-window residual; not forecast error",
+          "final_refit": false
+        },
+        "v": {
+          "terms": [
+            {
+              "id": "D000001",
+              "expr": "v",
+              "params": {},
+              "coefficient": -0.8000000408211687,
+              "fixed_coefficient": false
+            },
+            {
+              "id": "D000061",
+              "expr": "(u*v)",
+              "params": {},
+              "coefficient": 0.7999999916912798,
+              "fixed_coefficient": false
+            },
+            {
+              "id": "D000076",
+              "expr": "PD(v,(2,))",
+              "params": {},
+              "coefficient": 0.009999913939627639,
+              "fixed_coefficient": false
+            },
+            {
+              "id": "D000103",
+              "expr": "PD((v*PD(u,(1,))),(1,))",
+              "params": {},
+              "coefficient": -0.20000002443057815,
+              "fixed_coefficient": false
+            }
+          ],
+          "MSE": 4.170738813443697e-14,
+          "score": 6.128411747195973e-10,
+          "complexity": 19,
+          "optimizer": {
+            "method": "variable_projection",
+            "nonlinear_parameters": 0,
+            "linear_coefficients": 4,
+            "starts": [],
+            "success": true
+          },
+          "MSE_definition": "All observed times, GEM spatial-window residual; not forecast error",
+          "final_refit": false
+        }
+      },
+      "MSE": 3.3213993933733303e-13,
+      "complexity": 40,
+      "metrics": {
+        "legacy": {
+          "jaccard": 1.0,
+          "fields": {
+            "u": {
+              "jaccard": 1.0,
+              "matched": 4,
+              "true_terms": 4,
+              "found_terms": 4,
+              "missing": [],
+              "extra": []
+            },
+            "v": {
+              "jaccard": 1.0,
+              "matched": 5,
+              "true_terms": 5,
+              "found_terms": 5,
+              "missing": [],
+              "extra": []
+            }
+          }
+        },
+        "strict_nonzero": {
+          "jaccard": 1.0,
+          "fields": {
+            "u": {
+              "jaccard": 1.0,
+              "matched": 4,
+              "true_terms": 4,
+              "found_terms": 4,
+              "missing": [],
+              "extra": []
+            },
+            "v": {
+              "jaccard": 1.0,
+              "matched": 5,
+              "true_terms": 5,
+              "found_terms": 5,
+              "missing": [],
+              "extra": []
+            }
+          }
+        }
+      },
+      "API_calls": 22,
+      "usage": {
+        "prompt_tokens": 1370694,
+        "completion_tokens": 116671,
+        "total_tokens": 1487365
+      },
+      "search_fit_calls": 11962,
+      "terminal_fit_calls": 1083,
+      "initial_root_attempt_coverage": {
+        "u": 1.0,
+        "v": 1.0
+      }
+    },
+    "T2D": {
+      "equations": {
+        "u": {
+          "terms": [
+            {
+              "id": "D000031",
+              "expr": "PD(u,(1, 0))",
+              "params": {},
+              "coefficient": -0.5999998284873389,
+              "fixed_coefficient": false
+            },
+            {
+              "id": "D000035",
+              "expr": "PD(u,(0, 1))",
+              "params": {},
+              "coefficient": 0.39999988800688935,
+              "fixed_coefficient": false
+            },
+            {
+              "id": "D000045",
+              "expr": "(PD(u,(2, 0))+PD(u,(0, 2)))",
+              "params": {},
+              "coefficient": -0.2289288452589342,
+              "fixed_coefficient": false
+            },
+            {
+              "id": "D000179",
+              "expr": "(u*(1-(a*u)))",
+              "params": {
+                "a": 0.9999999269829314
+              },
+              "coefficient": 0.7999999382321404,
+              "fixed_coefficient": false
+            },
+            {
+              "id": "D001151",
+              "expr": "PD(PD(u,(1, 0)),(1, 0))",
+              "params": {},
+              "coefficient": 0.2789290880186312,
+              "fixed_coefficient": false
+            },
+            {
+              "id": "D001153",
+              "expr": "PD(PD(u,(0, 1)),(0, 1))",
+              "params": {},
+              "coefficient": 0.2789291881949553,
+              "fixed_coefficient": false
+            }
+          ],
+          "MSE": 2.9721098293156305e-15,
+          "score": 2.4737741827973363e-12,
+          "complexity": 38,
+          "optimizer": {
+            "method": "variable_projection",
+            "nonlinear_parameters": 1,
+            "linear_coefficients": 6,
+            "starts": [
+              {
+                "success": true,
+                "status": 1,
+                "nfev": 1,
+                "message": "`gtol` termination condition is satisfied."
+              },
+              {
+                "success": true,
+                "status": 1,
+                "nfev": 3,
+                "message": "`gtol` termination condition is satisfied."
+              }
+            ],
+            "success": true
+          },
+          "MSE_definition": "All observed times, GEM spatial-window residual; not forecast error",
+          "final_refit": false
+        }
+      },
+      "MSE": 2.9721098293156305e-15,
+      "complexity": 38,
+      "metrics": {
+        "legacy": {
+          "jaccard": 1.0,
+          "fields": {
+            "u": {
+              "jaccard": 1.0,
+              "matched": 6,
+              "true_terms": 6,
+              "found_terms": 6,
+              "missing": [],
+              "extra": []
+            }
+          }
+        },
+        "strict_nonzero": {
+          "jaccard": 1.0,
+          "fields": {
+            "u": {
+              "jaccard": 1.0,
+              "matched": 6,
+              "true_terms": 6,
+              "found_terms": 6,
+              "missing": [],
+              "extra": []
+            }
+          }
+        }
+      },
+      "API_calls": 21,
+      "usage": {
+        "prompt_tokens": 2405015,
+        "completion_tokens": 90570,
+        "total_tokens": 2495585
+      },
+      "search_fit_calls": 12861,
+      "terminal_fit_calls": 164,
+      "initial_root_attempt_coverage": {
+        "u": 1.0
+      }
+    }
+  },
+  "T03_ablation": {
+    "cases": [
+      {
+        "group": "baseline",
+        "J": 1.0,
+        "recovery": 1.0,
+        "matched": 5,
+        "found": 5,
+        "missing": [],
+        "extra": [],
+        "MSE": 3.7360150250047355e-08,
+        "C": 29,
+        "raw_nodes": 5,
+        "input": 785418,
+        "output": 81577,
+        "total": 866995,
+        "API": 21,
+        "search_fit_calls": 3699,
+        "terminal_fits": 1040,
+        "search_min": 70.21711169083913,
+        "terminal_min": 14.612504907449086,
+        "total_min": 84.82961659828821,
+        "coverage": 1.0,
+        "choice_valid": true,
+        "exact_in_shortlist": [
+          "K03"
+        ],
+        "equation": "0.99988139826614*u(x, t)**5 - 0.999978899617613*u(x, t)**3 + 1.50080924020779*u(x, t)*exp(-0.0997123731890747*x**2) - 1.99633580262323*Derivative(u(x, t), (x, 2)) - 0.99741457717858*Derivative(u(x, t), (x, 4))"
+      },
+      {
+        "group": "A",
+        "J": 1.0,
+        "recovery": 1.0,
+        "matched": 5,
+        "found": 5,
+        "missing": [],
+        "extra": [],
+        "MSE": 2.491986309332831e-12,
+        "C": 45,
+        "raw_nodes": 7,
+        "input": 385544,
+        "output": 31769,
+        "total": 417313,
+        "API": 21,
+        "search_fit_calls": 3921,
+        "terminal_fits": 1104,
+        "search_min": 59.783555873235066,
+        "terminal_min": 10.588913400967916,
+        "total_min": 70.37246927420298,
+        "coverage": 1.0,
+        "choice_valid": false,
+        "exact_in_shortlist": [
+          "K01",
+          "K02",
+          "K04"
+        ],
+        "equation": "1.00001052070544*u(x, t)**5 - 1.00000437603706*u(x, t)**3 + 1.49998562178386*u(x, t)*exp(-0.100004494396146*x**2) - 2.00006127435152*Derivative(u(x, t), (x, 2)) - 1.00003569463312*Derivative(u(x, t), (x, 4))"
+      },
+      {
+        "group": "B",
+        "J": 0.8333333333333334,
+        "recovery": 1.0,
+        "matched": 5,
+        "found": 6,
+        "missing": [],
+        "extra": [
+          "('sinh', ('variable', 'x'))"
+        ],
+        "MSE": 3.2560350503869298e-09,
+        "C": 35,
+        "raw_nodes": 6,
+        "input": 785121,
+        "output": 27528,
+        "total": 812649,
+        "API": 21,
+        "search_fit_calls": 2281,
+        "terminal_fits": 1057,
+        "search_min": 77.03246140480042,
+        "terminal_min": 14.331256926059723,
+        "total_min": 91.36371833086014,
+        "coverage": 0.5405735204392923,
+        "choice_valid": false,
+        "exact_in_shortlist": [],
+        "equation": "0.999873938589283*u(x, t)**5 - 0.99996759317072*u(x, t)**3 + 1.5006890296766*u(x, t)*exp(-0.0997659469945813*x**2) + 6.57034271064659e-8*sinh(x) - 1.99679819386425*Derivative(u(x, t), (x, 2)) - 0.997611005849875*Derivative(u(x, t), (x, 4))"
+      },
+      {
+        "group": "AB",
+        "J": 0.7142857142857143,
+        "recovery": 1.0,
+        "matched": 5,
+        "found": 7,
+        "missing": [],
+        "extra": [
+          "('product', ('cos', ('variable', 'x')), ('variable', 'u'))",
+          "('variable', 'u')"
+        ],
+        "MSE": 1.192561590375233e-11,
+        "C": 48,
+        "raw_nodes": 7,
+        "input": 373594,
+        "output": 19498,
+        "total": 393092,
+        "API": 21,
+        "search_fit_calls": 2281,
+        "terminal_fits": 1357,
+        "search_min": 56.679760726292926,
+        "terminal_min": 7.5455891211827595,
+        "total_min": 64.22534984747568,
+        "coverage": 0.5411836485661989,
+        "choice_valid": true,
+        "exact_in_shortlist": [],
+        "equation": "1.00000334489011*u(x, t)**5 - 1.00000174373591*u(x, t)**3 - 0.00402175473983849*u(x, t)*cos(0.476374720676385*x) - 0.00487107998821756*u(x, t) + 1.50875520170264*u(x, t)*exp(-0.0997039898556437*x**2) - 2.00044093456939*Derivative(u(x, t), (x, 2)) - 1.00028030595997*Derivative(u(x, t), (x, 4))"
+      }
+    ],
+    "new_total_tokens": 1623054,
+    "new_API_calls": 63,
+    "notes": [
+      "Metrics evaluate the candidate actually named by the LLM; A/B policies failed ban consistency, which remains recorded.",
+      "Recovery is matched reference mechanisms / reference mechanisms; redundant mechanisms do not lower recovery.",
+      "Equivalent derivative paths are merged for symbolic metrics; MSE/C remain those of the original numerical model.",
+      "Baseline ran concurrently with other cases; wall-time differences are descriptive.",
+      "One stochastic run per setting."
+    ]
+  }
+}

@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "gem-gss"
+version = "0.1.0"
+description = "Sampling-driven mechanism discovery and persistent PDE set optimization"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+  "numpy>=2.1,<3",
+  "scipy>=1.16,<2",
+  "sympy>=1.13,<2",
+  "networkx>=3.3,<4",
+  "requests>=2.32,<3",
+  "tokenizers==0.23.3",
+]
+
+[project.scripts]
+gem-gss = "gem_gss.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["gem_gss*"]
+
+[tool.setuptools.package-data]
+gem_gss = ["assets/*.json", "assets/*.gz", "assets/observations/*.npz"]

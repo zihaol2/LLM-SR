@@ -1,0 +1,16 @@
+{
+  "id": "CUSTOM",
+  "fields": ["u"],
+  "coordinates": ["x"],
+  "prior": "A smooth observed scalar field changes in time. u is the state, x is space, t is time.",
+  "data_path": "observations.npz",
+  "graph_path": "graph.json",
+  "metadata": {
+    "spatial_dimension": 1,
+    "fields": ["u"],
+    "coordinates": ["x"],
+    "shape": [100, 101],
+    "coordinate_ranges": {"x": [-1.0, 1.0]},
+    "time_range": [0.0, 1.0]
+  }
+}
