@@ -1,0 +1,363 @@
+[
+  {
+    "id": "T01",
+    "fields": [
+      "u"
+    ],
+    "coordinates": [
+      "x"
+    ],
+    "prior": "[D1]\nFind the mathematical function skeleton for the time derivative of a scalar field in a\none-dimensional system where a localized profile spreads and approaches a saturated\nstate.\n\n[V1]\nu is the scalar state field. x is the spatial coordinate. t is time. u_t is the time\nderivative of u.\n",
+    "metadata": {
+      "spatial_dimension": 1,
+      "fields": [
+        "u"
+      ],
+      "coordinates": [
+        "x"
+      ],
+      "shape": [
+        100,
+        1000
+      ],
+      "coordinate_ranges": {
+        "x": [
+          0.0,
+          6.220353454107791
+        ]
+      },
+      "time_range": [
+        0.0,
+        10.0
+      ],
+      "field_ranges": {
+        "u": [
+          2.586159310190617e-05,
+          0.9999704314176053
+        ]
+      }
+    },
+    "data_path": "T01.npz",
+    "data_sha256": "e98975489aba6574d4dd17b31ae75582bc99b59f4bc85426ee6937ab5183ed9a"
+  },
+  {
+    "id": "T02",
+    "fields": [
+      "u"
+    ],
+    "coordinates": [
+      "x"
+    ],
+    "prior": "[D1]\nFind the mathematical function skeleton for the time derivative of a scalar field in a\none-dimensional system where a localized bump grows and spreads while remaining bounded.\n\n[V1]\nu is the scalar state field. x is the spatial coordinate. t is time. u_t is the time\nderivative of u.\n",
+    "metadata": {
+      "spatial_dimension": 1,
+      "fields": [
+        "u"
+      ],
+      "coordinates": [
+        "x"
+      ],
+      "shape": [
+        128,
+        1000
+      ],
+      "coordinate_ranges": {
+        "x": [
+          -5.0,
+          4.921875
+        ]
+      },
+      "time_range": [
+        0.0,
+        10.0
+      ],
+      "field_ranges": {
+        "u": [
+          0.0,
+          1.2974107592399762
+        ]
+      }
+    },
+    "data_path": "T02.npz",
+    "data_sha256": "4fc374c878b9febfb828c499993fb2475523b8aac5c3f726241a91e566855113"
+  },
+  {
+    "id": "T03",
+    "fields": [
+      "u"
+    ],
+    "coordinates": [
+      "x"
+    ],
+    "prior": "[D1]\nFind the mathematical function skeleton for the time derivative of a scalar field in a\none-dimensional system where a small field develops a spatially structured pattern.\n\n[V1]\nu is the scalar state field. x is the spatial coordinate. t is time. u_t is the time\nderivative of u.\n",
+    "metadata": {
+      "spatial_dimension": 1,
+      "fields": [
+        "u"
+      ],
+      "coordinates": [
+        "x"
+      ],
+      "shape": [
+        256,
+        500
+      ],
+      "coordinate_ranges": {
+        "x": [
+          -10.0,
+          9.921875
+        ]
+      },
+      "time_range": [
+        0.0,
+        1.2
+      ],
+      "field_ranges": {
+        "u": [
+          -0.3624901815098102,
+          0.8715770384572716
+        ]
+      }
+    },
+    "data_path": "T03.npz",
+    "data_sha256": "8fa373875edc7cdcaae607899a4ac0f0e1f8574504d2ce4eae0a3e1c6a1e348d"
+  },
+  {
+    "id": "T04",
+    "fields": [
+      "u"
+    ],
+    "coordinates": [
+      "x"
+    ],
+    "prior": "[D1]\nFind the mathematical function skeleton for the time derivative of a scalar field in a\none-dimensional system with a localized moving profile that is bounded and asymmetric.\n\n[V1]\nu is the scalar state field. x is the spatial coordinate. t is time. u_t is the time\nderivative of u.\n",
+    "metadata": {
+      "spatial_dimension": 1,
+      "fields": [
+        "u"
+      ],
+      "coordinates": [
+        "x"
+      ],
+      "shape": [
+        256,
+        400
+      ],
+      "coordinate_ranges": {
+        "x": [
+          -15.0,
+          14.8828125
+        ]
+      },
+      "time_range": [
+        0.0,
+        5.0
+      ],
+      "field_ranges": {
+        "u": [
+          0.09999847391201114,
+          0.6995424109067072
+        ]
+      }
+    },
+    "data_path": "T04.npz",
+    "data_sha256": "9fa557df9c2e6ab38bfca98abd7b28fb518e15b78ca3d3d3744ed75ac6778c02"
+  },
+  {
+    "id": "T05",
+    "fields": [
+      "u",
+      "v"
+    ],
+    "coordinates": [
+      "x"
+    ],
+    "prior": "[D1]\nFind the mathematical function skeletons for the time derivatives of two co-evolving\nscalar fields in a one-dimensional system: one broad field that spreads and saturates,\nand one localized field that decays.\n\n[V1]\nu and v are scalar state fields. x is the spatial coordinate. t is time. u_t and v_t are\nthe time derivatives of u and v.\n",
+    "metadata": {
+      "spatial_dimension": 1,
+      "fields": [
+        "u",
+        "v"
+      ],
+      "coordinates": [
+        "x"
+      ],
+      "shape": [
+        128,
+        1000
+      ],
+      "coordinate_ranges": {
+        "x": [
+          0.0,
+          9.921875
+        ]
+      },
+      "time_range": [
+        0.0,
+        10.0
+      ],
+      "field_ranges": {
+        "u": [
+          -2.8984493219142286e-06,
+          0.9991301004826451
+        ],
+        "v": [
+          -1.960420447363349e-06,
+          0.399951174855111
+        ]
+      }
+    },
+    "data_path": "T05.npz",
+    "data_sha256": "e7cf27178f8730b897bda02d667ff3f2c508dd8df691de1744a81ce8047f9e81"
+  },
+  {
+    "id": "T2D",
+    "fields": [
+      "u"
+    ],
+    "coordinates": [
+      "x",
+      "y"
+    ],
+    "prior": "[D1: weak phenomenological description]\nA nonnegative population-density field over two spatial coordinates evolves in\ntime. Observed patterns shift while their magnitude and smoothness change.\nIf a candidate proposes an external input, express it explicitly using x, y, t\nand fitted constants; no additional input field is observed.\nDo not assume any named PDE, reaction law, exact solution or forcing formula.\n[V1: variable roles]\nu is the observed density; x and y are spatial coordinates; t is time.\nThe target is the local temporal rate u_t. Spatial derivatives are estimated\nfrom observations; no analytic time derivative or external input is supplied.\n",
+    "metadata": {
+      "spatial_dimension": 2,
+      "fields": [
+        "u"
+      ],
+      "coordinates": [
+        "x",
+        "y"
+      ],
+      "shape": [
+        65,
+        65,
+        129
+      ],
+      "coordinate_ranges": {
+        "x": [
+          -3.141592653589793,
+          3.141592653589793
+        ],
+        "y": [
+          -3.141592653589793,
+          3.141592653589793
+        ]
+      },
+      "time_range": [
+        0.0,
+        2.0
+      ],
+      "field_ranges": {
+        "u": [
+          0.10352650970685642,
+          0.8561251059704099
+        ]
+      }
+    },
+    "data_path": "T2D.npz",
+    "data_sha256": "9a838806a00ec96f7463af40b3dae21f04175278a74ca3feecc821fa1090e9da"
+  },
+  {
+    "id": "T3D",
+    "fields": [
+      "u"
+    ],
+    "coordinates": [
+      "x",
+      "y",
+      "z"
+    ],
+    "prior": "[D1]\nFind the mathematical function skeleton for the time derivative of a scalar\nfield in a three-dimensional system where a localized profile spreads,\nsmooths out and gradually decreases in amplitude over time.\n\n[V1]\nu is the observed real-valued scalar state field. x, y and z are the three\nspatial coordinates. t is time. u_t is the time derivative of u.\n",
+    "metadata": {
+      "spatial_dimension": 3,
+      "fields": [
+        "u"
+      ],
+      "coordinates": [
+        "x",
+        "y",
+        "z"
+      ],
+      "shape": [
+        24,
+        24,
+        24,
+        39
+      ],
+      "coordinate_ranges": {
+        "x": [
+          0.0,
+          6.021385919380436
+        ],
+        "y": [
+          0.0,
+          6.021385919380436
+        ],
+        "z": [
+          0.0,
+          6.021385919380436
+        ]
+      },
+      "time_range": [
+        0.0,
+        2.0
+      ],
+      "field_ranges": {
+        "u": [
+          0.12717019764215878,
+          0.7478186372522159
+        ]
+      }
+    },
+    "data_path": "T3D.npz",
+    "data_sha256": "a5663034b1bf7647c523459f2e28171d7cb8e66ec3c7f74a56ebfb15fed1e815"
+  },
+  {
+    "id": "TSC1",
+    "fields": [
+      "u",
+      "v"
+    ],
+    "coordinates": [
+      "x"
+    ],
+    "prior": "[D1]\nFind the mathematical function skeletons for the time derivatives of two observed scalar fields in a one-dimensional system with evolving bounded profiles and coupled transport.\n\n[V1]\nu is the normalized density of goods. v is the normalized processing-rate field. x denotes position along the line and t denotes time. Both fields are observed.\n",
+    "metadata": {
+      "spatial_dimension": 1,
+      "fields": [
+        "u",
+        "v"
+      ],
+      "coordinates": [
+        "x"
+      ],
+      "shape": [
+        256,
+        161
+      ],
+      "coordinate_ranges": {
+        "x": [
+          0.01227184630308513,
+          6.270913460876501
+        ]
+      },
+      "time_range": [
+        0.0,
+        0.8
+      ],
+      "field_ranges": {
+        "u": [
+          0.3542847268925513,
+          0.9159838693890445
+        ],
+        "v": [
+          0.43470882349467077,
+          0.8188753034461977
+        ]
+      }
+    },
+    "data_path": "TSC1.npz",
+    "data_sha256": "d173db057f99437137d5790af4397f0b51ec2b776c5c9f175f5d586cbc275fac"
+  }
+]
