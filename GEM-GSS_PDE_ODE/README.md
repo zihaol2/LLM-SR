@@ -1,31 +1,3 @@
-# GEM-GSS：历史 PDE 版本
-
-Archived PDE implementation of graph-guided symbolic discovery. This source-only
-release preserves the two historical source profiles behind the eight-task PDE
-summary dated 2026-11-15 (mean structural Jaccard **0.9375**).
-
-本目录用于上传 GitHub，共 **50 个文件**。包含算法源码、配置和八张冻结初始图；
-不包含观测数组、实验输出、模型答案、API 对话、图片、基线代码或虚拟环境。
-它不是后来加入 ODE 构图、每方程 25 次历史拟合或预拟合实验的开发版本。
-
-## 版本范围
-
-93.75% 是八个任务的平均结构 Jaccard，不是八个系统全部恢复的比例，也不是
-本次重新运行取得的结果。历史汇总来自以下两个接口版本：
-
-| 自动选择的源码配置 | 案例 | 历史版本 |
-|---|---|---|
-| `pde047` | T01–T05、T2D | 0.4.7 |
-| `pde049` | T3D、TSC1 | 0.4.9 |
-
-两版共享 25 个模块，六个不同文件保存在 `gem_gss/versions/pde047/`。
-入口在导入算法前选择对应版本；不是把后来的改动混入旧实验。
-`gem_gss/assets/release_manifest.json` 保存原始源码哈希、导出源码哈希、
-数据/初始图哈希、每题协议及打包改动。没有保存方程结果或评估答案。
-
-保持原算法的构图规则、轮转、历史搜索、前沿、数值拟合和最终选择。
-发布封装只处理命令入口、数据目录、缓存目录和源码核验；后来的按方程测试记录、
-LLM 满项替换修复、ODE 新图和各种预拟合原型均不在本包。
 
 ## 安装与无数据检查
 
@@ -102,22 +74,7 @@ T2D 使用原 `compiled_chain_2d`，其他案例使用 `reference`。
 | 在线修正 | `refinement.py`、`structural_rules.py`、`structure.py` | 删项、多项式替换、已有核心简化 |
 | LLM 交互 | `api.py`、`compression.py`、`wire.py`、`feedback.py`、`final_selection.py` | 请求、压缩、执行反馈和终选 |
 
-初始图是构图产物/运行输入，不是拟合结果；图中没有正确性标签。
-本包不提供离线真解评估器，也不将评估参考方程导入发现过程。
-Jaccard 的历史记录可定位版本，不能保证再次调用不确定性 LLM 得到完全相同结果。
 
-## 自定义案例
-
-使用 `--case-json case.json --graph graph.json.gz`。声明中包含 `id`、`fields`、
-`coordinates`、`prior`、`data_path` 和 `data_sha256`，数据路径相对声明文件。
-图使用同一语法，由 `builder.Graph`/`Registry` 等现有接口构建；新增案例需提供自己的
-初始图，不自动借用其他案例的图。入口默认使用 `pde049`，支持现有 1D/2D/3D 观测适配。
-
-## 来源与许可说明
-
-源码由本地 GEM-GSS PDE 研究归档整理，原模块哈希见发布清单。
-没有另行替作者或第三方授予整包 MIT/Apache 许可证。
-观测数据及第三方基线没有随包分发，使用者需要自行准备有权使用的数据。
 
 tokenizer 来自 `deepseek-ai/DeepSeek-V4.1-Flash`，归档 revision 为
 `314113f8a7dadb388215396ba5fbee2c610a04d6`，只用于本地输入长度计数。
