@@ -6,6 +6,6 @@ Base code and core concept derived from LLM-PDESR:https://github.com/jinyangdu5/
  * **`15_traffic_four_arm_comparison/`** (Traffic: Baseline vs.Phy Mechanism Library, Named vs. Anonymous)
  *   **`16_three_problem_library/`** (Three-Problem Anonymous Study — Library-Guided Discovery & Role Identification(Some physical priors))(带少量先验的匿名PDESR)
  * **`GEMS-PDE/`** (GEMS-PDE — LLM-Guided Mechanism Expansion & Persistent Equation Search)
- * **`GEMS-GSS/`** (Graph-based Equation Mechanism Sampling with Guided Set Search)
- * **`GEMS-GSS-PDE-ODE/`** (New Graph-based Equation Mechanism Sampling with Guided Set Search(final))
+ * **`GEMS-GSS/`** (Graph-based Equation Mechanism Sampling with Guided Set Search(V0))
+ * **`GEMS-GSS-PDE-ODE/`** (New Graph-based Equation Mechanism Sampling with Guided Set Search(V1))
 
