@@ -1,0 +1,42 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "gem-gss-pde"
+version = "0.4.9.post2"
+description = "GEM-GSS PDE discovery with a unified 0.4.9 implementation"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+  "numpy==2.1.2",
+  "scipy==1.16.3",
+  "sympy==1.13.3",
+  "networkx==3.3",
+  "requests==2.32.3",
+  "tokenizers==0.23.3",
+]
+
+[project.scripts]
+gem-gss-pde = "gem_gss.entry:main"
+
+[tool.setuptools]
+packages = ["gem_gss"]
+include-package-data = false
+
+[tool.setuptools.package-data]
+gem_gss = ["assets/*.json", "assets/*.gz"]
+
+[project.optional-dependencies]
+dev = ["black>=24", "ruff>=0.6"]
+
+[tool.black]
+line-length = 100
+target-version = ["py312"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F", "I"]
